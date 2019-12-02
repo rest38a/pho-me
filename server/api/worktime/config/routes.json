@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/worktimes",
+      "handler": "Worktime.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/worktimes/count",
+      "handler": "Worktime.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/worktimes/:id",
+      "handler": "Worktime.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/worktimes",
+      "handler": "Worktime.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/worktimes/:id",
+      "handler": "Worktime.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/worktimes/:id",
+      "handler": "Worktime.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

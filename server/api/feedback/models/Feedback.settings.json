@@ -1,0 +1,36 @@
+{
+  "connection": "default",
+  "collectionName": "feedbacks",
+  "info": {
+    "name": "feedback",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "feedback_text": {
+      "type": "text"
+    },
+    "public": {
+      "type": "boolean"
+    },
+    "email": {
+      "type": "string"
+    },
+    "date_create": {
+      "type": "date"
+    },
+    "answer": {
+      "type": "text"
+    }
+  }
+}

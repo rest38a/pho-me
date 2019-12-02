@@ -1,0 +1,35 @@
+{
+  "connection": "default",
+  "collectionName": "sliders",
+  "info": {
+    "name": "slider",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": [
+      "created_at",
+      "updated_at"
+    ],
+    "comment": ""
+  },
+  "attributes": {
+    "image": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload"
+    },
+    "sort": {
+      "type": "integer"
+    },
+    "public": {
+      "type": "boolean"
+    },
+    "head": {
+      "type": "string"
+    },
+    "slidetext": {
+      "type": "text"
+    }
+  }
+}

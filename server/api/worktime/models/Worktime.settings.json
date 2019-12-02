@@ -1,0 +1,21 @@
+{
+  "connection": "default",
+  "collectionName": "worktimes",
+  "info": {
+    "name": "worktime",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "comment": ""
+  },
+  "attributes": {
+    "days": {
+      "type": "string"
+    },
+    "hours": {
+      "type": "string"
+    }
+  }
+}

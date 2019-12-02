@@ -1,0 +1,13 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/api/feedbacks",
+      "handler": "Feedback.find",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}
+

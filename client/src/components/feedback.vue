@@ -106,7 +106,11 @@
                     answer:null,
                 },
                 errors:[],
-                feedbacks:[],
+                feedbacks:[{name:'',
+                    date_create:'',
+                    feedback_text:'',
+                    answer:''
+                }],
                 num_show:0,
                 sent:false,
                 load:false
@@ -115,13 +119,13 @@
         mounted() {
             axios.get('http://176.112.218.115:1337/feedbacks?public=true')
             .then( (response)=> {
-                console.log(response)
+
                 this.feedbacks.splice(0, this.feedbacks.length, ...response.data);
             })
         },
         methods:{
             goto(num) {
-                console.log(num)
+
                 if (this.num_show + num < 0) {
 
                     this.num_show = this.feedbacks.length-1

@@ -22,25 +22,15 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="feedback-list">
-                                    <div class="btn-feedback btn-feedback-google">
-                                        <div class="img-feedback-wrap img-wrap-google"><img src="../assets/image/icon-google.svg" alt=""></div>
-                                        <a href="https://goo.gl/maps/33hAJiqF1WTEA91x7" class="text-feedback-wrap text-color-black">Оставить отзыв<br><span class="text-uppercase">в google.карты</span></a>
-                                    </div>
-                                    <div class="btn-feedback btn-feedback-yandex">
-                                        <div class="img-feedback-wrap img-wrap-yandex"><img src="../assets/image/icon-yandex.svg" alt=""></div>
-                                        <a href="https://yandex.ru/profile/89814993326?intent=reviews&lr=63" class="text-feedback-wrap text-color-black">Оставить отзыв<br><span class="text-uppercase">в яндекс.карты</span></a>
-                                    </div>
-                                    <div class="btn-feedback btn-feedback-2gis">
-                                        <div class="img-feedback-wrap img-wrap-2gis"><img src="../assets/image/icon-2gis.svg" alt=""></div>
-                                        <a href="https://go.2gis.com/gzsw6v" class="text-feedback-wrap text-color-white">Оставить отзыв<br><span class="text-uppercase">в 2gis</span></a>
-                                    </div>
-                                    <div class="btn-feedback btn-feedback-advisor">
-                                        <div class="img-feedback-wrap img-wrap-advisor"><img src="../assets/image/icon-advisor.svg" alt=""></div>
-                                        <a href="https://www.tripadvisor.ru/Restaurant_Review-g298527-d14167780-Reviews-Pho_Me_Asian_Food_Drinks-Irkutsk_Irkutsk_Oblast_Siberian_District.html?m=19905" class="text-feedback-wrap text-color-white">Оставить отзыв<br><span class="text-uppercase">на trip advisor</span></a>
-                                    </div>
-                                    <div class="btn-feedback btn-feedback-flamp">
-                                        <div class="img-feedback-wrap img-wrap-flamp"><img src="../assets/image/icon-flamp.svg" alt=""></div>
-                                        <a href="https://irkutsk.flamp.ru/addreview/70000001032191878" class="text-feedback-wrap text-color-white">Оставить отзыв<br><span class="text-uppercase">на flamp</span></a>
+                                    <div
+                                        v-for="(item, index) of items"
+                                        :key="index"
+                                        class="btn-feedback"
+                                        :class="item.wrapClass"
+                                        @click="clickHandle(item.link)"
+                                    >
+                                        <div class="img-feedback-wrap" :class="item.classImg"><img :src="item.image" alt=""></div>
+                                        <div class="text-feedback-wrap" :class="item.childClass">Оставить отзыв<br><span class="text-uppercase">{{ item.title }}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +44,56 @@
 
 <script>
     export default {
-        name: "FeedbackMobile"
+        name: "FeedbackMobile",
+        data: () => ({
+            items: [
+                {
+                    title: 'в google.карты',
+                    image: '/image/icon-google.svg',
+                    link: 'https://goo.gl/maps/33hAJiqF1WTEA91x7',
+                    wrapClass: 'btn-feedback btn-feedback-google',
+                    classImg: 'img-wrap-google',
+                    childClass: 'text-color-black'
+                },
+                {
+                    title: 'в яндекс.карты',
+                    image: '/image/icon-yandex.svg',
+                    link: 'https://yandex.ru/profile/89814993326?intent=reviews&lr=63',
+                    wrapClass: 'btn-feedback btn-feedback-yandex',
+                    classImg: 'img-wrap-yandex',
+                    childClass: 'text-color-black'
+                },
+                {
+                    title: 'в 2gis',
+                    image: '/image/icon-2gis.svg',
+                    link: 'https://go.2gis.com/gzsw6v',
+                    wrapClass: 'btn-feedback btn-feedback-2gis',
+                    classImg: 'img-wrap-2gis',
+                    childClass: 'text-color-white'
+                },
+                {
+                    title: 'на trip advisor',
+                    image: '/image/icon-advisor.svg',
+                    link: 'https://www.tripadvisor.ru/Restaurant_Review-g298527-d14167780-Reviews-Pho_Me_Asian_Food_Drinks-Irkutsk_Irkutsk_Oblast_Siberian_District.html?m=19905',
+                    wrapClass: 'btn-feedback-advisor',
+                    classImg: 'img-wrap-advisor',
+                    childClass: 'text-color-white'
+                },
+                {
+                    title: 'на flamp',
+                    image: '/image/icon-flamp.svg',
+                    link: 'https://irkutsk.flamp.ru/addreview/70000001032191878',
+                    wrapClass: 'btn-feedback-flamp',
+                    classImg: 'img-wrap-flamp',
+                    childClass: 'text-color-white'
+                }
+            ]
+        }),
+        methods: {
+            clickHandle (link) {
+                location.href = link
+            }
+        }
     }
 </script>
 

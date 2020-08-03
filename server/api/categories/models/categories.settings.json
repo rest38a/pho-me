@@ -1,0 +1,26 @@
+{
+  "connection": "default",
+  "collectionName": "categories",
+  "info": {
+    "name": "Категории"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "sort_index": {
+      "type": "integer"
+    },
+    "is_active": {
+      "type": "boolean"
+    },
+    "products": {
+      "via": "category",
+      "collection": "products"
+    }
+  }
+}

@@ -6,8 +6,6 @@
         <menu-list></menu-list>
         <feedback></feedback>
         <my-footer></my-footer>
-
-
     </div>
 </template>
 
@@ -61,4 +59,5 @@ export default {
         position: fixed;
         top:200px
     }
+
 </style>

@@ -1,0 +1,45 @@
+{
+  "connection": "default",
+  "collectionName": "orders",
+  "info": {
+    "name": "Заказы"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "orders_date": {
+      "type": "datetime"
+    },
+    "delivery_time": {
+      "type": "datetime"
+    },
+    "comment": {
+      "type": "text"
+    },
+    "was_send": {
+      "type": "boolean"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "client_name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "json"
+    },
+    "can_early": {
+      "type": "boolean"
+    },
+    "sum_order": {
+      "type": "integer"
+    },
+    "products": {
+      "collection": "products",
+      "via": "orders",
+      "dominant": true
+    }
+  }
+}

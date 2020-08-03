@@ -15,12 +15,12 @@ const routes = [
     component: Home
   },
     {
-        path: '/feedback',
+        path: '/feedback2',
         name: 'feedback',
         component: feedback
     },
     {
-        path: '/feedback2',
+        path: '/feedback',
         name: 'feedback-mobile',
         component: FeedbackMobile
     }

@@ -73,3 +73,7 @@ export function setCategoriesMenu(state, categoriesMenu) {
 export function setForks(state, forks) {
   state.order.forks = forks;
 }
+
+export function setPromoCode(state, promoCode) {
+  state.order.promocode = promoCode;
+}

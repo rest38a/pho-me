@@ -19,6 +19,9 @@ import myFooter from './footer';
 
 export default {
   name: 'HelloWorld',
+  meta: {
+    title: 'Pho me. Азиатский ресторан в Иркутске',
+  },
   components: {
     feedback,
     myFooter,

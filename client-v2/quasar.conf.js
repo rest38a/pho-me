@@ -89,7 +89,7 @@ module.exports = function (/* ctx */) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
       iconSet: 'material-icons', // Quasar icon set
-      lang: 'en-us', // Quasar language pack
+      lang: 'ru', // Quasar language pack
       config: {
         ripple: {},
       },
@@ -108,7 +108,9 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: [
+        'Meta'
+      ],
     },
 
     // animations: 'all', // --- includes all animations

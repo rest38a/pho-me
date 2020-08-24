@@ -11,6 +11,7 @@ export default function () {
       comment: null,
       isCostume: false,
       forks: 1,
+      promocode: '',
     },
     orderProducts: [],
     orderMenu: [],

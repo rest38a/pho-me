@@ -24,9 +24,8 @@
                                @click="addProductToBasket(product)"
                                class="pho-btn-med" >
                             <div >
-                                В корзину
+                                {{getName(product.id)}}
                             </div >
-                            <img src="/icons/basket-b.svg" alt="" class="cart-logo" >
                         </q-btn >
                     </div >
                 </div >
@@ -57,10 +56,8 @@
                                @click="addProductToBasket(product)"
                                class="pho-btn-med" >
                             <div >
-                                В корзину
+                                {{getName(product.id)}}
                             </div >
-                            <img src="/icons/basket-b.svg" alt=""
-                                 class="cart-icon-m"  >
                         </q-btn >
                     </div >
                 </div >
@@ -70,7 +67,7 @@
 </template >
 
 <script >
-import { mapMutations } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
 
 export default {
   name: 'ProductItem',
@@ -87,6 +84,16 @@ export default {
   methods: {
     ...mapMutations('order', ['addProductToBasket',
       'removeProductToBasket']),
+    getName(productId) {
+      const searchProduct = this.orderProducts.find((item) => item.id === productId);
+
+      if (searchProduct !== undefined) return `В корзине ${searchProduct.count}`;
+
+      return 'В корзину';
+    },
+  },
+  computed: {
+    ...mapState('order', ['orderProducts']),
   },
 };
 </script >
@@ -144,7 +151,7 @@ export default {
     }
     .pho-card-product-weight{
         font-family: lcm;
-        font-size: 14px;
+        font-size: 10px;
         line-height: 19px;
         color: #333333;
     }

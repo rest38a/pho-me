@@ -18,12 +18,12 @@ const routes = [
       //   name: 'feedback',
       //   component: () => import('../views/feedback.vue'),
       // },
-      // {
-      //   path: 'feedback',
-      //   name: 'feedback-mobile',
-      //   component: () => import('../views/FeedbackMobile.vue'),
-      // },
-      { path: 'order', component: () => import('pages/OrderPage.vue') },
+      {
+        path: 'feedback',
+        name: 'feedback-mobile',
+        component: () => import('../views/FeedbackMobile.vue'),
+      },
+      { path: 'delivery', component: () => import('pages/OrderPage.vue') },
     ],
 
   },

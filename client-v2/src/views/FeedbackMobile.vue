@@ -7,7 +7,7 @@
                     <div class="child-bg">
                         <div class="row">
                             <div class="col-12 text-center">
-                                <img src="/public/fbmob-icon.svg"/>
+                                <img src="/fbmob-icon.svg"/>
                             </div>
                             <div class="col-12">
                                 <p class="title-feedback">Ждем твой<br>
@@ -92,7 +92,7 @@ export default {
   }),
   methods: {
     clickHandle(link) {
-      location.href = link;
+      window.location.href = link;
     },
   },
 };

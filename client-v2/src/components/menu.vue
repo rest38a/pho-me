@@ -6,6 +6,7 @@
                     <img src='../assets/image/logotext.png' class='textlogo_menu' >
                 </div >
                 <div class="row mobile-hide" >
+                    <div class="menu_1_d" @click="gotoDelivey()">Доставка</div >
                     <div class="menu_1_d" @click="scrollToElement('menu')" >Меню</div >
                     <div class="menu_1_d" @click="scrollToElement('akcii')" >Акции</div >
                     <div class="menu_1_d" @click="scrollToElement('feedback')" >Отзывы</div >
@@ -17,6 +18,7 @@
             </div >
         </div >
         <div class="column q-pt-xl bg-yel" v-if="showMenu">
+            <div class="menu_1_d" @click="gotoDelivey()">Доставка</div >
             <div class="menu_1_d" @click="scrollToElement('menu')" >Меню</div >
             <div class="menu_1_d" @click="scrollToElement('akcii')" >Акции</div >
             <div class="menu_1_d" @click="scrollToElement('feedback')" >Отзывы</div >
@@ -54,6 +56,9 @@ export default {
       const duration = 500;
       setScrollPosition(target, offset, duration);
     },
+    gotoDelivey() {
+      this.$router.push('delivery');
+    },
   },
 };
 </script >
@@ -89,6 +94,7 @@ export default {
     }
 
     .menu_1_d:hover {
+        cursor: pointer;
         background: #ad1da3;
         color: #ffffff;
         margin: 5px auto;

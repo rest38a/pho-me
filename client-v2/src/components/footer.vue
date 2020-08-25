@@ -2,9 +2,9 @@
     <div>
         <div class='black_blk'>
             <div class='container full-height justify-center justify-md-center'>
-                <div class='row justify-center justify-md-center items-center full-height'>
-                    <div class='col-md-4 col-12 text-md-left
-                    justify-center q-pt-md-none q-pt-md'>
+                <div class='row justify-center justify-md-center full-height'>
+                    <div class='col-md-4 col-sm-6 col-12 text-md-left
+                    justify-center contact-col'>
                         <div class='zag11720 text-md-left'>
                             АДРЕС
                         </div>
@@ -13,7 +13,7 @@
                             ТРК «Модный Квартал», 2 этаж
                         </div>
                     </div>
-                    <div class='col-md-4 col-12 justify-content-center q-pt-md-none q-pt-md'>
+                    <div class='col-md-4 col-sm-6 col-12 justify-content-center contact-col'>
                         <div class='zag11720'>
                             РЕЖИМ РАБОТЫ
                         </div>
@@ -22,7 +22,7 @@
                             ПТ-ВС с 12:00 до 24:00
                         </div>
                     </div>
-                    <div class='col-md-4 col-12 justify-content-center q-pt-md-none q-pt-md'>
+                    <div class='col-md-4 col-sm-6 col-12 justify-content-center contact-col'>
                         <div class='zag11720'>
                             КОНТАКТЫ
                         </div>
@@ -30,18 +30,11 @@
                             596-011
                         </div>
                     </div>
-                    <div class='socials-wrap'>
+                    <div class='socials-wrap col-sm-6 contact-col'>
 						<div class='socials'>
                             <a href='https://www.facebook.com/phome.irk/'><div class='faced '></div></a>
                             <a href='https://www.instagram.com/pho_me_/'><div class='instd'></div></a>
 						</div>
-                    </div>
-                    <div class='desktop-hide   text-md-left text-center
-                    column justify-center q-py-md'>
-                        <div class='d-flex '>
-                            <a href='https://www.facebook.com/phome.irk/'><div class='faced '></div></a>
-                            <a href='https://www.instagram.com/pho_me_/'><div class='instd'></div></a>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -80,8 +73,6 @@ export default {
 		padding: 12px 0;
 		position: relative;
 	}
-    @media (max-width: 780px) {
-    }
 
     .zag11720 {
 		font-weight: 900;
@@ -127,4 +118,42 @@ export default {
         background-repeat:no-repeat;
         cursor:pointer;
     }
+
+    @media (max-width: 1023px) {
+		.black_blk {
+			padding-top: 44px;
+			padding-bottom: 15px;
+		}
+		.socials-wrap {
+			position: static;
+			height: auto;
+			width: 50%;
+		}
+		.socials {
+			width: 80px;
+		}
+		.contact-col {
+			padding-bottom: 30px;
+		}
+	}
+    @media (max-width: 780px) {
+		.socials-wrap {
+		}
+		.zag11720 {
+			font-size: 20px;
+			line-height: 27px;
+		}
+
+		.zag1720 {
+			font-size: 16px;
+			line-height: 22px;
+		}
+
+    }
+    @media (max-width: 600px) {
+		.socials-wrap {
+			width: 100%;
+		}
+    }
+
 </style >

@@ -734,8 +734,7 @@ export default {
         }
       });
     this.isMounted = true;
-    const settings = { lang: 'ru_RU' };
-    await loadYmap(settings);
+    await loadYmap();
     // eslint-disable-next-line
       this.ymapsObj = ymaps;
 

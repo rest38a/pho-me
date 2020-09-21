@@ -444,7 +444,6 @@
                                 style="width: 100%; height: 600px;"
                                 v-if="isMounted"
                                 zoom="12"
-                                :settings="settings"
                     >
                         <ymap-marker :balloon="{
                                         body: item.properties.description
@@ -737,7 +736,10 @@ export default {
         }
       });
     this.isMounted = true;
-    await loadYmap();
+    const settings = {
+      apiKey: '7df138bc-f837-4e1b-b1c3-9790e63279b0', lang: 'ru_RU', coordorder: 'latlong', version: '2.1',
+    };
+    await loadYmap(settings);
     // eslint-disable-next-line
       this.ymapsObj = ymaps;
 

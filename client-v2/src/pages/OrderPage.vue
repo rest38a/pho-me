@@ -575,6 +575,7 @@ export default {
     },
     sendOrder() {
       this.loading = true;
+
       this.$axios.post('https://repairs.rest38.ru/api/phome',
         {
           order: this.order,
@@ -583,8 +584,14 @@ export default {
         .then(() => {
           this.thanks = true;
           this.loading = false;
+
+          return this.$store.dispatch('order/createOrder', this.order);
         })
-        .catch(() => {
+        .then(() => {
+          this.$store.dispatch('order/createOrder', this.order);
+        })
+        .catch((e) => {
+          console.log('e', e);
           this.loading = false;
           this.error = true;
         });

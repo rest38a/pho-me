@@ -107,7 +107,7 @@
                             </div >
                             <div class="pho-caption" >
                                 Доставка в среднем занимает 1,5 часа.<br>
-                                Режим работы доставки: с 12:00 о 22:00
+                                Режим работы доставки: с 12:00 по 22:00
                             </div >
                             <div >
                             </div >
@@ -190,7 +190,7 @@
                         <q-input
                                 :value="order.promocode"
                                 @input="setPromoCode"
-                                label="Прмокод"
+                                label="Промокод"
                                 bg-color="white"
                                 outlined dense />
                     </div>
@@ -199,7 +199,7 @@
                             Сумма заказа: <span class="total-sum" >{{totalSum}} ₽</span >
                         </div >
                         <div class="pho-caption" v-if="totalSum < 800">
-                            Минимальная сумма заказа 800 ₽
+                            Минимальная сумма заказа от 800 ₽
                         </div >
                     </div >
                 </div >
@@ -377,7 +377,7 @@
                         <q-input
                                 :value="order.promocode"
                                 @input="setPromoCode"
-                                label="Прмокод"
+                                label="Промокод"
                                 bg-color="white"
                                 outlined dense />
                     </div>
@@ -427,7 +427,7 @@
                         Дайте нам пару минут и наш менеджер свяжется с вами.
                     </div >
                     <div >
-                        Но если этого не произойдет, звоните по телефону 596-001.
+                        Но если этого не произойдет, звоните по телефону 596-011.
                     </div >
                 </div >
             </q-card >
@@ -439,6 +439,24 @@
                 </q-card-section >
 
                 <q-card-section class="q-pt-none" >
+                    <div class=" row   ">
+                        <div class="row items-center">
+                            <div class="yellow-zone ">
+
+                            </div>
+                            <div>
+                                от 800 руб
+                            </div>
+                        </div>
+                        <div class="row items-center">
+                            <div class="blue-zone pl-3">
+
+                            </div>
+                            <div>
+                                от 1100 руб
+                            </div>
+                        </div>
+                    </div>
                     <yandex-map :controls="controls"
                                 :coords="centerMap"
                                 style="width: 100%; height: 600px;"
@@ -927,5 +945,19 @@ export default {
 
     .logo-m {
         width: 100%;
+    }
+    .yellow-zone{
+        width: 50px;
+        height: 30px;
+        border-radius: 20px;
+        background: #ffd21e;
+        margin:20px 20px 20px 0;
+    }
+    .blue-zone{
+        width: 50px;
+        height: 30px;
+        border-radius: 20px;
+        background: #82cdff;
+        margin: 20px 20px;
     }
 </style >

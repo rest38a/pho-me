@@ -589,7 +589,12 @@ export default {
     ]),
     chooseCategory(category) {
       this.activeCategory = category.id;
-      this.activeCategoryProducts = [...category.products];
+
+      const prepareProducts = [...category.products];
+      const sortFunction = (a, b) => a.sort_index - b.sort_index;
+      console.log('prepareProducts', prepareProducts);
+      this.activeCategoryProducts = prepareProducts.sort(sortFunction);
+      console.log('prepareProducts', this.activeCategoryProducts);
     },
     sendOrder() {
       this.loading = true;

@@ -23,7 +23,7 @@ export default {
   },
   data() {
     return {
-      scr: window.pageYOffset,
+      scr: 0,
     };
   },
   methods: {
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     scroll() {
-      return window.pageYOffset;
+      return 0;
     },
   },
 };

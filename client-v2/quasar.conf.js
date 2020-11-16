@@ -49,7 +49,7 @@ module.exports = function (/* ctx */) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
       env:{
-        API_LINK: 'http://176.112.218.115:1337',
+        API_LINK: 'https://api.pho-me.ru',
       },
       // transpile: false,
 

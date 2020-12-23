@@ -5,9 +5,12 @@
         </div >
         <div class="main-container container">
 			<div class="text-col">
-				<h1>Мы запустили доставку</h1>
+				<h1>Мы ресторан и доставка</h1>
 				<h2>Азиатская кухня и напитки.</h2>
 				<div class="delivery-btn" @click="gotoDelivery()">Заказать доставку</div >
+				<div class="row q-mt-lg">
+				<a class="delivery-btn" href="https://www.calameo.com/read/0063012992a13044fb4ad">Меню расторана</a >
+				</div>
 				<div class="image"><img src="../assets/image/dish.png" alt=""></div>
 			</div>
         </div >
@@ -100,6 +103,7 @@ background: radial-gradient(59.09% 53.85% at 50% 50%, rgba(255, 168, 0, 0.88) 23
 		-webkit-transition: .5s box-shadow;
 		-o-transition: .5s box-shadow;
 		transition: .5s box-shadow;
+		text-decoration: none;
 	}
 
 	.delivery-btn:hover {
@@ -213,8 +217,8 @@ background: radial-gradient(59.09% 53.85% at 50% 50%, rgba(255, 168, 0, 0.88) 23
 		.image img {
 			width: 218px;
 		}
-		.delivery-btn {
-			margin-bottom: 62px;
+		.delivery-btn:last-of-type {
+			margin-bottom: 32px;
 		}
 	@media (max-width: 320px) {
 		.delivery-btn {

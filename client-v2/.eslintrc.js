@@ -62,6 +62,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'prefer-promise-reject-errors': 'off',
     'no-tabs': 0,
+    'quote-props': 'off',
 
 
     // allow debugger during development only

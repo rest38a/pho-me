@@ -1,0 +1,10 @@
+version: '3.0'
+
+services:
+
+    nginx:
+        image: nginx
+        ports:
+            - 8088:80
+        volumes:
+            - ./client-v2/dist/spa:/usr/share/nginx/html

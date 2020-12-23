@@ -1,5 +1,9 @@
 <template >
     <q-page class="main-container" >
+        <div class="warning-line">
+            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.
+            А вот 1.01.21 - принимаем заказы с 14:00.
+        </div>
         <img src="/icons/logo.svg" alt="" class="logo mobile-hide" >
         <div class="header-mobile row desktop-hide items-center" >
             <div class="col-3 q-pa-sm items-center row" >
@@ -205,6 +209,10 @@
                 </div >
             </div >
         </div >
+        <div class="warning-line-mobile">
+            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.
+            А вот 1.01.21 - принимаем заказы с 14:00.
+        </div>
         <div class="container" >
             <div class="row items-center justify-md-start justify-between" >
                 <div class="pho-h1" >
@@ -456,6 +464,22 @@
                                 от 1100 руб
                             </div>
                         </div>
+                        <div class="row items-center q-ml-md-md">
+                            <div class="purple-zone pl-3">
+
+                            </div>
+                            <div>
+                                от 1400 руб
+                            </div>
+                        </div>
+                        <div class="row items-center">
+                            <div class="green-zone pl-3">
+
+                            </div>
+                            <div>
+                                от 1700 руб
+                            </div>
+                        </div>
                     </div>
                     <yandex-map :controls="controls"
                                 :coords="centerMap"
@@ -589,12 +613,13 @@ export default {
     ]),
     chooseCategory(category) {
       this.activeCategory = category.id;
-
       const prepareProducts = [...category.products];
       const sortFunction = (a, b) => a.sort_index - b.sort_index;
-      console.log('prepareProducts', prepareProducts);
       this.activeCategoryProducts = prepareProducts.sort(sortFunction);
-      console.log('prepareProducts', this.activeCategoryProducts);
+    },
+    reachYandexGoal(name) {
+      // eslint-disable-next-line
+      yaCounter48434603.reachGoal(name);
     },
     sendOrder() {
       this.loading = true;
@@ -607,8 +632,7 @@ export default {
         .then(() => {
           this.thanks = true;
           this.loading = false;
-
-          return this.$store.dispatch('order/createOrder', this.order);
+          this.reachYandexGoal('thank');
         })
         .then(() => {
           this.$store.dispatch('order/createOrder', this.order);
@@ -835,6 +859,22 @@ export default {
     }
 
     @media (min-width: 1000px) {
+        .warning-line {
+            height: 95px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 0 40px 0 40px;
+            background: #FCD000;
+            font-family: lcb;
+            font-weight: 500;
+            color: #CA17A8;
+            font-size: 22px;
+        }
+        .warning-line-mobile{
+            display: none;
+        }
         .cart {
             z-index: 100;
             position: fixed;
@@ -860,6 +900,21 @@ export default {
     }
 
     @media (max-width: 999px) {
+        .warning-line{
+            display: none;
+        }
+        .warning-line-mobile{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 65px 20px 20px 20px;
+            background: #FCD000;
+            color: #CA17A8;
+            font-family: lcb;
+            font-weight: 500;
+            margin-bottom: -35px;
+        }
         .cart {
             position: fixed;
             z-index: 100;
@@ -956,13 +1011,27 @@ export default {
         height: 30px;
         border-radius: 20px;
         background: #ffd21e;
-        margin:20px 20px 20px 0;
+        margin:20px 10px 20px 0;
     }
     .blue-zone{
         width: 50px;
         height: 30px;
         border-radius: 20px;
         background: #82cdff;
-        margin: 20px 20px;
+        margin: 20px 10px 20px 20px;
+    }
+    .purple-zone{
+        width: 50px;
+        height: 30px;
+        border-radius: 20px;
+        background: #f371d1;
+        margin: 20px 10px 20px 0px;
+    }
+    .green-zone{
+        width: 50px;
+        height: 30px;
+        border-radius: 20px;
+        background: #56db40;
+        margin: 20px 10px 20px 20px;
     }
 </style >

@@ -23,6 +23,11 @@ const routes = [
         name: 'feedback-mobile',
         component: () => import('../views/FeedbackMobile.vue'),
       },
+      {
+        path: 'kewrwen3234532834dhrsjkwejrwejkrn',
+        name: 'report',
+        component: () => import('pages/ReportPage.vue'),
+      },
       { path: 'delivery', component: () => import('pages/OrderPage.vue') },
     ],
 

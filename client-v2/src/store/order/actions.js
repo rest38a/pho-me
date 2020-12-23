@@ -13,9 +13,14 @@ export async function createOrder(context, order) {
   const summ = context.state.orderProducts.reduce((accumulator, item) => accumulator + parseInt(item.price, 10) * item.count, 0);
 
   const address = `${order.address} ${order.apartment}`;
-  const productstring = JSON.stringify(context.state.orderProducts);
 
-  const comment = `комментарий: ${order.comment} продукты: ${productstring}`;
+  const comment = JSON.stringify({
+    comment: order.comment,
+    deliveryTime: order.time,
+    product: context.state.orderProducts,
+    numPerson: context.state.order.forks,
+  });
+
   const orderForStrappi = {
     phone: order.phone,
     comment,

@@ -1,9 +1,9 @@
 <template >
     <q-page class="main-container" >
-        <div class="warning-line">
-            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.
-            А вот 1.01.21 - принимаем заказы с 14:00.
-        </div>
+<!--        <div class="warning-line">-->
+<!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
+<!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
+<!--        </div>-->
         <img src="/icons/logo.svg" alt="" class="logo mobile-hide" >
         <div class="header-mobile row desktop-hide items-center" >
             <div class="col-3 q-pa-sm items-center row" >
@@ -209,10 +209,10 @@
                 </div >
             </div >
         </div >
-        <div class="warning-line-mobile">
-            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.
-            А вот 1.01.21 - принимаем заказы с 14:00.
-        </div>
+<!--        <div class="warning-line-mobile">-->
+<!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
+<!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
+<!--        </div>-->
         <div class="container" >
             <div class="row items-center justify-md-start justify-between" >
                 <div class="pho-h1" >

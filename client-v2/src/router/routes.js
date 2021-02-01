@@ -24,6 +24,11 @@ const routes = [
         component: () => import('../views/FeedbackMobile.vue'),
       },
       {
+        path: 'sobaka',
+        name: 'feedback-mobile',
+        component: () => import('../views/SobakaView.vue'),
+      },
+      {
         path: 'kewrwen3234532834dhrsjkwejrwejkrn',
         name: 'report',
         component: () => import('pages/ReportPage.vue'),

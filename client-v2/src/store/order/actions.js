@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 // eslint-disable-next-line
 export async function getOrderMenu(context) {
-  await axios.get(`${process.env.API_LINK}/categories?is_active=true&_sort=Sort_index:ASC`).then((res) => {
+  await axios.get(`${process.env.CLIENT_API_LINK}/categories?is_active=true&_sort=Sort_index:ASC`).then((res) => {
     context.commit('setCategoriesMenu', res.data);
   });
 
@@ -32,5 +32,5 @@ export async function createOrder(context, order) {
     products: [],
   };
 
-  return axios.post(`${process.env.API_LINK}/orders`, orderForStrappi).then(() => true);
+  return axios.post(`${process.env.CLIENT_API_LINK}/orders`, orderForStrappi).then(() => true);
 }

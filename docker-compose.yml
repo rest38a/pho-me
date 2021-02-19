@@ -14,7 +14,7 @@ services:
         volumes:
             - ./admin/src:/app/src:rw
         ports:
-            - '3000:8080'
+            - '3002:8080'
         depends_on:
             - api
         links:
@@ -47,13 +47,15 @@ services:
         links:
             - db:db
         ports:
-            - '3334:3334'
+            - ${SERVER_PORT}:${SERVER_PORT}
         environment:
             SERVER_HOST: ${SERVER_HOST}
             SERVER_PORT: ${SERVER_PORT}
             SERVER_DB_PORT: ${SERVER_DB_PORT}
             SERVER_DB_CONNECTION: ${SERVER_DB_CONNECTION}
             SERVER_APP_KEY: ${SERVER_APP_KEY}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
             DB_HOST: ${DB_HOST}
             APP_URL: http://${SERVER_HOST}:${SERVER_PORT}
             APP_NAME: ${APP_NAME}

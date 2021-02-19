@@ -14,11 +14,17 @@
 				<div class="image"><img src="../assets/image/dish.png" alt=""></div>
 			</div>
         </div >
+		<left-navigate></left-navigate>
+		<right-navigate></right-navigate>
     </div >
 </template >
 
 <script >
+import LeftNavigate from './navigation/LeftNavigate.vue';
+import RightNavigate from './navigation/RightNavigate.vue';
+
 export default {
+  components: { LeftNavigate, RightNavigate },
   name: 'main-page',
   methods: {
     gotoDelivery() {

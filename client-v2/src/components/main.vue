@@ -1,13 +1,13 @@
 <template>
     <q-page-container>
         <main-page></main-page>
-        <my-footer></my-footer>
+<!--        <my-footer></my-footer>-->
     </q-page-container>
 </template>
 
 <script>
 import mainPage from './main-page';
-import myFooter from './footer';
+// import myFooter from './footer';
 
 export default {
   name: 'HelloWorld',
@@ -15,7 +15,7 @@ export default {
     title: 'Pho me. Азиатский ресторан в Иркутске',
   },
   components: {
-    myFooter,
+    //  myFooter,
     mainPage,
   },
   props: {

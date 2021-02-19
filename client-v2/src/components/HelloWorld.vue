@@ -5,7 +5,7 @@
         <slider></slider>
         <menu-list></menu-list>
         <feedback></feedback>
-        <my-footer></my-footer>
+<!--        <my-footer></my-footer>-->
     </q-page-container>
 </template>
 
@@ -15,7 +15,7 @@ import startPage from './start-page';
 import slider from './slider';
 import menuList from './menu-list';
 import feedback from './feedback';
-import myFooter from './footer';
+// import myFooter from './footer';
 
 export default {
   name: 'HelloWorld',
@@ -24,7 +24,7 @@ export default {
   },
   components: {
     feedback,
-    myFooter,
+//    myFooter,
     myMenu,
     startPage,
     menuList,

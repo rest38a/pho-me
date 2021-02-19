@@ -14,7 +14,7 @@ services:
         volumes:
             - ./admin/src:/app/src:rw
         ports:
-            - '3002:8080'
+            - '3001:8080'
         depends_on:
             - api
         links:
@@ -46,6 +46,8 @@ services:
         restart: always
         links:
             - db:db
+        depends_on:
+            - db
         ports:
             - ${SERVER_PORT}:${SERVER_PORT}
         environment:
@@ -56,6 +58,9 @@ services:
             SERVER_APP_KEY: ${SERVER_APP_KEY}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
+            IIKO_API_USER: ${IIKO_API_USER}
+            IIKO_API_PASS: ${IIKO_API_PASS}
+            IIKO_ORGANIZATION_ID: ${IIKO_ORGANIZATION_ID}
             DB_HOST: ${DB_HOST}
             APP_URL: http://${SERVER_HOST}:${SERVER_PORT}
             APP_NAME: ${APP_NAME}

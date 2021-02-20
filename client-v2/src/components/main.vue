@@ -1,11 +1,13 @@
 <template>
     <q-page-container>
         <main-page></main-page>
+        <menu-page></menu-page>
 <!--        <my-footer></my-footer>-->
     </q-page-container>
 </template>
 
 <script>
+import MenuPage from '../pages/MenuPage.vue';
 import mainPage from './main-page';
 // import myFooter from './footer';
 
@@ -17,6 +19,7 @@ export default {
   components: {
     //  myFooter,
     mainPage,
+    MenuPage,
   },
   props: {
     msg: String,

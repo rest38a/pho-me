@@ -119,7 +119,7 @@ export default {
   background: radial-gradient(#ffa1c7, #f07550);
   height: 100vh;
   position: relative;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .render-card {

@@ -1,38 +1,47 @@
 <template>
-      <div class="side-container row ">
-         <div class="photo-box col-4">
-              <img src="..\assets\image\SideMenu.png" class="photo">
-          </div>
-          <div class="side-menu col-grow">
-             <img src="..\assets\icon\logo.png" class="logo">
-              <ul class="title column">
-                  <li class="title">МЕНЮ</li>
-                  <li class="title">АКЦИИ</li>
-                  <li class="title">ИНТЕРЬЕР</li>
-                  <li class="title">КОНТАКТЫ</li>
-                  <li class="title">ВАКАНСИИ</li>
-              </ul>
-              <div class="vertical-line col"></div>
-          </div>
-      </div>
+  <div class="side-container row">
+    <div class="photo-box col-4">
+      <img src="..\assets\image\SideMenu.png" class="photo" />
+    </div>
+    <div class="side-menu col-grow">
+      <img src="..\assets\icon\logo.png" class="logo" />
+      <ul class="title column">
+        <li class="title" @click="gotoMenu('main-page-page')">МЕНЮ</li>
+        <li class="title">АКЦИИ</li>
+        <li class="title">ИНТЕРЬЕР</li>
+        <li class="title">КОНТАКТЫ</li>
+        <li class="title">ВАКАНСИИ</li>
+      </ul>
+      <div class="vertical-line col"></div>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'SideMenu',
+  methods: {
+    gotoMenu(id) {
+      this.$router.push(id);
+    },
+  },
+  scrollToMenu(id) {
+    const el = document.getElementById(id);
+    el.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
+  },
 };
 </script>
 
   <style scoped>
-  .side-container {
-      position: fixed;
-      height: 100vh;
-      overflow: hidden;
-      left: 0;
-      right: 0;
-  }
+.side-container {
+  position: fixed;
+  height: 100vh;
+  overflow: hidden;
+  left: 0;
+  right: 0;
+}
 
-  .photo-box {
+.photo-box {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -41,7 +50,7 @@ export default {
   align-content: center;
 }
 
-.photo{
+.photo {
   display: block;
   height: 100%;
   width: auto;
@@ -90,8 +99,8 @@ export default {
 }
 
 ::-webkit-scrollbar {
-background: transparent;
-  }
+  background: transparent;
+}
 
 @media (max-width: 1280px) {
   .title {

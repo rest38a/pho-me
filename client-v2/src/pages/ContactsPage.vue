@@ -2,7 +2,7 @@
   <div class="garden-side">
     <div class="container">
       <div class="full-width row justify-start items-baseline">
-        <h1 class="title">МЕНЮ</h1>
+        <h1 class="title">КОНТАКТЫ</h1>
       </div>
       <div class="row justify-between">
         <div>
@@ -53,7 +53,6 @@ export default {
 <style scoped >
 .garden-side {
   background: radial-gradient(#f8c200, #5b9f58);
-  position: relative;
   height: 100vh;
   overflow: hidden;
 }
@@ -75,14 +74,10 @@ export default {
   margin: 112px 0 83px;
 }
 
-.description {
-}
-
 .yandex-map {
   width: 100%;
   height: 310px;
   border-radius: 15px;
-  overflow: hidden;
   margin: 38px 0;
 }
 
@@ -93,4 +88,5 @@ export default {
 .icon-img {
   margin-left: 50px;
 }
+
 </style>

@@ -17,6 +17,7 @@
     "js2excel": "^1.0.1",
     "moment": "^2.29.1",
     "quasar": "^1.15.4",
+    "vue-scrollto": "^2.20.0",
     "vue-yandex-maps": "^0.10.9"
   },
   "devDependencies": {

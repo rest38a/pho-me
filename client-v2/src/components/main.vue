@@ -1,9 +1,12 @@
 <template>
     <q-page-container>
-        <main-page></main-page>
-        <menu-page></menu-page>
-        <action-page></action-page>
-        <contacts-page></contacts-page>
+        <main-page id="main-page"></main-page>
+        <menu-page id="menu-page"></menu-page>
+        <action-page id="action-page"></action-page>
+        <interior-page id="interior-page"></interior-page>
+        <contacts-page id="contact-page"></contacts-page>
+        <right-navigate></right-navigate>
+        <left-navigate></left-navigate>
 <!--        <my-footer></my-footer>-->
     </q-page-container>
 </template>
@@ -11,8 +14,11 @@
 <script>
 import ActionPage from '../pages/ActionPage.vue';
 import ContactsPage from '../pages/ContactsPage.vue';
+import InteriorPage from '../pages/InteriorPage.vue';
 import MenuPage from '../pages/MenuPage.vue';
 import mainPage from './main-page';
+import LeftNavigate from './navigation/LeftNavigate.vue';
+import RightNavigate from './navigation/RightNavigate.vue';
 // import myFooter from './footer';
 
 export default {
@@ -26,6 +32,9 @@ export default {
     MenuPage,
     ActionPage,
     ContactsPage,
+    InteriorPage,
+    RightNavigate,
+    LeftNavigate,
   },
   props: {
     msg: String,

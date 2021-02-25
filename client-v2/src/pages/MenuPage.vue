@@ -1,5 +1,5 @@
 <template>
-    <div class="green-side">
+    <div class="green-side" id="menu-page">
         <div class="container">
             <div class="full-width row justify-start items-baseline">
                 <h1 class="title">МЕНЮ</h1>
@@ -41,7 +41,6 @@ export default {
   methods: {
     changeMenu(item) {
       this.activeMenu = item;
-      console.log(this.activeMenu);
     },
   },
   mounted() {

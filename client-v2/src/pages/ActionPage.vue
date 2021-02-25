@@ -18,7 +18,7 @@
                   :src="require(`../assets/image/actionCard/${item.image}`)"
                 />
               </div>
-              <div class="btn-image" @click="chooseCard(item), (medium = true)">
+              <div class="btn-image" @click="chooseCard(item)">
                 <img src="..\assets\image\actionCard\actionButton.png" />
               </div>
             </div>
@@ -105,6 +105,7 @@ export default {
   methods: {
     chooseCard(item) {
       this.activeAction = item;
+      this.medium = true;
     },
   },
   mounted() {
@@ -118,7 +119,6 @@ export default {
 .pink-side {
   background: radial-gradient(#ffa1c7, #f07550);
   height: 100vh;
-  position: relative;
   overflow: hidden;
 }
 

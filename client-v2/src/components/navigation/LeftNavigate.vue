@@ -1,7 +1,7 @@
 <template>
   <div class="left-navigate row justify-start items-center content-center">
     <div
-      class="full-width column wrap justify-center items-center content-center"
+      class="center-box full-width column wrap justify-around items-center content-center"
     >
       <div
         class="ellipse-box ellipse-close"
@@ -13,33 +13,6 @@
         :class="{ active: idPage === item.id }"
         v-scroll-to="{ el: activePoint.page }"
       ></div>
-      <!--        <img class="" src="../../assets/image/EllipseOpen.png" />
-      </div>
-      <div
-        class="ellipse-box"
-        @click="scrollToMenu('menu-page')"
-        data-title="Меню"
-        @click="scrollToId('main-page')"
-      >
-        <img src="../../assets/image/EllipseClose.png" />
-      </div>
-      <div class="ellipse-box" data-title="Акции">
-        <img src="../../assets/image/EllipseClose.png" />
-      </div>
-      <div
-        class="ellipse-box"
-        @click="scrollToId('interior-page')"
-        data-title="Интерьер"
-      >
-        <img src="../../assets/image/EllipseClose.png" />
-      </div>
-      <div
-        class="ellipse-box"
-        v-scroll-to="{ el: '#contact-page' }"
-        data-title="Контакты"
-      >
-        <img src="../../assets/image/EllipseClose.png" />
-      </div>-->
     </div>
   </div>
 </template>
@@ -154,6 +127,10 @@ export default {
   margin-top: 30px;
 }
 
+.center-box {
+  height: 261px;
+}
+
 @keyframes ellipse-anim {
   0% {
     box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
@@ -172,7 +149,6 @@ export default {
   background-position: center;
   width: 21px;
   height: 21px;
-  margin: 36px;
   cursor: pointer;
   border-radius: 55%;
 
@@ -180,6 +156,18 @@ export default {
     background-image: url('../../assets/image/EllipseOpen.png');
     background-repeat: no-repeat;
     background-position: center;
+  }
+}
+
+@media (max-height: 350px) {
+  .center-box {
+    height: 200px;
+  }
+}
+
+@media (max-height: 200px) {
+  .center-box {
+    height: 160px;
   }
 }
 </style>

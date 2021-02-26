@@ -60,6 +60,7 @@ background: radial-gradient(59.09% 53.85% at 50% 50%, rgba(255, 168, 0, 0.88) 23
 		height: 100vh;
 		position: relative;
 		overflow: hidden;
+		padding: 0 120px 178px 120px;
     }
 
     .main-container {
@@ -116,7 +117,7 @@ background: radial-gradient(59.09% 53.85% at 50% 50%, rgba(255, 168, 0, 0.88) 23
 		position: absolute;
 		top: 23px;
 		left: 50px;
-		z-index: 10;
+		z-index: 1;
 	}
 
 	.text-col {

@@ -1,5 +1,6 @@
 <template>
   <div class="pink-side">
+    <logo></logo>
     <div class="container">
       <div class="full-width row justify-start items-baseline">
         <h1 class="title">АКЦИИ</h1>
@@ -63,7 +64,10 @@
 </template>
 
 <script>
+import logo from '../components/navigation/logo.vue';
+
 export default {
+  components: { logo },
   name: 'ActionPage',
   data() {
     return {
@@ -118,14 +122,17 @@ export default {
 <style scoped >
 .pink-side {
   background: radial-gradient(#ffa1c7, #f07550);
-  height: 100vh;
+  min-height: 100%;
   overflow: hidden;
+  padding: 0 120px 0 120px;
+  position: relative;
 }
 
 .render-card {
   border-radius: 10px;
   height: 286px;
   position: relative;
+  z-index: 1;
 }
 
 .title {
@@ -139,6 +146,10 @@ export default {
 .titles-btn {
   padding: 35px 0 0 46px;
   height: 100%;
+}
+
+.titles {
+z-index: 3;
 }
 
 .under-title {
@@ -160,10 +171,12 @@ export default {
   position: absolute;
   right: -17px;
   bottom: -32px;
+  z-index: -1;
 }
 
 .btn-image {
   cursor: pointer;
+  display: inline-block;
 }
 
 .q-card {

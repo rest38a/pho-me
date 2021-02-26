@@ -1,5 +1,6 @@
 <template>
     <div class="green-side" id="menu-page">
+      <logo></logo>
         <div class="container">
             <div class="full-width row justify-start items-baseline">
                 <h1 class="title">МЕНЮ</h1>
@@ -17,7 +18,10 @@
 </template>
 
 <script>
+import logo from '../components/navigation/logo.vue';
+
 export default {
+  components: { logo },
   name: 'MenuPage',
   data() {
     return {
@@ -54,9 +58,14 @@ export default {
 <style scoped lang='scss'>
 .green-side {
   background: radial-gradient(#4de963, #02bbbd);
-  height: 100vh;
+  min-height: 100%;
   overflow: hidden;
   margin: 0;
+  padding: 0 120px 178px 120px;
+  position: relative;
+}
+
+.container {
 }
 
 .title {

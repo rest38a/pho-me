@@ -1,5 +1,6 @@
 <template>
   <div class="garden-side">
+    <logo></logo>
     <div class="container">
       <div class="full-width row justify-start items-baseline">
         <h1 class="title">КОНТАКТЫ</h1>
@@ -22,7 +23,7 @@
           </div>
         </div>
       </div>
-      <yandex-map class="yandex-map"
+            <yandex-map class="yandex-map"
                             :controls="['zoomControl']"
                             :zoom='14'
                             :coords="[52.2731080, 104.2912690]">
@@ -45,7 +46,10 @@
 </template >
 
 <script >
+import logo from '../components/navigation/logo.vue';
+
 export default {
+  components: { logo },
   name: 'ContactsPage',
 };
 </script >
@@ -53,8 +57,10 @@ export default {
 <style scoped >
 .garden-side {
   background: radial-gradient(#f8c200, #5b9f58);
-  height: 100vh;
+  min-height: 100%;
   overflow: hidden;
+  padding: 0 120px 178px 120px;
+  position: relative;
 }
 
 .under-title {
@@ -79,6 +85,7 @@ export default {
   height: 310px;
   border-radius: 15px;
   margin: 38px 0;
+  overflow: hidden;
 }
 
 .follow-container {

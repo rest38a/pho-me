@@ -5,7 +5,7 @@
         <action-page id="action-page"></action-page>
         <interior-page id="interior-page"></interior-page>
         <contacts-page id="contact-page"></contacts-page>
-        <right-navigate></right-navigate>
+        <right-navigate id="right-navigate"></right-navigate>
         <left-navigate></left-navigate>
 <!--        <my-footer></my-footer>-->
     </q-page-container>

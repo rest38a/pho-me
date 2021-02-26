@@ -1,7 +1,7 @@
 <template>
   <div class="right-Navigate">
     <div class="vertical-line column items-center">
-      <div class="icon-box column justify-start items-center content-center">
+      <div class="icon-box column items-center">
         <a href="https://www.facebook.com/phome.irk/" target="blank">
           <img src="..\..\assets\icon\fb-icon.png" class="icon-img"
         /></a>
@@ -18,7 +18,7 @@
         <div class="close-img">
           <img
             src="..\..\assets\image\close-menu.png"
-            @click="toggleVisible"
+            @click="toggleVisibleClose"
             v-show="isSideMenuVisible"
           />
         </div>
@@ -27,10 +27,15 @@
     <div class="side-container row" v-show="isSideMenuVisible">
       <div class="photo-box col-4">
         <img src="..\..\assets\image\SideMenu.png" class="photo" />
+        <!-- главная антрекота -->
       </div>
       <div class="side-menu col-grow">
-        <img src="..\..\assets\icon\logo.png" class="logo" @click="scrollToMenu('main-page')" />
-        <ul class="title column">
+        <img
+          src="..\..\assets\icon\logo.png"
+          class="logo"
+          @click="scrollToMenu('main-page')"
+        />
+        <ul class="column">
           <li class="title" @click="scrollToMenu('menu-page')">МЕНЮ</li>
           <li class="title" @click="scrollToMenu('action-page')">АКЦИИ</li>
           <li class="title" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
@@ -54,6 +59,11 @@ export default {
   methods: {
     toggleVisible() {
       this.isSideMenuVisible = !this.isSideMenuVisible;
+      document.body.style.overflow = 'hidden';
+    },
+    toggleVisibleClose() {
+      this.isSideMenuVisible = !this.isSideMenuVisible;
+      document.body.style.overflow = 'auto';
     },
     scrollToMenu(id) {
       this.isSideMenuVisible = !this.isSideMenuVisible;
@@ -62,6 +72,7 @@ export default {
         block: 'end',
         inline: 'nearest',
       });
+      document.body.style.overflow = 'auto';
     },
   },
 };
@@ -71,8 +82,9 @@ export default {
 .right-Navigate {
   top: 0;
   position: fixed;
-  width: 100%;
-  z-index: 999999;
+  width: 2000px;
+  z-index: 2;
+  display: block;
 }
 
 .vertical-line {
@@ -80,17 +92,12 @@ export default {
   right: 0;
   height: 100vh;
   width: 100px;
-  z-index: 999999;
+  z-index: 3;
   background-color: #f8c200;
 }
 
 .sand-line {
   padding-top: 11px;
-  cursor: pointer;
-}
-
-.icon-img {
-  margin-top: 39px;
   cursor: pointer;
 }
 .close-img {
@@ -99,7 +106,7 @@ export default {
 
 .center {
   position: absolute;
-  height: 100vh;
+  top: 50%;
 }
 
 .side-container {
@@ -111,18 +118,15 @@ export default {
 }
 
 .photo-box {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  justify-items: center;
-  align-items: center;
-  align-content: center;
+  width: 40%;
+  height: 100vh;
+  z-index: 1;
 }
 
 .photo {
-  display: block;
+  width: 100%;
   height: 100%;
-  width: auto;
+  object-fit: cover;
 }
 
 .side-menu {
@@ -130,6 +134,7 @@ export default {
   padding: 50px 100px 50px 131px;
   overflow-y: auto;
   height: 100vh;
+  z-index: 2;
 }
 
 .side-title {
@@ -146,49 +151,59 @@ export default {
   cursor: pointer;
   padding: 0 0 25px 0;
 }
-.vertical-line {
-  width: 100px;
-  background-color: #f8c200;
-}
-
-.right-navigate {
-  cursor: pointer;
-}
 
 .icon-img {
   margin-top: 39px;
-  cursor: pointer;
+  cursor: pointer !important;
+  z-index: 55;
 }
 
 .logo {
   cursor: pointer;
-}
-
-.close-img {
+  margin-left: 60px;
 }
 
 ::-webkit-scrollbar {
   background: transparent;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1430px) {
   .title {
-    font-size: 60px;
-    line-height: 60px;
+    font-size: 80px;
+    line-height: 80px;
+  }
+  .logo {
+    width: 250px;
   }
 }
 
-@media (max-width: 991px) {
+@media (max-width: 1295px) {
+  .title {
+    font-size: 70px;
+    line-height: 60px;
+  }
+.logo {
+    width: 230px;
+  }
+}
+
+@media (max-width: 1190px) {
   .title {
     font-size: 50px;
     line-height: 50px;
   }
+.logo {
+    width: 200px;
+  }
 }
 
-@media (max-width: 713px) {
+@media (max-width: 980px) {
   .title {
     font-size: 40px;
     line-height: 40px;
+  }
+.logo {
+    width: 180px;
   }
 }
 
@@ -197,5 +212,9 @@ export default {
     font-size: 30px;
     line-height: 30px;
   }
+.logo {
+    width: 50px;
+  }
 }
+
 </style>

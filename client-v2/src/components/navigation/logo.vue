@@ -30,12 +30,9 @@ export default {
   }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 992px) {
   .logo {
-    position: static;
-    padding-top: 23px;
-    padding-left: 25px;
-    margin-bottom: 40px;
+    display: none;
   }
 }
 </style >

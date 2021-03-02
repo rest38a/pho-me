@@ -170,4 +170,10 @@ export default {
     height: 160px;
   }
 }
+
+@media only screen and (max-width: 919px) {
+  .left-navigate {
+    display: none;
+  }
+}
 </style>

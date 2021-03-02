@@ -1,20 +1,24 @@
 <template>
-    <div class="green-side" id="menu-page">
-      <logo></logo>
-        <div class="container">
-            <div class="full-width row justify-start items-baseline">
-                <h1 class="title">МЕНЮ</h1>
-                <ul class="row">
-                    <li v-for="item in menus"
-                    class="title-list"
-                    :key="item.id"
-                    @click="changeMenu(item)"
-                    :class="{active: activeMenu === item}">{{ item.name }}</li>
-                </ul>
-            </div>
-            <div class="for-iframe" v-html="activeMenu.link"></div>
-        </div>
+  <div class="green-side background" id="menu-page">
+    <logo></logo>
+    <div class="container">
+      <div class="full-width row justify-start items-baseline">
+        <h1 class="title">МЕНЮ</h1>
+        <ul class="row under-title">
+          <li
+            v-for="item in menus"
+            class="title-list"
+            :key="item.id"
+            @click="changeMenu(item)"
+            :class="{ active: activeMenu === item }"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+      </div>
+      <div class="for-iframe" v-html="activeMenu.link"></div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -30,13 +34,13 @@ export default {
         {
           name: 'КУХНЯ',
           link:
-          '<iframe src="//v.calameo.com/?bkcode=0063012992a13044fb4ad&mode=viewer&showsharemenu=false" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency allowfullscreen style="margin:0 auto;"></iframe>',
+            '<iframe src="//v.calameo.com/?bkcode=0063012992a13044fb4ad&mode=viewer&showsharemenu=false" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency allowfullscreen style="margin:0 auto;"></iframe>',
           id: '1',
         },
         {
           name: 'БАР',
           link:
-          '<iframe src="//v.calameo.com/?bkcode=00630129929f58b759a74&mode=viewer&showsharemenu=false" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency allowfullscreen style="margin:0 auto;"></iframe>',
+            '<iframe src="//v.calameo.com/?bkcode=00630129929f58b759a74&mode=viewer&showsharemenu=false" width="100%" height="100%" frameborder="0" scrolling="no" allowtransparency allowfullscreen style="margin:0 auto;"></iframe>',
           id: '2',
         },
       ],
@@ -65,13 +69,6 @@ export default {
   position: relative;
 }
 
-.container {
-}
-
-.title {
-    margin: 112px 0 79px;
-}
-
 .title-list {
   font-size: 24px;
   line-height: 32.4px;
@@ -87,5 +84,39 @@ export default {
 
 .for-iframe {
   height: 447px;
+}
+
+@media only screen and (max-width: 599px) {
+  .green-side {
+    padding: 25.51px 14.83px 64px 14.83px;
+  }
+
+  .title {
+    margin: 0
+  }
+
+  .under-title {
+    padding-left: 7px;
+  }
+
+  .title-list {
+    font-size: 15px;
+    line-height: 15px;
+    margin: 0 7px 0 0;
+    cursor: pointer;
+  }
+
+  .for-iframe {
+    height: 221px;
+  }
+
+  .logo {
+    display: none;
+  }
+}
+@media only screen and (max-width: 991.98px) {
+  .background {
+    padding: 25.51px 14.83px 64px 14.83px;
+  }
 }
 </style >

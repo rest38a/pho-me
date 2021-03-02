@@ -1,6 +1,11 @@
 <template>
   <div class="right-Navigate">
     <div class="vertical-line column items-center">
+      <img
+        src="..\..\assets\icon\logo.png"
+        class="logo-mobile"
+        @click="scrollToMenu('main-page')"
+      />
       <div class="icon-box column items-center">
         <a href="https://www.facebook.com/phome.irk/" target="blank">
           <img src="..\..\assets\icon\fb-icon.png" class="icon-img"
@@ -15,19 +20,21 @@
           <img src="..\..\assets\image\sandLine.png" class="sand-line" />
           <img src="..\..\assets\image\sandLine.png" class="sand-line" />
         </div>
-        <div class="close-img">
-          <img
-            src="..\..\assets\image\close-menu.png"
-            @click="toggleVisibleClose"
-            v-show="isSideMenuVisible"
-          />
+        <div
+          class="close-img"
+          @click="toggleVisibleClose"
+          v-show="isSideMenuVisible"
+        >
+          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
+          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
+          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
+          <img class="close" src="..\..\assets\image\close-menu.png" />
         </div>
       </div>
     </div>
     <div class="side-container row" v-show="isSideMenuVisible">
       <div class="photo-box col-4">
         <img src="..\..\assets\image\SideMenu.png" class="photo" />
-        <!-- главная антрекота -->
       </div>
       <div class="side-menu col-grow">
         <img
@@ -35,7 +42,8 @@
           class="logo"
           @click="scrollToMenu('main-page')"
         />
-        <ul class="column">
+        <ul class="column title-list">
+          <li class="title" @click="gotoDelivery()">ДОСТАВКА</li>
           <li class="title" @click="scrollToMenu('menu-page')">МЕНЮ</li>
           <li class="title" @click="scrollToMenu('action-page')">АКЦИИ</li>
           <li class="title" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
@@ -73,6 +81,9 @@ export default {
         inline: 'nearest',
       });
       document.body.style.overflow = 'auto';
+    },
+    gotoDelivery() {
+      this.$router.push('delivery');
     },
   },
 };
@@ -141,10 +152,14 @@ export default {
   padding: 57px 0;
 }
 
+.title-list {
+  padding: 0;
+}
+
 .title {
   font-family: lb;
-  font-size: 90px;
-  line-height: 120px;
+  font-size: 88px;
+  line-height: 118px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -160,61 +175,163 @@ export default {
 
 .logo {
   cursor: pointer;
-  margin-left: 60px;
+  margin-left: 20px;
 }
 
 ::-webkit-scrollbar {
   background: transparent;
 }
 
-@media (max-width: 1430px) {
+.logo-mobile {
+  display: none;
+}
+
+.sand-line-mobile {
+  display: none;
+}
+
+.mobile {
+  display: none;
+}
+
+@media (max-width: 1340px) {
   .title {
     font-size: 80px;
-    line-height: 80px;
+    line-height: 110px;
   }
   .logo {
-    width: 250px;
+    width: 290px;
+  }
+  .side-menu {
+    padding-left: 20px;
   }
 }
 
-@media (max-width: 1295px) {
+@media (max-width: 1279px) {
   .title {
+    font-size: 68px;
+    line-height: 98px;
+    padding: 0;
+    margin: 0;
+  }
+  .logo {
+    width: 270px;
+  }
+  .mobile {
+    display: inline;
+  }
+  .side-menu {
+    padding-left: 20px;
+  }
+}
+
+@media (max-width: 919px) {
+  .title {
+    font-family: lb;
     font-size: 70px;
-    line-height: 60px;
+    line-height: 100px;
+    padding: 0;
   }
-.logo {
-    width: 230px;
+  .logo {
+    width: 300px;
   }
-}
-
-@media (max-width: 1190px) {
-  .title {
-    font-size: 50px;
-    line-height: 50px;
-  }
-.logo {
-    width: 200px;
+  .photo-box {
+    display: none;
   }
 }
 
-@media (max-width: 980px) {
-  .title {
-    font-size: 40px;
-    line-height: 40px;
-  }
-.logo {
-    width: 180px;
-  }
-}
-
-@media (max-width: 580px) {
-  .title {
-    font-size: 30px;
-    line-height: 30px;
-  }
-.logo {
+@media only screen and (max-width: 919px) {
+  .logo {
     width: 50px;
   }
+  .vertical-line {
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 48px;
+    width: 100%;
+    z-index: 3;
+    background-color: #f8c200;
+  }
+
+  .center {
+    top: 4.75px;
+  }
+
+  .sand-line {
+    padding-top: 7.83px;
+    width: 42px;
+  }
+  .close-img {
+    top: 4.75px;
+    height: 42px;
+    width: 42px;
+  }
+
+  .close {
+    display: none;
+  }
+
+  .sand-line-mobile {
+    padding-top: 7.83px;
+    width: 42px;
+    display: block;
+  }
+
+  .photo-box {
+    display: none;
+  }
+
+  .title {
+    font-size: 70px;
+    line-height: 100px;
+    padding: 0;
+  }
+  .logo {
+    width: 300px;
+  }
+
+  .icon-box {
+    display: inline;
+    position: fixed;
+    right: 15px;
+    top: 14px;
+  }
+
+  .icon-img {
+    z-index: 55;
+    margin: 0 0 0 31.04px;
+    height: 20px;
+  }
+
+  .logo-mobile {
+    display: inline;
+    position: fixed;
+    height: 27px;
+    left: 17px;
+    top: 8.74px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+  }
 }
 
+@media only screen and (max-width: 599px) {
+  .title {
+    font-family: lb;
+    font-size: 36px;
+    line-height: 55px;
+  }
+}
+
+@media only screen and (min-width: 1240px) {
+  .title {
+    margin: 0;
+  }
+}
 </style>

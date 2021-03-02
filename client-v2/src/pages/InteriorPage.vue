@@ -1,12 +1,15 @@
 <template>
-  <div class="interior-side">
+  <div class="interior-side background">
     <logo></logo>
     <div class="container">
       <div class="full-width row justify-start items-baseline">
         <h1 class="title">ИНТЕРЬЕР</h1>
       </div>
-      <div class="row justify-between q-col-gutter-md">
-        <!--      <div class="img-wrapper">
+      <div class="relative-box">
+        <div
+          class="interior-box row justify-between q-pr-md q-col-gutter-md no-wrap wrap-md"
+        >
+          <!--      <div class="img-wrapper">
         <img class="image" src="..\assets\image\interiorCard\interior-card-mini-1.png"/>
       </div>
       <div class="img-wrapper">
@@ -30,29 +33,63 @@
       <div class="img-wrapper">
         <img class="image" src="..\assets\image\interiorCard\interior-card-mini-8.png"/>
       </div>-->
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg2.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg3.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg4.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg5.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg6.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg7.jpg" />
-        </div>
-        <div class="img-wrapper col">
-          <img class="image" src="..\assets\image\interiorCard\testimg8.jpg" />
+          <div class="img-wrapper col-md-grow col-12">
+            <img class="image" src="..\assets\image\interiorCard\testimg.jpg" />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg2.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg3.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg4.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg5.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg6.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg7.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"></div>
+          <div class="img-wrapper col-md-grow col-12">
+            <img
+              class="image"
+              src="..\assets\image\interiorCard\testimg8.jpg"
+            />
+          </div>
+          <div class="img-help img-wrapper col-md-grow col-12"><img
+              class="image"
+              src="..\assets\image\interiorCard\testimg8.jpg"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -77,22 +114,41 @@ export default {
   padding: 0 120px 178px 120px;
 }
 
-.title {
-  margin: 112px 0 79px;
-}
-
 .image {
   cursor: pointer;
 }
 
 .img-wrapper {
   overflow: hidden;
+  width: 138px;
+  height: auto;
+}
+
+.relative-box {
+  position: relative;
+  height: 100%;
+}
+
+.interior-box {
+  padding-bottom: 0;
 }
 
 .img-wrapper:hover {
   width: 100%;
+  height: 100%;
+  object-fit: fill;
+  padding-bottom: 16px;
   position: absolute;
   animation: img-animation 0.4s;
+}
+
+.img-help {
+display: none;
+}
+
+.img-wrapper:hover + .img-help {
+  width: 138px;
+  display: block;
 }
 
 @keyframes img-animation {
@@ -107,43 +163,69 @@ export default {
   }
 }
 
-@media (max-width: 1280px) {
+@media only screen and (max-width: 599px) {
+  .interior-side {
+    padding: 25.51px 14.83px 64px 14.83px;
+  }
+
+  ::-webkit-scrollbar {
+    background: transparent;
+  }
+
   .title {
-    font-size: 90px;
-    line-height: 90px;
+    margin: 0 0 18px 0;
+  }
+  .logo {
+    display: none;
+  }
+  .img-wrapper {
+    height: 375px;
+  }
+
+  .image {
+    height: 100%;
+    width: 100vw;
+  }
+
+  .interior-box {
+    padding-right: 14.83px;
+    overflow-x: scroll;
+  }
+  .img-wrapper:hover {
+    width: 100%;
+    padding-bottom: 16px;
+  }
+}
+@media only screen and (max-width: 1019px) {
+  .interior-box {
+    padding-right: 14.83px;
+    overflow-x: scroll;
+  }
+  .img-wrapper:hover {
+    width: 100%;
+  }
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
 
-@media (min-width: 1400px) {
-}
-
-@media (max-width: 991px) {
-  .title {
-    font-size: 70px;
-    line-height: 70px;
+@media only screen and (max-width: 991.98px) {
+  .background {
+    padding: 25.51px 14.83px 64px 14.83px;
   }
 }
 
-@media (max-width: 650px) {
-  .title {
-    font-size: 40px;
-    line-height: 32px;
+@media only screen and (min-width: 0px) and (max-width: 1344px) {
+  .img-wrapper:hover {
+    width: 100%;
+    padding-bottom: 0;
+  }
+  .img-wrapper {
+    height: 321.5px;
+  }
+  .image {
+    height: 100%;
+    width: 100vw;
   }
 }
-
-@media (max-width: 767px) {
-  .title {
-    font-size: 50px;
-    line-height: 32px;
-  }
-}
-
-@media (max-width: 580px) {
-  .title {
-    font-size: 34px;
-    line-height: 32px;
-    width: 30%;
-  }
-}
-
 </style>

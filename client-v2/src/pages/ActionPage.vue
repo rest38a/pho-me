@@ -1,14 +1,18 @@
 <template>
-  <div class="pink-side">
+  <div class="pink-side background">
     <logo></logo>
     <div class="container">
       <div class="full-width row justify-start items-baseline">
         <h1 class="title">АКЦИИ</h1>
       </div>
       <div class="action-cards row q-col-gutter-md">
-        <div class="col-6" v-for="item in actions" :key="item.id">
+        <div
+          class="col-lg-6 col-md-6 col-xs-12 render-card-box"
+          v-for="item in actions"
+          :key="item.id"
+        >
           <div class="render-card" :style="{ background: item.gradient }">
-            <div class="titles-btn">
+            <div class="titles-btn column justify-between">
               <div class="titles">
                 <div class="under-title">{{ item.title }}</div>
                 <div class="description">{{ item.description }}</div>
@@ -33,7 +37,7 @@
                 class="render-card justify-between"
                 :style="{ background: activeAction.gradient }"
               >
-                <div class="titles-btn">
+                <div class="titles-btn column justify-between">
                   <div class="titles">
                     <div class="under-title">{{ activeAction.title }}</div>
                     <div class="description">
@@ -75,8 +79,8 @@ export default {
       medium: false,
       actions: [
         {
-          title: 'ЗАХОДИ ЕСЛИ ЧТО',
-          description: 'Каждый день молниеносные скидки на блюда дня!',
+          title: 'ТЕМ КТО В ТЕМЕ',
+          description: 'К каждому Том Кха - рис бесплатно!',
           image: 'actionCard1.png',
           id: '1',
           gradient: 'radial-gradient(at right bottom, #4de963, #02bbbd)',
@@ -135,21 +139,13 @@ export default {
   z-index: 1;
 }
 
-.title {
-  margin: 112px 0 79px;
-}
-
-.action-cards {
-  margin-bottom: 178px;
-}
-
 .titles-btn {
   padding: 35px 0 0 46px;
   height: 100%;
 }
 
 .titles {
-z-index: 3;
+  z-index: 3;
 }
 
 .under-title {
@@ -164,7 +160,6 @@ z-index: 3;
   font-size: 24px;
   line-height: 36px;
   color: #fff;
-  width: 306px;
 }
 
 .image {
@@ -188,4 +183,61 @@ z-index: 3;
   padding: 0;
 }
 
+@media only screen and (max-width: 599px) {
+  .pink-side {
+    padding: 25.51px 14.83px 64px 14.83px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .render-card-box {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .action-cards {
+    margin: 0;
+  }
+
+  .titles-btn {
+    padding: 17px 22px 17px 22px;
+    height: 100%;
+  }
+
+  .under-title {
+    font-size: 20px;
+    line-height: 27px;
+  }
+
+  .description {
+    font-size: 16px;
+    line-height: 22px;
+  }
+
+  .image {
+    position: absolute;
+    right: -14px;
+    bottom: -14px;
+    z-index: -1;
+  }
+
+  .btn-image {
+    width: 76px;
+    height: 76px;
+  }
+}
+
+@media only screen and (max-width: 991.98px) {
+  .background {
+    padding: 25.51px 14.83px 64px 14.83px;
+  }
+}
+
+@media only screen and (min-width: 991.98px) {
+  .action-cards {
+  margin-bottom: 178px;
+}
+}
 </style>

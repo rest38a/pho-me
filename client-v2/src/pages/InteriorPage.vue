@@ -36,6 +36,9 @@
           <div class="img-wrapper col-md-grow col-12">
             <img class="image" src="..\assets\image\interiorCard\testimg.jpg" />
           </div>
+          <div class="img-help img-wrapper col-md-grow">
+            <img class="image" src="..\assets\image\interiorCard\testimg.jpg" />
+          </div>
           <div class="img-help img-wrapper col-md-grow col-12"></div>
           <div class="img-wrapper col-md-grow col-12">
             <img
@@ -85,7 +88,8 @@
               src="..\assets\image\interiorCard\testimg8.jpg"
             />
           </div>
-          <div class="img-help img-wrapper col-md-grow col-12"><img
+          <div class="img-help img-wrapper col-md-grow">
+            <img
               class="image"
               src="..\assets\image\interiorCard\testimg8.jpg"
             />
@@ -116,12 +120,17 @@ export default {
 
 .image {
   cursor: pointer;
+  margin: 0 5%;
+  z-index: 0;
 }
 
 .img-wrapper {
   overflow: hidden;
   width: 138px;
   height: auto;
+  z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .relative-box {
@@ -139,11 +148,12 @@ export default {
   object-fit: fill;
   padding-bottom: 16px;
   position: absolute;
-  animation: img-animation 0.4s;
+  animation: img-animation 0.3s;
+  z-index: 9999;
 }
 
 .img-help {
-display: none;
+  display: none;
 }
 
 .img-wrapper:hover + .img-help {
@@ -154,6 +164,8 @@ display: none;
 @keyframes img-animation {
   from {
     opacity: 0;
+  }
+  10% {
   }
   50% {
     opacity: 0.75;
@@ -209,12 +221,29 @@ display: none;
   }
 }
 
-@media only screen and (max-width: 991.98px) {
+@media screen and (max-width: 991.98px) {
   .background {
     padding: 25.51px 14.83px 64px 14.83px;
   }
 }
 
+@media only screen and (max-width: 919px) {
+  @keyframes img-animation {
+  from {
+    opacity: 0;
+  }
+  10% {
+    -webkit-transform: scale(0, 0);
+  }
+  50% {
+    opacity: 0.75;
+  }
+  to {
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+  }
+}
+}
 @media only screen and (min-width: 0px) and (max-width: 1344px) {
   .img-wrapper:hover {
     width: 100%;
@@ -226,6 +255,13 @@ display: none;
   .image {
     height: 100%;
     width: 100vw;
+    margin: 0 0;
+  }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 1561px) {
+  .image {
+    margin: 0 0;
   }
 }
 </style>

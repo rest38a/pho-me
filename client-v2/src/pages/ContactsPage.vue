@@ -143,7 +143,7 @@ a {
   }
 }
 
-@media only screen and (max-width: 991.98px) {
+@media only screen and (max-width: 919.98px) {
   .background {
     padding: 25.51px 14.83px 64px 14.83px;
   }

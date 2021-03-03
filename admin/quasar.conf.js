@@ -60,7 +60,8 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       env: {
-        ADMIN_API_LINK: JSON.stringify(process.env.ADMIN_API_LINK),
+        ADMIN_API_LINK: JSON.stringify('http://localhost:3002'),
+        // ADMIN_API_LINK: JSON.stringify(process.env.ADMIN_API_LINK),
         sourceList: {
           SITE: 1,
           APP: 2,
@@ -101,8 +102,13 @@ module.exports = function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       https: false,
-      port: 8080,
-      open: true, // opens browser window automatically
+      port: 3001,
+      open: true,
+      // watchOptions: {
+      //   aggregateTimeout: 300,
+      //   poll: 1000,
+      // },
+      // opens browser window automatically
     },
 
     // animations: 'all', // --- includes all animations

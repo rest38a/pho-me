@@ -6,21 +6,21 @@ volumes:
         driver: local
 
 services:
-    admin-front:
-        container_name: ${PROJECT}_admin_front
-        build:
-            context: ./admin
-            dockerfile: ./Dockerfile
-        volumes:
-            - ./admin/src:/app/src:rw
-        ports:
-            - '3001:8080'
-        depends_on:
-            - api
-        links:
-            - api:api
-        environment:
-            ADMIN_API_LINK: ${ADMIN_API_LINK}
+#    admin-front:
+#        container_name: ${PROJECT}_admin_front
+#        build:
+#            context: ./admin
+#            dockerfile: ./Dockerfile
+#        volumes:
+#            - ./admin/src:/app/src
+#        ports:
+#            - '3001:3001'
+#        depends_on:
+#            - api
+#        links:
+#            - api:api
+#        environment:
+#            ADMIN_API_LINK: ${ADMIN_API_LINK}
     db:
         build: ./${DB_SERVER_TYPE}
         container_name: ${PROJECT}_db
@@ -46,6 +46,9 @@ services:
         restart: always
         links:
             - db:db
+        volumes:
+            - ./server-v2/app:/app/app
+            - ./server-v2/start:/app/start
         depends_on:
             - db
         ports:

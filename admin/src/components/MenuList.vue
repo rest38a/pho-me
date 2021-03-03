@@ -66,14 +66,6 @@
                 </div>
             </template>
         </q-tree>
-        <q-btn @click="updateIIkoMenu"
-                label="обновить данные меню из Iiko"></q-btn>
-        <q-btn @click="updateIIkoDiscount"
-               label="обновить скидки из Iiko"></q-btn>
-        <q-btn @click="updateIIkoPayment"
-               label="обновить типы оплат из Iiko"></q-btn>
-        <q-btn @click="getIikoOrders"
-               label="получить заказы"></q-btn>
     </div>
 </template>
 
@@ -134,34 +126,6 @@ export default {
       if (node.type === 'product' && node.iiko_id === null) return true;
 
       return false;
-    },
-    updateIIkoMenu() {
-      this.$axios.get('/api/iiko/menu/update')
-        .then(() => {
-          // data = this.$toCamelCase(data);
-          // console.log(data);
-        });
-    },
-    updateIIkoPayment() {
-      this.$axios.get('/api/iiko/payment/update')
-        .then(() => {
-          // data = this.$toCamelCase(data);
-          // console.log(data);
-        });
-    },
-    getIikoOrders() {
-      this.$axios.get('/api/iiko/orders')
-        .then(() => {
-          // console.log(data);
-          // data = this.$toCamelCase(data);
-        });
-    },
-    updateIIkoDiscount() {
-      this.$axios.get('/api/iiko/discount/update')
-        .then(() => {
-          // console.log(data);
-          // data = this.$toCamelCase(data);
-        });
     },
   },
 };

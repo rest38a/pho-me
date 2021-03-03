@@ -77,6 +77,10 @@ export default {
           link: '/departments',
         },
         {
+          name: 'Типы оплат',
+          link: '/payments',
+        },
+        {
           name: 'Доставка',
           link: '/delivery',
         },

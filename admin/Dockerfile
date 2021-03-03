@@ -4,8 +4,6 @@ WORKDIR ./app/
 
 COPY . ./
 
-EXPOSE 8080
-
-RUN npm install
+RUN npm install && npx browserslist@latest --update-db
 
 CMD npx quasar dev

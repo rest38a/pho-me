@@ -57,6 +57,11 @@ const routes = [
             name: 'menu_list',
             component: () => import('../components/MenuList.vue'),
           },
+          {
+            path: 'iiko',
+            name: 'iiko_list',
+            component: () => import('../components/MenuIiko.vue'),
+          },
         ],
       },
       {
@@ -73,6 +78,45 @@ const routes = [
         path: 'departments',
         name: 'department_list',
         component: () => import('pages/Departments/DepartmentPage.vue'),
+      },
+      {
+        path: 'payments',
+        name: 'payments',
+        component: () => import('pages/payments/PaymentsPage.vue'),
+        children: [
+          {
+            path: 'type/list',
+            name: 'payments_list',
+            component: () => import('../pages/payments/PaymentList.vue'),
+          },
+          {
+            path: 'merchant/list',
+            name: 'merchant_list',
+            component: () => import('../pages/payments/MerchantList.vue'),
+          },
+          {
+            path: 'type/:id',
+            name: 'payment_edit',
+            props: { edit: true },
+            component: () => import('../pages/payments/PaymentEdit.vue'),
+          },
+          {
+            path: 'type/create',
+            name: 'payment_create',
+            component: () => import('../pages/payments/PaymentEdit.vue'),
+          },
+          {
+            path: 'merchant/:id',
+            name: 'merchant_edit',
+            props: { edit: true },
+            component: () => import('../pages/payments/MerchantEdit.vue'),
+          },
+          {
+            path: 'merchant/create',
+            name: 'merchant_create',
+            component: () => import('../pages/payments/MerchantEdit.vue'),
+          },
+        ],
       },
       {
         path: 'department/create',

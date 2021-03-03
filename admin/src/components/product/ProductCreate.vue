@@ -15,6 +15,7 @@
                 <div class="text-h6">Основное</div>
                 <q-form
                         class="q-gutter-md"
+                        ref="myForm"
                 >
 
                     <div class="row">
@@ -26,6 +27,8 @@
                                       v-model="product.category"
                                       option-label="name"
                                       option-value="id"
+                                      :rules="[ val => val
+                                      || 'Категорию нужно выбрать обязательно' ]"
                                       :options="categories" label="Категория"/>
                         </div>
                     </div>
@@ -416,23 +419,27 @@ export default {
       }
     },
     createProduct() {
-      this.$axios.post('/api/product', { product: this.product })
-        .then(({ data }) => {
-          if (data.error !== undefined) {
-            this.alert.show = true;
-            this.alert.massageText = data.error;
-            this.alert.massageType = 'error';
-          } else {
-            this.alert.show = true;
-            this.alert.massageText = data.massage;
-            this.alert.massageType = 'success';
-          }
-        })
-        .catch(({ data }) => {
-          this.alert.show = true;
-          this.alert.massageText = data.error;
-          this.alert.massageType = 'error';
-        });
+      this.$refs.myForm.validate().then((success) => {
+        if (success) {
+          this.$axios.post('/api/product', { product: this.product })
+            .then(({ data }) => {
+              if (data.error !== undefined) {
+                this.alert.show = true;
+                this.alert.massageText = data.error;
+                this.alert.massageType = 'error';
+              } else {
+                this.alert.show = true;
+                this.alert.massageText = data.massage;
+                this.alert.massageType = 'success';
+              }
+            })
+            .catch(({ data }) => {
+              this.alert.show = true;
+              this.alert.massageText = data.error;
+              this.alert.massageType = 'error';
+            });
+        }
+      });
     },
     deletProduct(productId) {
       this.$axios.delete(`/api/product/${productId}`)

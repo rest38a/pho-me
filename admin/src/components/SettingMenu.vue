@@ -36,6 +36,10 @@ export default {
           name: 'Меню',
           link: '/setting_menu/list',
         },
+        {
+          name: 'Iiko',
+          link: '/setting_menu/iiko',
+        },
       ],
     };
   },

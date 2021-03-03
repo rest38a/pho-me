@@ -12,9 +12,9 @@ services:
             context: ./admin
             dockerfile: ./Dockerfile
         volumes:
-            - ./admin/src:/app/src:rw
+            - ./admin/src:/app/src
         ports:
-            - '3001:8080'
+            - '3001:3001'
         depends_on:
             - api
         links:
@@ -46,6 +46,9 @@ services:
         restart: always
         links:
             - db:db
+        volumes:
+            - ./server-v2/app:/app/app
+            - ./server-v2/start:/app/start
         depends_on:
             - db
         ports:

@@ -1,10 +1,82 @@
-version: '3.0'
+version: '2'
+
+volumes:
+    site:
+    db:
+        driver: local
 
 services:
-
-    nginx:
-        image: nginx
-        ports:
-            - 8088:80
+    admin-front:
+        container_name: ${PROJECT}_admin_front
+        build:
+            context: ./admin
+            dockerfile: ./Dockerfile
         volumes:
-            - ./client-v2/dist/spa:/usr/share/nginx/html
+            - ./admin/src:/app/src:rw
+        ports:
+            - '3001:8080'
+        depends_on:
+            - api
+        links:
+            - api:api
+        environment:
+            ADMIN_API_LINK: ${ADMIN_API_LINK}
+    db:
+        build: ./${DB_SERVER_TYPE}
+        container_name: ${PROJECT}_db
+        volumes:
+            - ./db:/var/lib/mysql:rw
+        volumes_from:
+            - source
+        ports:
+            - '3307:3306'
+        environment:
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+
+    api:
+        build:
+            context: ./server-v2
+            dockerfile: ./Dockerfile
+        container_name: ${PROJECT}_api
+        restart: always
+        links:
+            - db:db
+        depends_on:
+            - db
+        ports:
+            - ${SERVER_PORT}:${SERVER_PORT}
+        environment:
+            SERVER_HOST: ${SERVER_HOST}
+            SERVER_PORT: ${SERVER_PORT}
+            SERVER_DB_PORT: ${SERVER_DB_PORT}
+            SERVER_DB_CONNECTION: ${SERVER_DB_CONNECTION}
+            SERVER_APP_KEY: ${SERVER_APP_KEY}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            IIKO_API_USER: ${IIKO_API_USER}
+            IIKO_API_PASS: ${IIKO_API_PASS}
+            IIKO_ORGANIZATION_ID: ${IIKO_ORGANIZATION_ID}
+            DB_HOST: ${DB_HOST}
+            APP_URL: http://${SERVER_HOST}:${SERVER_PORT}
+            APP_NAME: ${APP_NAME}
+    adminer:
+        image: dockette/adminer:full
+        container_name: ${PROJECT}adminer
+        links:
+            - db:db
+        ports:
+            - '8085:80'
+        environment:
+            UPLOAD: 1024M # upload_max_filesize, post_max_size
+    source:
+        image: alpine:latest
+        container_name: ${PROJECT}_source
+        volumes:
+            - ./logs/${WEB_SERVER_TYPE}:/var/log/${WEB_SERVER_TYPE}
+            - ./logs/php:/var/log/php
+            - ./logs/db:/var/log/mysql

@@ -3,7 +3,7 @@
         <div class="pho-card column mobile-hide" >
             <div class="pho-img-wrapper col-auto">
                 <q-img
-                        :src="`${API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
                         :ratio="4/3"
                 />
             </div >
@@ -34,7 +34,7 @@
         <div class="pho-card-m row desktop-hide" >
             <div class="pho-img-wrapper-row col-5">
                 <q-img
-                        :src="`${API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
                         style="height: 100%"
                 />
             </div >
@@ -78,7 +78,7 @@ export default {
   },
   data() {
     return {
-      API_LINK: process.env.API_LINK,
+      CLIENT_API_LINK: process.env.CLIENT_API_LINK,
     };
   },
   methods: {

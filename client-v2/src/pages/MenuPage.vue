@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
   <div class="green-side background" id="menu-page">
     <logo></logo>
@@ -119,4 +120,4 @@ export default {
     padding: 25.51px 14.83px 64px 14.83px;
   }
 }
-</style >
+</style>

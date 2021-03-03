@@ -219,7 +219,7 @@ export default {
       // const start = moment(this.dateStart, 'DD.MM.YYYY').toDate();
       // const dateStartReq = `${this.qDate.formatDate(start, 'YYYY-MM-DD')} 00:00:00`;
 
-      axios.get(`${process.env.API_LINK}/orders?id_gte=${this.startId}&id_lte=${this.endId}&_limit=999`).then(({ data }) => {
+      axios.get(`${process.env.CLIENT_API_LINK}/orders?id_gte=${this.startId}&id_lte=${this.endId}&_limit=999`).then(({ data }) => {
         this.orders = [...data];
       });
     },

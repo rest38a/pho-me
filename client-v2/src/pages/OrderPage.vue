@@ -551,7 +551,7 @@ export default {
   },
   data() {
     return {
-      API_LINK: process.env.API_LINK,
+      API_LINK: process.env.CLIENT_API_LINK,
       categories: [],
       products: [],
       activeCategoryProducts: [],

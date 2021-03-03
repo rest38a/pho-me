@@ -3,7 +3,7 @@
         <div class="col-2">
             <div class="pho-img-wrapper">
                 <q-img
-                        :src="`${API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
                         :ratio="4/3"
                 />
             </div>
@@ -61,7 +61,7 @@ export default {
   },
   data() {
     return {
-      API_LINK: process.env.API_LINK,
+      CLIENT_API_LINK: process.env.CLIENT_API_LINK,
     };
   },
 };

@@ -3,7 +3,7 @@
         <div class="pho-card column mobile-hide" >
             <div class="pho-img-wrapper col-auto">
                 <q-img
-                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
                         :ratio="4/3"
                 />
             </div >
@@ -15,13 +15,18 @@
                 <div class="pho-card-description">
                     {{product.description}}
                 </div >
+                <modifiers-block
+                :modifiers="product.modifiers"
+                :userModifiers="userModifiers"
+                :setModifierFunction="setModifier"
+            ></modifiers-block>
                 <div class="row justify-between items-center" >
                     <div class="pho-card-price">
-                        {{product.price}} ₽
+                        {{ finalPrice }} ₽
                     </div >
                     <div>
                         <q-btn flat
-                               @click="addProductToBasket(product)"
+                               @click="proxyAddBasket(product)"
                                class="pho-btn-med" >
                             <div >
                                 {{getName(product.id)}}
@@ -34,7 +39,7 @@
         <div class="pho-card-m row desktop-hide" >
             <div class="pho-img-wrapper-row col-5">
                 <q-img
-                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
                         style="height: 100%"
                 />
             </div >
@@ -48,12 +53,12 @@
                 </div >
                 <div class="row justify-between items-center" >
                     <div class="pho-card-price">
-                        {{product.price}} ₽
+                        {{ finalPrice }} ₽
                     </div >
                     <div>
                         <q-btn flat
                                size="sm"
-                               @click="addProductToBasket(product)"
+                               @click="proxyAddBasket(product)"
                                class="pho-btn-med" >
                             <div >
                                 {{getName(product.id)}}
@@ -68,8 +73,10 @@
 
 <script >
 import { mapMutations, mapState } from 'vuex';
+import ModifiersBlock from './ModifiersBlock.vue';
 
 export default {
+  components: { ModifiersBlock },
   name: 'ProductItem',
   props: {
     product: {
@@ -79,21 +86,133 @@ export default {
   data() {
     return {
       CLIENT_API_LINK: process.env.CLIENT_API_LINK,
+      userModifiers: {
+        main: { product: {} },
+        size: { product: {} },
+        add: [],
+      },
     };
   },
   methods: {
     ...mapMutations('order', ['addProductToBasket',
       'removeProductToBasket']),
     getName(productId) {
-      const searchProduct = this.orderProducts.find((item) => item.id === productId);
+      const searchProduct = this.orderProducts.find((item) => item.product.id === productId);
 
-      if (searchProduct !== undefined) return `В корзине ${searchProduct.count}`;
+      if (searchProduct !== undefined) return `В корзине ${searchProduct.number}`;
 
       return 'В корзину';
     },
+    proxyAddBasket(productItem) {
+      const cartItem = {
+        id: '',
+        userModifiers: {},
+        finalPrice: '',
+        comment: '',
+        product: productItem,
+        number: 1,
+      };
+      cartItem.id = this.buildIdToBasket(this.product, this.userModifiers);
+      cartItem.userModifiers = JSON.parse(JSON.stringify(this.userModifiers));
+      cartItem.finalPrice = this.finalPrice;
+      cartItem.comment = this.buildCommentToBasket(this.product, this.userModifiers);
+      this.addProductToBasket(cartItem);
+    },
+    buildIdToBasket(product, userModifiers) {
+      let cartId = `${product.id}`;
+      if (userModifiers.main.product.id !== undefined) {
+        cartId += ` ${userModifiers.main.product.id}`;
+      }
+      if (userModifiers.size.product.id !== undefined) {
+        cartId += ` ${userModifiers.size.product.id}`;
+      }
+      for (let i = 0; i < userModifiers.add.length; i += 1) {
+        cartId += `${userModifiers.add[i].product.id}`;
+      }
+      return cartId;
+    },
+    buildCommentToBasket(product, userModifiers) {
+      let cartComment = '';
+      if (userModifiers.main.product.id !== undefined) {
+        cartComment += ` ${userModifiers.main.pName}`;
+      }
+      if (userModifiers.size.product.id !== undefined) {
+        // todo поменять на структуру pName у всех модификаторов = name
+        cartComment += ` ${userModifiers.size.pName}`;
+      }
+      for (let i = 0; i < userModifiers.add.length; i += 1) {
+        cartComment += `${userModifiers.add[i].pName}`;
+      }
+      return cartComment;
+    },
+    setModifier(modifier, type) {
+      if (type !== 'add') {
+        this.userModifiers[type] = modifier;
+      } else {
+        let needIndex = null;
+        this.userModifiers.add.forEach((item, index) => {
+          if (item.product.id === modifier.product.id) needIndex = index;
+        });
+        if (needIndex === null) {
+          this.userModifiers.add.push(modifier);
+        } else {
+          this.userModifiers.add.splice(needIndex, 1);
+        }
+      }
+    },
+    hasMainOrSizeModifiers() {
+      return this.mainModifiers.length > 0 || this.sizeModifiers.length > 0;
+    },
   },
   computed: {
-    ...mapState('order', ['orderProducts']),
+    ...mapState('order', ['orderProducts', 'promoCode']),
+    mainModifiers() {
+      return this.product.modifiers.filter((item) => {
+        if (item.type === undefined) return true;
+        if (item.type === 'main') return true;
+        return false;
+      });
+    },
+    sizeModifiers() {
+      return this.product.modifiers.filter((item) => {
+        if (item.type === 'size') return true;
+        return false;
+      });
+    },
+    addModifiers() {
+      return this.product.modifiers.filter((item) => {
+        if (item.type === 'add') return true;
+        return false;
+      });
+    },
+    finalPrice() {
+      let preparePrice = this.product.base_price;
+      if (this.userModifiers.main !== undefined
+          && this.userModifiers.main.addPrice !== undefined) {
+        preparePrice += +this.userModifiers.main.addPrice;
+      }
+      if (this.userModifiers.size !== undefined
+          && this.userModifiers.size.addPrice !== undefined) {
+        preparePrice += +this.userModifiers.size.addPrice;
+      }
+      for (let i = 0; i < this.userModifiers.add.length; i += 1) {
+        preparePrice += this.userModifiers.add[i].product.base_price;
+      }
+      return preparePrice;
+    },
+  },
+  mounted() {
+    if (this.modifiers.length > 0) {
+      if (this.mainModifiers.length > 0) {
+        [this.userModifiers.main] = this.mainModifiers;
+      }
+      if (this.sizeModifiers.length > 0) {
+        [this.userModifiers.size] = this.sizeModifiers;
+      }
+      if (this.addModifiers.length > 0) {
+        [this.userModifiers.add] = this.addModifiers;
+      }
+    }
   },
 };
 </script >
@@ -190,4 +309,26 @@ export default {
         width: 15px;
         margin-left: 10px;
     }
+    switch_item {
+        cursor: pointer;
+    }
+
+    switch_area {
+    background: #f2f2f2;
+    border-radius: 10px;
+    font-size: 12px;
+    line-height: 22px;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: #828282;
+    padding: 3px;
+    }
+
+    .active_switch {
+    background: #fff;
+    box-shadow: 4px 4px 5px rgb(0 0 0 / 15%);
+    border-radius: 9px;
+    padding: 4px;
+    cursor: pointer;
+}
 </style >

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <template>
   <div class="green-side background" id="menu-page">
     <logo></logo>
@@ -93,7 +92,7 @@ export default {
   }
 
   .title {
-    margin: 0
+    margin: 0;
   }
 
   .under-title {

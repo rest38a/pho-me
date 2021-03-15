@@ -9,7 +9,7 @@
         <div class="col-auto">
           <div class="under-title">АДРЕС</div>
           <div class="description">
-            г.Иркутск, ул. 3 июля, 25<br />ТРК «Модный Квартал», 2 этаж
+            г. Иркутск, ул. 3 июля, 25<br />ТРК «Модный Квартал», 2 этаж
           </div>
         </div>
         <div class="col-auto">

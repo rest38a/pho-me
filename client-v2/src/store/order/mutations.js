@@ -1,58 +1,62 @@
-export function addProductToBasket(state, product) {
-  const index = state.orderProducts.findIndex((item) => item.name === product.name);
+export function addProductToBasket(state, cartItem) {
+  const index = state.orderProducts.findIndex((item) => item.id === cartItem.id);
 
   if (index !== -1) {
     const searchElem = { ...state.orderProducts[index] };
-    searchElem.count += 1;
+    searchElem.number += 1;
     const oldStateOrderProduct = [...state.orderProducts];
     oldStateOrderProduct.splice(index, 1, searchElem);
 
-    state.orderProducts = oldStateOrderProduct;
+    state.orderProducts = [...oldStateOrderProduct];
   } else {
-    product.count = 1;
-    state.orderProducts.push(product);
+    state.orderProducts.push(cartItem);
   }
 }
 
-export function removeOneProduct(state, product) {
-  const index = state.orderProducts.findIndex((item) => item.name === product.name);
+export function removeOneProduct(state, cartItem) {
+  const index = state.orderProducts.findIndex((item) => item.id === cartItem.id);
 
-  if (state.orderProducts[index].count > 1) {
+  if (state.orderProducts[index].number > 1) {
     const newProductState = [...state.orderProducts];
-    newProductState[index].count -= 1;
+    newProductState[index].number -= 1;
     state.orderProducts = [...newProductState];
   } else {
-    state.orderProducts = state.orderProducts.filter((item) => item.name !== product.name);
+    state.orderProducts = state.orderProducts.filter((item) => item.id !== cartItem.id);
   }
 }
-export function removeProductToBasket(state, product) {
-  state.orderProducts = state.orderProducts.filter((item) => item.name !== product.name);
+export function removeProductToBasket(state, cartItem) {
+  state.orderProducts = state.orderProducts.filter((item) => item.id !== cartItem.id);
 }
 
 export function setPhone(state, phone) {
-  state.order.phone = phone;
+  state.currentOrder.clientInfo.phone = phone;
+  state.currentOrder.clientInfo.phoneString = phone.replace(/[^+\d]/g, '');
 }
 
 export function setPayment(state, payment) {
-  state.order.payment = payment;
+  state.currentOrder.payments.type = payment;
+}
+
+export function setPaymentLink(state, paymentLink) {
+  state.currentOrder.payments[0].paymentLink = paymentLink;
 }
 
 export function setAddress(state, address) {
-  state.order.address = address;
+  state.currentOrder.clientInfo.address.dadata = address;
 }
 
 export function setApartment(state, apartment) {
-  state.order.apartment = apartment;
+  state.currentOrder.clientInfo.address.apartment = apartment;
 }
 export function setTime(state, time) {
-  state.order.time = time;
+  state.currentOrder.deliveryInfo.time = time;
 }
 
 export function setComment(state, comment) {
-  state.order.comment = comment;
+  state.currentOrder.comment = comment;
 }
 export function setEarly(state, early) {
-  state.order.early = early;
+  state.currentOrder.early = early;
 }
 
 export function setCostume(state, isCostume) {
@@ -60,7 +64,7 @@ export function setCostume(state, isCostume) {
 }
 
 export function setName(state, name) {
-  state.order.name = name;
+  state.currentOrder.clientInfo.client.name = name;
 }
 export function setOrderMenu(state, orderMenu) {
   state.orderMenu = [...orderMenu];
@@ -71,9 +75,21 @@ export function setCategoriesMenu(state, categoriesMenu) {
 }
 
 export function setForks(state, forks) {
-  state.order.forks = forks;
+  state.currentOrder.forks = forks;
 }
 
 export function setPromoCode(state, promoCode) {
-  state.order.promocode = promoCode;
+  state.promoCode.value = promoCode;
+}
+
+export function getPromoCodes(state, promoCodes) {
+  state.promoCodes = [...promoCodes];
+}
+
+export function setFinalPrice(state, finalPrice) {
+  state.orderProducts.finalPrice = finalPrice;
+}
+
+export function setOrderId(state, OrderId) {
+  state.currentOrder.id = OrderId;
 }

@@ -50,6 +50,7 @@ module.exports = function (/* ctx */) {
 
       env:{
         API_LINK: 'https://api.pho-me.ru',
+        CLIENT_API_LINK: 'http://localhost:3002',
       },
       // transpile: false,
 

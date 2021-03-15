@@ -60,8 +60,8 @@ module.exports = function (ctx) {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
       env: {
-        // ADMIN_API_LINK: JSON.stringify('http://localhost:3002'),
-        ADMIN_API_LINK: JSON.stringify(process.env.ADMIN_API_LINK),
+        ADMIN_API_LINK: JSON.stringify('http://localhost:3002'),
+        // ADMIN_API_LINK: JSON.stringify(process.env.ADMIN_API_LINK),
         sourceList: {
           SITE: 1,
           APP: 2,

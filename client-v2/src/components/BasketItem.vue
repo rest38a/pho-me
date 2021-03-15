@@ -3,14 +3,16 @@
         <div class="col-2">
             <div class="pho-img-wrapper">
                 <q-img
-                        :src="`${CLIENT_API_LINK}${product.photo[0].url}`"
+                        :src="`${CLIENT_API_LINK}/uploads/${cartItem.product.main_photo}`"
                         :ratio="4/3"
                 />
             </div>
         </div>
         <div class="col-4 column">
-            <div class="name">{{product.name}}</div>
-            <div class="grey4">{{product.weight}} гр</div>
+            <div class="name">{{cartItem.product.name}}</div>
+            <div
+            class="name-modifiers">{{cartItem.comment}}</div>
+            <div class="grey4">{{cartItem.product.weight}} гр</div>
         </div>
         <div class="col-3 row items-cente">
                 <q-btn flat
@@ -18,26 +20,26 @@
                        class="round-btn"
                        size="xs"
                        icon="remove"
-                       @click="removeOneProduct(product)">
+                       @click="removeOneProduct(cartItem)">
                 </q-btn>
-            <div class="num-product">{{product.count}}</div>
+            <div class="num-product">{{cartItem.number}}</div>
                 <q-btn flat
                        class="round-btn"
                        round
                        size="xs"
                        icon="add"
-                       @click="addToBasket(product)">
+                       @click="addToBasket(cartItem)">
                 </q-btn>
         </div>
         <div class="col-2 price">
-            {{product.price}} ₽
+            {{ cartItem.finalPrice }} ₽
         </div>
         <div class="col-1">
             <q-btn flat
                    size="xs"
                    round
                    color="grey-5"
-                   icon="close" @click="removeFromBasket(product)"></q-btn>
+                   icon="close" @click="removeFromBasket(cartItem)"></q-btn>
         </div>
     </div>
 </template >
@@ -46,10 +48,13 @@
 export default {
   name: 'BasketItem',
   props: {
-    product: {
-      type: Object,
+    orderProducts: {
+      type: Array,
     },
     addToBasket: {
+      type: Function,
+    },
+    proxyAddBasket: {
       type: Function,
     },
     removeOneProduct: {
@@ -57,6 +62,9 @@ export default {
     },
     removeFromBasket: {
       type: Function,
+    },
+    cartItem: {
+      type: Object,
     },
   },
   data() {
@@ -80,10 +88,9 @@ export default {
     .name{
         font-family: tr;
         font-style: normal;
-        font-weight: 500;
+        font-weight: 900;
         font-size: 13px;
         line-height: 15px;
-
         color: #000000;
     }
     .grey4{
@@ -101,5 +108,14 @@ export default {
     .round-btn{
         background: #E0E0E0;
         color: #828282;
+    }
+
+    .name-modifiers {
+       font-family: tr;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 15px;
+        color: #000000;
     }
 </style >

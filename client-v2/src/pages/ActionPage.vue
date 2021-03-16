@@ -8,22 +8,26 @@
       <div class="action-cards row q-col-gutter-md">
         <div
           class="col-lg-6 col-md-6 col-xs-12 render-card-box"
-          v-for="item in actions"
-          :key="item.id"
+          v-for="promo in promotions"
+          :key="promo.id"
         >
-          <div class="render-card" :style="{ background: item.gradient }">
+          <div
+            class="render-card"
+            :style="{
+              background: promo.short_text}"
+          >
             <div class="titles-btn column justify-between">
               <div class="titles">
-                <div class="under-title">{{ item.title }}</div>
-                <div class="description">{{ item.description }}</div>
+                <div class="under-title">{{ promo.name }}</div>
+                <div class="description">{{ promo.long_text }}</div>
               </div>
               <div>
                 <img
                   class="image"
-                  :src="require(`../assets/image/actionCard/${item.image}`)"
+                  :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
                 />
               </div>
-              <div class="btn-image" @click="chooseCard(item)">
+              <div class="btn-image" @click="chooseCard(promo)">
                 <img src="..\assets\image\actionCard\actionButton.png" />
               </div>
             </div>
@@ -35,21 +39,20 @@
             <q-card-section class="q-card-section">
               <div
                 class="render-card justify-between"
-                :style="{ background: activeAction.gradient }"
+                :style="{
+                  background: activePromo.short_text}"
               >
                 <div class="titles-btn column justify-between">
                   <div class="titles">
-                    <div class="under-title">{{ activeAction.title }}</div>
+                    <div class="under-title">{{ activePromo.name }}</div>
                     <div class="description">
-                      {{ activeAction.description }}
+                      {{ activePromo.long_text }}
                     </div>
                   </div>
                   <div>
                     <img
                       class="image"
-                      :src="
-                        require(`../assets/image/actionCard/${activeAction.image}`)
-                      "
+                      :src="`${CLIENT_API_LINK}/uploads/${activePromo.image}`"
                     />
                   </div>
                   <div class="btn-image" @click="medium = false">
@@ -68,6 +71,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import logo from '../components/navigation/logo.vue';
 
 export default {
@@ -75,51 +79,45 @@ export default {
   name: 'ActionPage',
   data() {
     return {
-      activeAction: null,
+      CLIENT_API_LINK: process.env.CLIENT_API_LINK,
+      activePromo: null,
       medium: false,
-      actions: [
-        {
-          title: 'ТЕМ КТО В ТЕМЕ',
-          description: 'К каждому Том Кха - рис бесплатно!',
-          image: 'actionCard1.png',
-          id: '1',
-          gradient: 'radial-gradient(at right bottom, #4de963, #02bbbd)',
-        },
-        {
-          title: 'ШЕСТЬ ПЕЧАТЕЙ',
-          description: 'Собирай печати за каждую покупку и получай подарки!',
-          image: 'actionCard2.png',
-          id: '2',
-          gradient: 'radial-gradient(at right bottom, #F51F4B, #CA17A8)',
-        },
-        {
-          title: 'ТРИ ПО ЦЕНЕ ТРЁХ',
-          description:
-            'Наши коктейли сильно крутые чтобы продавать их по скидке. Просто пробуй!',
-          image: 'actionCard3.png',
-          id: '3',
-          gradient: 'radial-gradient(at right bottom, #F48C17, #EAC102)',
-        },
-        {
-          title: 'ЗАХОДИ ЕСЛИ ЧТО',
-          description: 'Каждый день молниеносные скидки на блюда дня!',
-          image: 'actionCard4.png',
-          id: '4',
-          gradient: 'radial-gradient(at right bottom, #F1B505, #5D9F57)',
-        },
-      ],
+      // gradients: [
+      //   {
+      //     id: '1',
+      //     gradient: 'radial-gradient(at right bottom, #4de963, #02bbbd)',
+      //   },
+      //   {
+      //     id: '2',
+      //     gradient: 'radial-gradient(at right bottom, #F51F4B, #CA17A8)',
+      //   },
+      //   {
+      //     id: '3',
+      //     gradient: 'radial-gradient(at right bottom, #F48C17, #EAC102)',
+      //   },
+      //   {
+      //     id: '4',
+      //     gradient: 'radial-gradient(at right bottom, #F1B505, #5D9F57)',
+      //   },
+      // ],
     };
   },
+  computed: {
+    ...mapState('promotions', ['promotions']),
+  },
   methods: {
-    chooseCard(item) {
-      this.activeAction = item;
+    ...mapMutations('promotions', ['getPromotions']),
+    chooseCard(promo) {
+      this.activePromo = promo;
       this.medium = true;
     },
   },
-  mounted() {
-    if (this.actions[0] !== undefined) {
-      [this.activeAction] = this.actions;
-    }
+  async mounted() {
+    this.$store.dispatch('promotions/getPromotions').then(() => {
+      if (this.promotions[0] !== undefined) {
+        [this.activePromo] = this.promotions;
+      }
+    });
   },
 };
 </script >
@@ -237,7 +235,7 @@ export default {
 
 @media only screen and (min-width: 991.98px) {
   .action-cards {
-  margin-bottom: 178px;
-}
+    margin-bottom: 178px;
+  }
 }
 </style>

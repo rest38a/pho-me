@@ -224,16 +224,31 @@
               @input="setPromoCode"
               label="Промокод"
               bg-color="white"
+              :disable="promoInputDisabled"
               outlined
               dense
             />
             <q-btn
               flat
               size="md"
-              @click="usePromoCode"
+              @click="usePromoCode('top')"
               class="pho-btn-med"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === true"
             >
-              <div>Добавить промокод</div>
+              <div>Применить промокод</div>
+            </q-btn>
+            <q-btn
+              flat
+              size="md"
+              @click="removePromoFromBasket()"
+              class="pho-btn-med"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === false"
+            >
+              <div>Отменить промокод</div>
             </q-btn>
           </div>
           <div>
@@ -461,16 +476,31 @@
               @input="setPromoCode"
               label="Промокод"
               bg-color="white"
+              :disable="promoInputDisabled"
               outlined
               dense
             />
             <q-btn
               flat
               size="md"
-              @click="usePromoCode"
+              @click="usePromoCode('top')"
               class="pho-btn-med"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === true"
             >
-              <div>Добавить промокод</div>
+              <div>Применить промокод</div>
+            </q-btn>
+            <q-btn
+              flat
+              size="md"
+              @click="removePromoFromBasket()"
+              class="pho-btn-med"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === false"
+            >
+              <div>Отменить промокод</div>
             </q-btn>
           </div>
           <div>
@@ -623,6 +653,8 @@ export default {
   data() {
     return {
       API_LINK: process.env.CLIENT_API_LINK,
+      promoInputDisabled: false,
+      hidePromoButton: true,
       categories: [],
       products: [],
       activeCategoryProducts: [],
@@ -703,30 +735,29 @@ export default {
       // eslint-disable-next-line
       yaCounter48434603.reachGoal(name);
     },
-    usePromoCode() {
+    usePromoCode(position) {
       const result = this.promoCodes.filter((item) => item.value === this.promoCode.value);
-      this.checkPromoCode(result[0], result[0].product);
+      if (result.length === 0) {
+        this.triggerNegative(position);
+      } else this.checkPromoCode(result[0], position);
     },
-    checkPromoCode(result) {
+    checkPromoCode(result, position) {
       const date = new Date();
       const limitDate = Date.parse(result.date_finish) - Date.parse(date);
-      const searchItem = `${result.id} ${result.product.id}`;
-      const filterOrder = this.orderProducts.filter((item) => item.id === searchItem);
+      const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
       if (result.min_sum <= this.totalSum
       && limitDate >= 0
       && filterOrder[0] === undefined) {
         this.promoCode.product = result.product;
         this.addPromocode(result, result.product);
-      } else if (result.min_sum <= this.totalSum
-      && limitDate >= 0
-      && filterOrder[0].number + 1 <= result.limit) {
-        this.promoCode.product = result.product;
-        this.addPromocode(result, result.product);
+        this.triggerPositive(position);
+        this.promoInputDisabled = true;
+        this.hidePromoButton = false;
       } else if (result.min_sum > this.totalSum) {
-        console.log('сумма меньше заявленной в акции');
-      } else if (filterOrder[0].number + 1 > result.limit) {
-        console.log('Акция лимитирована');
-      } else console.log('Промокод не действителен');
+        this.triggerWarning(position);
+      } else if (filterOrder[0].number + 1 > 1) {
+        this.triggerLimit(position);
+      } else this.triggerNegative(position);
     },
     addPromocode(result, product) {
       const cartItemPromo = {
@@ -736,9 +767,44 @@ export default {
         comment: 'ПОДАРОК',
         product: this.promoCode.product,
         number: 1,
+        isGift: true,
       };
       cartItemPromo.finalPrice = product.base_price - (product.base_price / 100) * result.discount;
       this.addProductToBasket(cartItemPromo);
+    },
+    triggerPositive(position) {
+      this.$q.notify({
+        type: 'positive',
+        message: 'Промокод добавлен',
+        position,
+      });
+    },
+    triggerNegative(position) {
+      this.$q.notify({
+        type: 'negative',
+        message: 'Промокод не найден',
+        position,
+      });
+    },
+    triggerLimit(position) {
+      this.$q.notify({
+        type: 'negative',
+        message: 'Можно добавить только один промокод',
+        position,
+      });
+    },
+    triggerWarning(position) {
+      this.$q.notify({
+        type: 'warning',
+        message: 'Сумма меньше заявленной в акции',
+        position,
+      });
+    },
+    removePromoFromBasket() {
+      this.promoInputDisabled = false;
+      this.hidePromoButton = true;
+      const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
+      this.removeProductToBasket(filterOrder[0]);
     },
     sendOrder() {
       this.loading = true;
@@ -910,6 +976,16 @@ export default {
   .pho-btn-outline:hover > div {
     color: #4f4f4f;
   }
+}
+.q-notifications__list--center {
+  bottom: 55px;
+}
+.q-notifications__list--bottom {
+  top: 0;
+}
+
+.q-notifications__list--top {
+    top: 0;
 }
 
 .main-container {

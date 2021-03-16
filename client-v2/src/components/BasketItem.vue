@@ -12,18 +12,22 @@
             <div class="name">{{cartItem.product.name}}</div>
             <div
             class="name-modifiers">{{cartItem.comment}}</div>
-            <div class="grey4">{{cartItem.product.weight}} гр</div>
+            <!-- <div class="grey4">{{cartItem.product.weight}} гр</div> -->
         </div>
         <div class="col-3 row items-cente">
                 <q-btn flat
+                v-if="cartItem.isGift !== true"
                        round
                        class="round-btn"
                        size="xs"
                        icon="remove"
                        @click="removeOneProduct(cartItem)">
                 </q-btn>
-            <div class="num-product">{{cartItem.number}}</div>
+            <div
+            v-if="cartItem.isGift !== true"
+            class="num-product">{{cartItem.number}}</div>
                 <q-btn flat
+                v-if="cartItem.isGift !== true"
                        class="round-btn"
                        round
                        size="xs"
@@ -36,6 +40,7 @@
         </div>
         <div class="col-1">
             <q-btn flat
+            v-if="cartItem.isGift !== true"
                    size="xs"
                    round
                    color="grey-5"

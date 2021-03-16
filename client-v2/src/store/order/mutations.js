@@ -28,6 +28,27 @@ export function removeProductToBasket(state, cartItem) {
   state.orderProducts = state.orderProducts.filter((item) => item.id !== cartItem.id);
 }
 
+export function addPromocode(result, product) {
+  const cartItemPromo = {
+    id: `${result.id} ${product.id}`,
+    userModifiers: 'Блюдо по промокоду',
+    finalPrice: '',
+    comment: 'ПОДАРОК',
+    product: this.promoCode.product,
+    number: 1,
+    isGift: true,
+  };
+  cartItemPromo.finalPrice = product.base_price - (product.base_price / 100) * result.discount;
+  this.addProductToBasket(cartItemPromo);
+}
+
+export function removePromoFromBasket() {
+  this.promoInputDisabled = false;
+  this.hidePromoButton = true;
+  const filterOrder = this.state.orderProducts.filter((item) => item.isGift === true);
+  this.removeProductToBasket(filterOrder[0]);
+}
+
 export function setPhone(state, phone) {
   state.currentOrder.clientInfo.phone = phone;
   state.currentOrder.clientInfo.phoneString = phone.replace(/[^+\d]/g, '');
@@ -35,6 +56,10 @@ export function setPhone(state, phone) {
 
 export function setPayment(state, payment) {
   state.currentOrder.payments.type = payment;
+}
+
+export function switchPaymentType(state, PaymentType) {
+  state.currentOrder.payments[0].type = PaymentType;
 }
 
 export function setPaymentLink(state, paymentLink) {

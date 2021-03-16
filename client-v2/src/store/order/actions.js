@@ -55,17 +55,6 @@ export async function getPromocode(context) {
   return true;
 }
 
-// export async function getPromocode(commit) {
-//   await axios.get(`${process.env.CLIENT_API_LINK}/api/promoCodes`).then((promoCodes) => {
-//     commit('getPromoCodes', promoCodes);
-//     return promoCodes;
-//   })
-//     .catch((error) => {
-//       console.log(error);
-//       return error;
-//     });
-// }
-
 export async function tryPromoCode(context, promoCodeParam) {
   const promoCodeValue = context.state.promoCode.value;
   let answer = {};

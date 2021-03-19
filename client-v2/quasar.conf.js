@@ -51,6 +51,9 @@ module.exports = function (/* ctx */) {
       env:{
         API_LINK: 'https://api.pho-me.ru',
         CLIENT_API_LINK: 'http://localhost:3002',
+        DELIVERY_TYPE_LIST: {"DELIVERY":1, "PICKUP":2},
+        PAIMENT_TYPES: {"CASH":1, "CARD":2, "SITE":3},
+        sourceList: {"SITE":1, "APP":2, "PHONE":3},
       },
       // transpile: false,
 

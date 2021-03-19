@@ -202,7 +202,7 @@ export default {
     },
   },
   mounted() {
-    if (this.modifiers.length > 0) {
+    if (this.product.modifiers.length > 0) {
       if (this.mainModifiers.length > 0) {
         [this.userModifiers.main] = this.mainModifiers;
       }

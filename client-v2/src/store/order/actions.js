@@ -1,5 +1,3 @@
-import keysToCamel from '../../helpers/toCamelCase';
-
 const axios = require('axios').default;
 // eslint-disable-next-line
 export async function getOrderMenu(context) {
@@ -19,7 +17,7 @@ export async function createOrder(context, currentOrder) {
   const comment = JSON.stringify({
     comment: currentOrder.comment,
     deliveryTime: currentOrder.deliveryInfo.time,
-    product: context.state.orderProducts,
+    product: context.state.currentOrder.products,
     numPerson: context.state.currentOrder.forks,
   });
 
@@ -31,7 +29,7 @@ export async function createOrder(context, currentOrder) {
     address,
     can_early: currentOrder.early,
     sum_order: summ,
-    products: [],
+    product: [],
   };
 
   return axios.post(`${process.env.CLIENT_API_LINK}/orders`, orderForStrappi).then(() => true);
@@ -39,7 +37,7 @@ export async function createOrder(context, currentOrder) {
 
 export async function sendOrder(context) {
   const order = context.state.currentOrder;
-  await axios.post('/api/order-site',
+  await axios.post(`${process.env.CLIENT_API_LINK}/api/order-site`,
     { order })
     .then(({ data }) => {
       context.commit('setOrderId', data.order.id);
@@ -55,37 +53,19 @@ export async function getPromocode(context) {
   return true;
 }
 
-export async function tryPromoCode(context, promoCodeParam) {
-  const promoCodeValue = context.state.promoCode.value;
-  let answer = {};
-  if (promoCodeValue !== null && promoCodeValue !== '') {
-    await axios.post('/api/promocode/use',
-      { promoCodeParam })
-      .then(({ data }) => {
-        if (data.product !== undefined) {
-          const product = keysToCamel(data.product);
-          context.commit('setPromoCodeUsing', product);
-          context.commit('deleteAllGiftProduct');
-          const giftProduct = {
-            product,
-            isGift: true,
-            modifiers: {
-              main: {},
-              size: {},
-              add: [],
-            },
-            finalPrice: 0,
-          };
-          context.commit('addProduct', giftProduct);
-          answer = data;
-        }
-        answer = data;
-      });
-  } else {
-    answer.promoCodeError = {
-      massage: 'Вы не заполнили поле промокода',
-    };
-  }
+export async function getAddressHints(context, string) {
+  context.commit('setAddressString', string);
+  return axios.get(`${process.env.CLIENT_API_LINK}/api/address/hints?address=${string}`)
+    .then(({ data }) => data.hints).catch((error) => {
+      console.warn(error);
+    });
+}
 
-  return answer;
+export async function getCoordsByString(context, string) {
+  return axios.get(`${process.env.CLIENT_API_LINK}/api/address/coord?address=${string}`)
+    .then(({ data }) => data.coords)
+    .catch((error) => {
+      console.warn(error);
+      return { error };
+    });
 }

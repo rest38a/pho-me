@@ -1,18 +1,5 @@
 export default function () {
   return {
-    order: {
-      // name: null,
-      // phone: null,
-      // address: null,
-      // apartment: null,
-      // time: null,
-      // early: true,
-      // payment: '1',
-      // comment: null,
-      isCostume: false,
-      // forks: 1,
-      promocode: '',
-    },
     orderProducts: [],
     orderMenu: [],
     categoriesMenu: [],
@@ -24,11 +11,11 @@ export default function () {
     },
     currentOrder: {
       id: null,
-      // sourceId: JSON.parse(process.env.sourceList).SITE,
+      sourceId: process.env.sourceList.SITE,
       comment: null,
       isDelete: false,
       isApprove: false,
-      needConfirm: false,
+      needConfirm: true,
       fullForm: true,
       clientInfo: {
         client: {
@@ -44,6 +31,7 @@ export default function () {
           id: null,
           apartment: null,
           dadata: null,
+          type: null,
         },
       },
       deliveryInfo: {
@@ -51,14 +39,15 @@ export default function () {
         time: null,
         isCheck: false,
         dateCheck: null,
-        // type: JSON.parse(process.env.DELIVERY_TYPE_LIST).DELIVERY,
+        type: process.env.DELIVERY_TYPE_LIST.DELIVERY,
         department: null,
       },
       payments: [
         {
-          // type: { id: JSON.parse(process.env.PAIMENT_TYPES).CASH },
+          type: { id: process.env.PAIMENT_TYPES.CASH },
           sum: null,
           paymentLink: null,
+          name: '',
         },
       ],
       discount: null,

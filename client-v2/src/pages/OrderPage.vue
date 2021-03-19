@@ -70,40 +70,68 @@
           <div class="pho-pb-2">
             <div class="name-field">Укажите тип оплаты</div>
             <q-radio
-              :value="currentOrder.payments"
-              @input="setPayment"
-              val="1"
+            name="paymentRadio"
+              :value="currentOrder.payments[0].type.id"
+              @input="switchPaymentType({id: PAIMENT_TYPES.CASH})"
+              :val="PAIMENT_TYPES.CASH"
               label="Наличные"
               color="yellow-14"
             />
             <q-radio
-              :value="currentOrder.payments"
-              @input="setPayment"
-              val="2"
+            name="paymentRadio"
+              :value="currentOrder.payments[0].type.id"
+              @input="switchPaymentType({id: PAIMENT_TYPES.CARD})"
+              :val="PAIMENT_TYPES.CARD"
               label="Карта"
               color="yellow-14"
             />
           </div>
           <div class="pho-pb-2">
             <div class="name-field">Адрес</div>
-            <q-input
+            <input-adress
+            :inputValue="currentOrder.clientInfo.addressString"
+            :getPriceZoneCoords="getPriceZoneCoords"
+                                        :inputFunc="updateClientAddressString"
+                                        :options="addressHint"
+                                        :valid="hasAddress"
+                                        :hasHouse="hasHouse"
+                                        :isInAdditionalZone="isInAdditionalZone"
+                                        :startBreak="startBreak"
+                                        :finishBreak="finishBreak"
+                                        :isInZone="isInZone"
+                                        ></input-adress>
+            <!-- <q-input
               :value="currentOrder.clientInfo.address.dadata"
               @input="setAddress"
               bg-color="white"
               outlined
               dense
-            />
+            /> -->
           </div>
-
           <div class="pho-pb-2">
             <div class="name-field">Квартира</div>
+             <div class="row items-center">
+               <div class="col-5">
             <q-input
               :value="currentOrder.clientInfo.address.apartment"
               @input="setApartment"
               bg-color="white"
               outlined
               dense
+              :disable="apartmentDisabled"
             />
+               </div>
+               <div class="col-grow">
+            <q-checkbox
+            v-model="apartmentDisabled"
+            @input="setApartment('')"
+                  :value="currentOrder.clientInfo.address.apartment"
+                  color="yellow-14"
+                  size="xs"
+                  label="Частный дом"
+                />
+                </div>
+             </div>
           </div>
           <div class="pho-pb-2">
             <div class="name-field">Кол-во персон</div>
@@ -170,7 +198,7 @@
             flat
             style="background: #fcd000; color: #fff"
             class="full-width q-my-md"
-            @click="sendOrder"
+            @click="proxySendOrder('top')"
           >
             <q-spinner
               v-if="loading"
@@ -396,39 +424,68 @@
           <div class="pho-pb-2">
             <div class="name-field">Укажите тип оплаты</div>
             <q-radio
-              :value="currentOrder.payments"
-              @input="setPayment"
-              val="1"
+            name="paymentRadio"
+              :value="currentOrder.payments[0].type.id"
+              @input="switchPaymentType({id: PAIMENT_TYPES.CASH})"
+              :val="PAIMENT_TYPES.CASH"
               label="Наличные"
               color="yellow-14"
             />
             <q-radio
-              :value="currentOrder.payments"
-              @input="setPayment"
-              val="2"
+            name="paymentRadio"
+              :value="currentOrder.payments[0].type.id"
+              @input="switchPaymentType({id: PAIMENT_TYPES.CARD})"
+              :val="PAIMENT_TYPES.CARD"
               label="Карта"
               color="yellow-14"
             />
           </div>
           <div class="pho-pb-2">
             <div class="name-field">Адрес</div>
-            <q-input
+            <input-adress
+            :inputValue="currentOrder.clientInfo.addressString"
+            :getPriceZoneCoords="getPriceZoneCoords"
+                                        :inputFunc="updateClientAddressString"
+                                        :options="addressHint"
+                                        :valid="hasAddress"
+                                        :hasHouse="hasHouse"
+                                        :isInAdditionalZone="isInAdditionalZone"
+                                        :startBreak="startBreak"
+                                        :finishBreak="finishBreak"
+                                        :isInZone="isInZone"
+                                        ></input-adress>
+            <!-- <q-input
               :value="currentOrder.clientInfo.address.dadata"
               @input="setAddress"
               bg-color="white"
               outlined
               dense
-            />
+            /> -->
           </div>
           <div class="pho-pb-2">
             <div class="name-field">Квартира</div>
+             <div class="row items-center">
+               <div class="col-5">
             <q-input
               :value="currentOrder.clientInfo.address.apartment"
               @input="setApartment"
               bg-color="white"
               outlined
               dense
+              :disable="apartmentDisabled"
             />
+               </div>
+               <div class="col-grow">
+            <q-checkbox
+            v-model="apartmentDisabled"
+            @input="setApartment('')"
+                  :value="currentOrder.clientInfo.address.apartment"
+                  color="yellow-14"
+                  size="xs"
+                  label="Частный дом"
+                />
+                </div>
+             </div>
           </div>
           <div class="pho-pb-2">
             <div class="name-field">Кол-во персон</div>
@@ -529,7 +586,7 @@
             flat
             style="background: #fcd000; color: #fff"
             class="full-width q-my-md"
-            @click="sendOrder"
+            @click="proxySendOrder('top')"
           >
             <q-spinner
               color="white"
@@ -582,7 +639,6 @@
             </div>
           </div>
           <yandex-map
-            :controls="controls"
             :coords="centerMap"
             style="width: 100%; height: 600px"
             v-if="isMounted"
@@ -636,16 +692,23 @@ import { dom } from 'quasar';
 
 const { height } = dom;
 import { loadYmap } from 'vue-yandex-maps';
-import { mapState, mapMutations, mapGetters } from 'vuex';
+import {
+  mapState,
+  mapGetters,
+  mapMutations,
+  mapActions,
+} from 'vuex';
 import ProductItem from '../components/ProductItem';
 import BasketItem from '../components/BasketItem';
 import YmapConstructor from '../boot/yandex-map-constructor.json';
+import InputAdress from '../components/inputAdress.vue';
 
 export default {
   name: 'OrderPage',
   components: {
     ProductItem,
     BasketItem,
+    InputAdress,
   },
   meta: {
     title: 'Pho me. Доставка из азиатского ресторана в Иркутске',
@@ -653,8 +716,17 @@ export default {
   data() {
     return {
       API_LINK: process.env.CLIENT_API_LINK,
+      PAIMENT_TYPES: process.env.PAIMENT_TYPES,
+      DELIVERY_TYPE_LIST: process.env.DELIVERY_TYPE_LIST,
+      paymentRadio: '',
       promoInputDisabled: false,
+      apartmentDisabled: false,
       hidePromoButton: true,
+      addressHint: [],
+      startBreak: new Date(1989, 5, 26, 17, 0, 0, 0),
+      finishBreak: new Date(1989, 5, 26, 19, 30, 0, 0),
+      isInZone: true,
+      isInAdditionalZone: false,
       categories: [],
       products: [],
       activeCategoryProducts: [],
@@ -702,16 +774,25 @@ export default {
       'promoCode',
       'promoCodes',
     ]),
-    ...mapGetters('order', ['totalSum', 'orderProductsNum']),
+    ...mapGetters('order', ['totalSum', 'orderProductsNum',
+      'hasAddress',
+      'hasHouse',
+      'isAddressInZone',
+      'isValidPhone']),
   },
   methods: {
+    ...mapActions('order', ['getAddressHints',
+      'getCoordsByString', 'sendOrder']),
     ...mapMutations('order', [
       'addProductToBasket',
       'removeProductToBasket',
       'setPromoCode',
+      'setPromoCodeProduct',
       'removeOneProduct',
       'setPhone',
       'setAddress',
+      'setAddressString',
+      'setAddressDadata',
       'setApartment',
       'setTime',
       'setEarly',
@@ -721,8 +802,11 @@ export default {
       'setName',
       'setForks',
       'setBusinessLunch',
-      'sendOrder',
       'setPromoCode',
+      'switchPaymentType',
+      'setPaymentSumm',
+      'setDate',
+      'addProducts',
     ]),
     chooseCategory(category) {
       this.activeCategory = category.id;
@@ -738,31 +822,30 @@ export default {
     usePromoCode(position) {
       const result = this.promoCodes.filter((item) => item.value === this.promoCode.value);
       if (result.length === 0) {
-        this.triggerNegative(position);
+        this.createNotify('Промокод не найден');
       } else this.checkPromoCode(result[0], position);
     },
-    checkPromoCode(result, position) {
+    checkPromoCode(result) {
       const date = new Date();
       const limitDate = Date.parse(result.date_finish) - Date.parse(date);
       const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
       if (result.min_sum <= this.totalSum
       && limitDate >= 0
       && filterOrder[0] === undefined) {
-        this.promoCode.product = result.product;
+        this.setPromoCodeProduct(result.product);
         this.addPromocode(result, result.product);
-        this.triggerPositive(position);
+        this.createNotifyPositive('Промокод добавлен');
         this.promoInputDisabled = true;
         this.hidePromoButton = false;
       } else if (result.min_sum > this.totalSum) {
-        this.triggerWarning(position);
+        this.createNotify('Сумма меньше заявленной в акции');
       } else if (filterOrder[0].number + 1 > 1) {
-        this.triggerLimit(position);
-      } else this.triggerNegative(position);
+        this.createNotify('Можно добавить только один промокод');
+      } else this.createNotify('Промокод не найден');
     },
     addPromocode(result, product) {
       const cartItemPromo = {
         id: `${result.id} ${product.id}`,
-        userModifiers: 'Блюдо по промокоду',
         finalPrice: '',
         comment: 'ПОДАРОК',
         product: this.promoCode.product,
@@ -772,69 +855,125 @@ export default {
       cartItemPromo.finalPrice = product.base_price - (product.base_price / 100) * result.discount;
       this.addProductToBasket(cartItemPromo);
     },
-    triggerPositive(position) {
-      this.$q.notify({
-        type: 'positive',
-        message: 'Промокод добавлен',
-        position,
-      });
-    },
-    triggerNegative(position) {
-      this.$q.notify({
-        type: 'negative',
-        message: 'Промокод не найден',
-        position,
-      });
-    },
-    triggerLimit(position) {
-      this.$q.notify({
-        type: 'negative',
-        message: 'Можно добавить только один промокод',
-        position,
-      });
-    },
-    triggerWarning(position) {
-      this.$q.notify({
-        type: 'warning',
-        message: 'Сумма меньше заявленной в акции',
-        position,
-      });
-    },
     removePromoFromBasket() {
       this.promoInputDisabled = false;
       this.hidePromoButton = true;
       const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
       this.removeProductToBasket(filterOrder[0]);
     },
-    sendOrder() {
-      this.loading = true;
-
-      this.$axios
-        .post('https://repairs.rest38.ru/api/phome', {
-          order: this.currentOrder,
-          products: this.orderProducts,
-        })
-        .then(() => {
-          this.thanks = true;
-          this.loading = false;
-          this.reachYandexGoal('thank');
-        })
-        .then(() => {
-          this.$store.dispatch('order/createOrder', this.order);
-        })
-        .catch((e) => {
-          console.log('e', e);
-          this.loading = false;
-          this.error = true;
-        });
-    },
     getPriceZoneCoords(item) {
       const result = item.geometry.coordinates[0];
-
       return [result];
     },
+    async updateClientAddressString(e) {
+      this.addressHint = await this.getAddressHints(e.target.value);
+    },
+    isTimeInBreak(checkTime) {
+      let prepareTime = checkTime;
+      if (typeof prepareTime === 'string') {
+        const minutes = prepareTime.split(':')[1];
+        const hours = prepareTime.split(':')[0];
+        prepareTime = new Date(1989, 5, 26, hours, minutes, 0, 0);
+      }
+      const checkHour = prepareTime.getHours();
+      const checkMinuts = prepareTime.getMinutes();
+      const isLessFinishBreak = (checkHour === this.finishBreak.getHours()
+        && checkMinuts < this.finishBreak.getMinutes())
+        || checkHour < this.finishBreak.getHours();
+      const isBiggerFinishBreak = (checkHour === this.startBreak.getHours()
+        && checkMinuts > this.startBreak.getMinutes())
+        || checkHour > this.startBreak.getHours();
+      return isBiggerFinishBreak && isLessFinishBreak;
+    },
+    proxySendOrder() {
+      this.setPaymentSumm(this.totalSum);
+      this.addProducts();
+      if (!this.isValidPhone) {
+        this.createNotify('Номер телефона указан некорректно');
+      } else if (this.orderProducts.length === 0) {
+        this.createNotify('Нет блюд в корзине');
+      } else if (this.currentOrder.clientInfo.address.dadata === null) {
+        this.createNotify('Адрес не определён');
+      } else if (this.isValidPhone
+      && this.orderProducts.length !== 0
+      && this.currentOrder.clientInfo.address.dadata !== null) {
+        this.sendOrder();
+        this.thanks = true;
+        this.loading = false;
+        this.reachYandexGoal('thank');
+      }
+    },
+    createNotify(text, colorType = 'negative') {
+      this.$q.notify({
+        message: text,
+        color: colorType,
+        position: 'top',
+        multiLine: true,
+        actions: [
+          {
+            label: 'Ok',
+            color: 'white',
+            handler: () => { /* ... */
+            },
+          },
+        ],
+      });
+    },
+    createNotifyPositive(text, colorType = 'positive') {
+      this.$q.notify({
+        message: text,
+        color: colorType,
+        position: 'top',
+        multiLine: true,
+        actions: [
+          {
+            label: 'Ok',
+            color: 'white',
+            handler: () => { /* ... */
+            },
+          },
+        ],
+      });
+    },
+  },
+  async proxySetAddressDadata(dadataAddress) {
+    const addressStringForYandex = dadataAddress.value;
+    // смотрим есть ли координаты у адреса с дадаты
+    if (dadataAddress.data.geo_lat === null) {
+      // если нет то строку адреса шлем в геокодер яндеекса
+      const coordYandex = await this.getCoordsByString(addressStringForYandex);
+      // яндекс это пиздец. он в некоторых методах принимает сначала долготу а потом ширину.
+      // а в других наборот. отдает следоватетльно тоже как попало.
+      this.coords = [+coordYandex.coords[0], +coordYandex.coords[1]];
+    } else {
+      // если все ок то берем с дадаты
+      this.coords = [dadataAddress.data.geo_lat, dadataAddress.data.geo_lon];
+    }
+    const chekZones = this.isTimeInBreak(this.currentOrder.deliveryInfo.time)
+      ? this.dsZoneWholeTime : this.dsZonesPriced;
+    const checkNowZones = await this.checkAddressByZones(chekZones);
+    console.log('test0');
+    if (checkNowZones) {
+      // если есть радумеся.
+      this.isInZone = true;
+      console.log('test1');
+      // this.getDepatmentByPoint(this.coords);
+    } else {
+      console.log('test2');
+      const isInAllZones = await this.checkAddressByZones(this.dsZonesPriced);
+      if (isInAllZones) {
+        this.isInAdditionalZone = true;
+      } else {
+        this.isInAdditionalZone = false;
+      }
+      this.isInZone = false;
+      this.reachYandexGoal('addresfail');
+    }
+    // сохраняем адрес
+    this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    this.setDate();
     this.$store.dispatch('order/getPromocode').then(() => {
       if (this.promoCodes[0] !== undefined) {
         console.log(2);

@@ -81,6 +81,14 @@ export default {
           link: '/payments',
         },
         {
+          name: 'Интерьеры',
+          link: '/interior',
+        },
+        {
+          name: 'Меню ресторана',
+          link: '/rest-menu',
+        },
+        {
           name: 'Доставка',
           link: '/delivery',
         },

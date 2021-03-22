@@ -178,6 +178,38 @@ const routes = [
         component: () => import('../pages/promotion/PromotionCreate.vue'),
       },
       {
+        path: 'interior/',
+        name: 'interiors',
+        component: () => import('../pages/interior/Interiors.vue'),
+      },
+      {
+        path: 'interior/create',
+        name: 'interior_create',
+        component: () => import('../pages/interior/InteriorCreate.vue'),
+      },
+      {
+        path: 'interior/:id',
+        name: 'interior_edit',
+        props: { edit: true },
+        component: () => import('../pages/interior/InteriorCreate.vue'),
+      },
+      {
+        path: 'rest-menu/',
+        name: 'rest-menus',
+        component: () => import('../pages/Restmenu/RestMenu.vue'),
+      },
+      {
+        path: 'rest-menu/create',
+        name: 'rest-menus_create',
+        component: () => import('../pages/Restmenu/RestMenuCreate.vue'),
+      },
+      {
+        path: 'rest-menu/:id',
+        name: 'rest-menus_edit',
+        props: { edit: true },
+        component: () => import('../pages/Restmenu/RestMenuCreate.vue'),
+      },
+      {
         path: 'promo-code/',
         name: 'promoCode',
         component: () => import('../pages/PromoCode/PromoCodePage.vue'),

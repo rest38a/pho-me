@@ -30,6 +30,8 @@ export default function () {
         address: {
           id: null,
           apartment: null,
+          floor: null,
+          entrance: null,
           dadata: null,
           type: null,
         },
@@ -55,7 +57,6 @@ export default function () {
       products: [],
       forks: '',
       early: true,
-      useBonus: 0,
     },
   };
 }

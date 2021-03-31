@@ -18,7 +18,7 @@
                 <q-btn flat
                 v-if="cartItem.isGift !== true"
                        round
-                       class="round-btn"
+                       class="round-btn button-mobile-size"
                        size="xs"
                        icon="remove"
                        @click="removeOneProduct(cartItem)">

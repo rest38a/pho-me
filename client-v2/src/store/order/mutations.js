@@ -83,6 +83,18 @@ export function setApartment(state, apartment) {
   state.currentOrder.clientInfo.address.apartment = apartment;
 }
 
+export function setFloor(state, floor) {
+  state.currentOrder.clientInfo.address.floor = floor;
+}
+
+export function setEntrance(state, entrance) {
+  state.currentOrder.clientInfo.address.entrance = entrance;
+}
+
+export function switchDeliveryType(state, DeliveryType) {
+  state.currentOrder.deliveryInfo.type = DeliveryType;
+}
+
 export function setDate(state) {
   state.currentOrder.deliveryInfo.date = moment().format('DD.MM.YYYY');
 }

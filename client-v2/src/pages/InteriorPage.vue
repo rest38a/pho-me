@@ -5,34 +5,43 @@
       <div class="full-width row justify-start items-baseline">
         <h1 class="title">ИНТЕРЬЕР</h1>
       </div>
-      <div class="relative-box">
-        <div
+      <div class="relative-box row q-col-gutter-md">
+        <div class="img-wrapper col-lg-6 col-md-6 col-xs-12 render-card-box"
+         v-for="interior in interiors"
+      :key="interior.id">
+          <img class="image"
+          :src="`${CLIENT_API_LINK}/uploads/${interior.photo}`" />
+        </div>
+        <!-- <q-btn
+            v-if="activeInterior !== null && interior.id === activeinterior"
+            @click="chooseInterior(interior)"
+            class="pho-btn"
+            flat
+            :key="interior.id"
+          >
+            <div>
+              {{ interior.name }}
+            </div>
+          </q-btn>
+          <q-btn
+            v-else
+            flat
+            class="pho-btn-outline"
+            @click="chooseInterior(Interior)"
+            :key="interior.id"
+          >
+            <div>
+              {{ interior.name }}
+            </div>
+          </q-btn> -->
+        <!-- <div class="img-wrapper col-md-grow col-12">
+          <img class="image"
+          :src="`${CLIENT_API_LINK}/uploads/${item.photo}`" />
+        </div> -->
+        </div>
+        <!-- <div
           class="interior-box row justify-between q-pr-md q-col-gutter-md no-wrap wrap-md"
         >
-          <!--      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-1.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-2.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-3.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-4.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-5.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-6.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-7.png"/>
-      </div>
-      <div class="img-wrapper">
-        <img class="image" src="..\assets\image\interiorCard\interior-card-mini-8.png"/>
-      </div>-->
           <div class="img-wrapper col-md-grow col-12">
             <img class="image" src="..\assets\image\interiorCard\testimg.jpg" />
           </div>
@@ -94,18 +103,49 @@
               src="..\assets\image\interiorCard\testimg8.jpg"
             />
           </div>
-        </div>
-      </div>
+        </div> -->
     </div>
+    <bottom-navigation></bottom-navigation>
   </div>
 </template >
 
 <script >
+import { mapState, mapMutations } from 'vuex';
+import BottomNavigation from '../components/navigation/bottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
 export default {
-  components: { logo },
+  components: { logo, BottomNavigation },
   name: 'InteriorPage',
+  data() {
+    return {
+      CLIENT_API_LINK: process.env.CLIENT_API_LINK,
+      interior: [],
+      photos: [],
+      activeInteriorPhoto: [],
+      activeInteriors: null,
+    };
+  },
+  computed: {
+    ...mapState('interiors', ['interiors']),
+  },
+  methods: {
+    ...mapMutations('interiors', ['setInterior']),
+    chooseInterior(interior) {
+      this.activeInteriors = interior.id;
+      const prepareInterior = [...interior.photo];
+      this.photo = [...interior.photo];
+      const sortFunction = (a, b) => a.sort_index - b.sort_index;
+      this.activeInteriorPhoto = prepareInterior.sort(sortFunction);
+    },
+  },
+  async mounted() {
+    this.$store.dispatch('interiors/getInteriors').then(() => {
+      if (this.interiors[0] !== undefined) {
+        [this.activeInteriors] = this.interiors;
+      }
+    });
+  },
 };
 </script >
 
@@ -126,7 +166,6 @@ export default {
 
 .img-wrapper {
   overflow: hidden;
-  width: 138px;
   height: auto;
   z-index: 1;
   will-change: transform;
@@ -223,26 +262,26 @@ export default {
 
 @media screen and (max-width: 991.98px) {
   .background {
-    padding: 25.51px 14.83px 64px 14.83px;
+    padding: 25.51px 14.83px 96px 14.83px;
   }
 }
 
 @media only screen and (max-width: 919px) {
   @keyframes img-animation {
-  from {
-    opacity: 0;
+    from {
+      opacity: 0;
+    }
+    10% {
+      -webkit-transform: scale(0, 0);
+    }
+    50% {
+      opacity: 0.75;
+    }
+    to {
+      opacity: 1;
+      -webkit-transform: scale(1, 1);
+    }
   }
-  10% {
-    -webkit-transform: scale(0, 0);
-  }
-  50% {
-    opacity: 0.75;
-  }
-  to {
-    opacity: 1;
-    -webkit-transform: scale(1, 1);
-  }
-}
 }
 @media only screen and (min-width: 0px) and (max-width: 1344px) {
   .img-wrapper:hover {

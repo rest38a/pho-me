@@ -48,7 +48,8 @@
           <li class="title" @click="scrollToMenu('action-page')">АКЦИИ</li>
           <li class="title" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
           <li class="title" @click="scrollToMenu('contact-page')">КОНТАКТЫ</li>
-          <li class="title" @click="scrollToMenu('action-page')">ВАКАНСИИ</li>
+          <li class="title" @click="scrollToMenu('feedback-page')">ОТЗЫВЫ</li>
+          <li class="title" @click="scrollToMenu('')">ВАКАНСИИ</li>
         </ul>
         <div class="vertical-line col"></div>
       </div>
@@ -77,8 +78,8 @@ export default {
       this.isSideMenuVisible = !this.isSideMenuVisible;
       const el = document.getElementById(id);
       el.scrollIntoView({
-        block: 'end',
         inline: 'nearest',
+        top: true,
       });
       document.body.style.overflow = 'auto';
     },
@@ -138,6 +139,7 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: 3;
 }
 
 .side-menu {

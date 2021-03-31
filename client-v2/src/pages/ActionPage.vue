@@ -67,15 +67,17 @@
         </q-dialog>
       </div>
     </div>
+    <bottom-navigation></bottom-navigation>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex';
+import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
 export default {
-  components: { logo },
+  components: { logo, BottomNavigation },
   name: 'ActionPage',
   data() {
     return {
@@ -229,7 +231,7 @@ export default {
 
 @media only screen and (max-width: 991.98px) {
   .background {
-    padding: 25.51px 14.83px 64px 14.83px;
+    padding: 25.51px 14.83px 98px 14.83px;
   }
 }
 

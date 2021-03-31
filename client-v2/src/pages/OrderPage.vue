@@ -5,10 +5,10 @@
     <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
     <!--        </div>-->
     <img src="/icons/logo.svg" alt="" class="logo mobile-hide" />
-    <div class="header-mobile row desktop-hide items-center">
-      <div class="col-3 q-pa-sm items-center row">
+    <div class="row desktop-hide items-center">
+      <!-- <div class="col-3 q-pa-sm items-center row">
         <img src="/icons/logo.svg" alt="" class="logo-m" />
-      </div>
+      </div> -->
       <div
         v-ripple
         class="cart-widget-m"
@@ -34,8 +34,11 @@
         @click.stop="showCart = !showCart"
       ></div>
     </div>
-    <div class="cart row" v-if="showCart">
-      <div class="col-12 col-md-5 form-area mobile-hide">
+    <right-navigate-order-page></right-navigate-order-page>
+    <!-- корзина десктоп -->
+    <div class="cart row col-8" v-if="showCart">
+      <div class="col-md-5 form-area mobile-hide"
+      :class="{'col-sm-12': ordering === false, 'form-area-display': ordering === true}">
         <q-scroll-area
           :thumb-style="thumbStyle"
           :content-style="contentStyle"
@@ -43,8 +46,10 @@
           style="height: 100%; padding-right: 20px"
           v-if="!thanks"
         >
-          <div class="cart-h1">Оформление заказа</div>
-          <div class="pho-pb-2">
+          <div v-if="!showAddress" class="cart-h1"
+          >Оформление заказа</div>
+          <div v-if="showAddress" class="cart-h1">Адрес доставки</div>
+          <div v-if="!showAddress" class="pho-pb-2">
             <div class="name-field">Имя</div>
             <q-input
               :value="currentOrder.clientInfo.client.name"
@@ -52,88 +57,158 @@
               bg-color="white"
               outlined
               dense
+              placeholder="Введите имя"
             /><!--
               v-model="text" //вызывает ошибки
               -->
           </div>
           <div class="pho-pb-2">
-            <div class="name-field">Телефон</div>
+            <div class="name-field" v-if="!showAddress">Телефон</div>
             <q-input
+              v-if="!showAddress"
               :value="currentOrder.clientInfo.phone"
               @input="setPhone"
               mask="+7 (###) ###-##-##"
               bg-color="white"
               outlined
               dense
+              placeholder="+7 (___)-___-__-__"
             />
           </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Укажите тип оплаты</div>
-            <q-radio
-            name="paymentRadio"
-              :value="currentOrder.payments[0].type.id"
-              @input="switchPaymentType({id: PAIMENT_TYPES.CASH})"
-              :val="PAIMENT_TYPES.CASH"
-              label="Наличные"
-              color="yellow-14"
-            />
-            <q-radio
-            name="paymentRadio"
-              :value="currentOrder.payments[0].type.id"
-              @input="switchPaymentType({id: PAIMENT_TYPES.CARD})"
-              :val="PAIMENT_TYPES.CARD"
-              label="Карта"
-              color="yellow-14"
-            />
+          <div v-if="!showAddress" class="row button-box">
+            <div
+              v-for="item in deliveryTypeButton"
+              :key="item.type"
+              class="row col-6"
+            >
+              <q-btn
+                v-if="
+                  activeDeliveryTypeButton !== null &&
+                  item === activeDeliveryTypeButton
+                "
+                flat
+                @click="changeDeliveryType(item)"
+                class="pho-btn-delivery col"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+              <q-btn
+                v-else
+                flat
+                @click="changeDeliveryType(item)"
+                class="pho-btn-delivery-outline col"
+                :key="item.type"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+            </div>
           </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Адрес</div>
-            <input-adress
-            :inputValue="currentOrder.clientInfo.addressString"
-            :getPriceZoneCoords="getPriceZoneCoords"
-                                        :inputFunc="updateClientAddressString"
-                                        :options="addressHint"
-                                        :valid="hasAddress"
-                                        :hasHouse="hasHouse"
-                                        :isInAdditionalZone="isInAdditionalZone"
-                                        :startBreak="startBreak"
-                                        :finishBreak="finishBreak"
-                                        :isInZone="isInZone"
-                                        ></input-adress>
-            <!-- <q-input
-              :value="currentOrder.clientInfo.address.dadata"
-              @input="setAddress"
-              bg-color="white"
-              outlined
-              dense
-            /> -->
-          </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Квартира</div>
-             <div class="row items-center">
-               <div class="col-5">
-            <q-input
-              :value="currentOrder.clientInfo.address.apartment"
-              @input="setApartment"
-              bg-color="white"
-              outlined
-              dense
-              :disable="apartmentDisabled"
-            />
-               </div>
-               <div class="col-grow">
-            <q-checkbox
-            v-model="apartmentDisabled"
-            @input="setApartment('')"
-                  :value="currentOrder.clientInfo.address.apartment"
-                  color="yellow-14"
-                  size="xs"
-                  label="Частный дом"
-                />
+          <div v-if="showAddressInput">
+            <div
+              v-if="!showAddress"
+              class="pho-pb-2 address-animation"
+              :class="{
+                active: showAddressInput === true,
+                noActive: showAddressInput === false,
+              }"
+            >
+              <div class="row name-field">
+                <div class="col-6">Адрес доставки</div>
+                <div
+                  @click="showMap = !showMap"
+                  class="col-6 row items-baseline justify-end"
+                >
+                  <img
+                    src="/icons/location-baloon.svg"
+                    class="q-mr-xs baloon-order"
+                  />
+                  <div class="cursor">Зона доставки</div>
                 </div>
-             </div>
+              </div>
+              <div @click="showCardAddress" class="orderMargin">
+                <q-input
+                  :value="currentOrder.clientInfo.addressString"
+                  bg-color="white"
+                  outlined
+                  dense
+                  :disable="deliveryInputDisabled"
+                />
+              </div>
+            </div>
           </div>
-          <div class="pho-pb-2">
+          <div v-if="showAddress" class="pho-pb-2">
+            <div class="name-field col-6">Улица и дом</div>
+            <input-adress
+              :inputValue="currentOrder.clientInfo.addressString"
+              :getPriceZoneCoords="getPriceZoneCoords"
+              :inputFunc="updateClientAddressString"
+              :options="addressHint"
+              :valid="hasAddress"
+              :hasHouse="hasHouse"
+              :isInAdditionalZone="isInAdditionalZone"
+              :startBreak="startBreak"
+              :finishBreak="finishBreak"
+              :isInZone="isInZone"
+            ></input-adress>
+          </div>
+          <div v-if="showAddress" class="row">
+            <div class="pho-pb-2">
+              <div class="name-field">Квартира</div>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-6">
+                  <q-input
+                    :value="currentOrder.clientInfo.address.apartment"
+                    @input="setApartment"
+                    bg-color="white"
+                    outlined
+                    dense
+                    :disable="apartmentDisabled"
+                  />
+                </div>
+                <div class="col-6">
+                  <q-toggle
+                    v-model="apartmentDisabled"
+                    @input="setApartment('')"
+                    :value="currentOrder.clientInfo.address.apartment"
+                    color="yellow-14"
+                    size="xs"
+                    label="Частный дом"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">Этаж</div>
+              <div class="col-5">
+                <q-input
+                  :value="currentOrder.clientInfo.address.floor"
+                  @input="setFloor"
+                  bg-color="white"
+                  outlined
+                  dense
+                  :disable="apartmentDisabled"
+                />
+              </div>
+            </div>
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">Подъезд</div>
+              <div class="col-5">
+                <q-input
+                  :value="currentOrder.clientInfo.address.entrance"
+                  @input="setEntrance"
+                  bg-color="white"
+                  outlined
+                  dense
+                  :disable="apartmentDisabled"
+                />
+              </div>
+            </div>
+          </div>
+          <div v-if="!showAddress" class="pho-pb-2">
             <div class="name-field">Кол-во персон</div>
             <q-input
               :value="currentOrder.forks"
@@ -143,37 +218,104 @@
               dense
             />
           </div>
-          <div class="pho-pb-2">
+          <div v-if="!showAddress" class="pho-pb-2">
             <div class="name-field">Время доставки</div>
-            <div class="row items-center">
-              <div class="col-5">
-                <q-input
-                  :value="currentOrder.deliveryInfo.time"
-                  @input="setTime"
-                  mask="##:##"
-                  bg-color="white"
-                  outlined
-                  dense
-                />
+            <div v-if="!showAddress" class="row button-box-time">
+              <div
+                v-for="item in deliveryTimeButton"
+                :key="item.type"
+                class="row col-6"
+              >
+                <q-btn
+                  v-if="
+                    activeDeliveryTimeButton !== null &&
+                    item === activeDeliveryTimeButton
+                  "
+                  flat
+                  @click="changeDeliveryTime(item)"
+                  class="pho-btn-delivery col"
+                  no-caps
+                >
+                  <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                </q-btn>
+                <q-btn
+                  v-else
+                  flat
+                  @click="changeDeliveryTime(item)"
+                  class="pho-btn-delivery-outline col"
+                  :key="item.type"
+                  no-caps
+                >
+                  <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                </q-btn>
               </div>
-              <div class="col-grow">
-                <q-checkbox
-                  :value="currentOrder.early"
-                  @input="setEarly"
-                  color="yellow-14"
-                  size="xs"
-                  label="Как можно скорее"
-                />
-              </div>
-              <div class="pho-caption">
-                Доставка в среднем занимает 1,5 часа.<br />
-                Режим работы доставки: с 12:00 по 22:00
-              </div>
-              <div></div>
             </div>
           </div>
-          <div>
-            <div class="name-field">Комментарий</div>
+          <div
+            class="row items-center time-animation"
+            v-if="!showTimeInput"
+            :class="{
+              active: showTimeInput === false,
+              noActive: showTimeInput === true,
+            }"
+          >
+            <div class="col-12" v-if="!showAddress">
+              <q-input
+                :value="currentOrder.deliveryInfo.time"
+                @input="setTime"
+                mask="##:##"
+                bg-color="white"
+                outlined
+                dense
+                placeholder="00:00"
+              >
+                <template v-slot:prepend>
+                  <q-icon name="schedule" />
+                </template>
+              </q-input>
+            </div>
+            <div class="pho-caption" v-if="!showAddress">
+              <!-- Доставка в среднем занимает 1,5 часа.<br />
+                Режим работы доставки: с 12:00 по 22:00 -->
+              Среднее время доставки - 90 минут.
+            </div>
+            <div></div>
+          </div>
+          <div v-if="!showAddress" class="name-field">Способ оплаты</div>
+          <div v-if="!showAddress" class="row button-box">
+            <div
+              v-for="item in deliveryPayButton"
+              :key="item.type"
+              class="row col-6"
+            >
+              <q-btn
+                v-if="
+                  activeDeliveryPayButton !== null &&
+                  item === activeDeliveryPayButton
+                "
+                flat
+                :val="PAIMENT_TYPES.CASH"
+                @click="changeDeliveryPay(item)"
+                class="pho-btn-delivery col"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+              <q-btn
+                v-else
+                flat
+                :val="PAIMENT_TYPES.CARD"
+                @click="changeDeliveryPay(item)"
+                class="pho-btn-delivery-outline col"
+                :key="item.type"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+            </div>
+          </div>
+          <div v-if="showAddress">
+            <div class="name-field">Комментарий к адресу</div>
             <q-input
               type="textarea"
               class="comment-input"
@@ -195,8 +337,9 @@
             </template>
           </q-banner>
           <q-btn
+            v-if="!showAddress"
             flat
-            style="background: #fcd000; color: #fff"
+            style="background: #ca17a8; color: #fff"
             class="full-width q-my-md"
             @click="proxySendOrder('top')"
           >
@@ -216,15 +359,39 @@
               :thickness="2"
             />
           </q-btn>
+          <q-btn
+            v-if="showAddress"
+            flat
+            style="background: #fcd000; color: #fff"
+            class="full-width q-my-md"
+            @click="showCardAddress"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">Сохранить</div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
         </q-scroll-area>
         <div v-else>
           <h6 class="bold">Спасибо за заказ!</h6>
           <div>В ближайшее время с вами свяжется наш менеджер.</div>
         </div>
       </div>
-
-      <div class="col-12 col-md-7 cart-area mobile-hide">
-        <div class="cart-h1">Корзина</div>
+      <div class="col-12 col-md-7 col-sm-12 cart-area mobile-hide"
+        :class="{'col-sm-12': ordering === true, 'form-area-display': ordering === false}">
+        <div class="cart-h1"
+        >Корзина</div>
         <q-scroll-area
           :thumb-style="thumbStyle"
           :content-style="contentStyle"
@@ -244,13 +411,17 @@
               <q-separator />
             </div>
           </div>
+          <additional-sale
+            :addToBasket="addProductToBasket"
+            :categoriesMenu="categoriesMenu"
+          ></additional-sale>
         </q-scroll-area>
         <div class="row justify-between items-center">
-          <div>
+          <div class="row">
             <q-input
               :value="promoCode.value"
               @input="setPromoCode"
-              label="Промокод"
+              label="Ввести промокод"
               bg-color="white"
               :disable="promoInputDisabled"
               outlined
@@ -260,23 +431,23 @@
               flat
               size="md"
               @click="usePromoCode('top')"
-              class="pho-btn-med"
+              class="pho-btn-med-promo"
               no-caps
               unelevated
               v-if="hidePromoButton === true"
             >
-              <div>Применить промокод</div>
+              <div>Применить</div>
             </q-btn>
             <q-btn
               flat
               size="md"
               @click="removePromoFromBasket()"
-              class="pho-btn-med"
+              class="pho-btn-med-promo"
               no-caps
               unelevated
               v-if="hidePromoButton === false"
             >
-              <div>Отменить промокод</div>
+              <div>Отменить</div>
             </q-btn>
           </div>
           <div>
@@ -288,6 +459,29 @@
             </div>
           </div>
         </div>
+        <q-btn
+            v-if="!showAddress"
+            flat
+            style="background: #ca17a8; color: #fff"
+            class="full-width q-my-md create-order-button"
+            @click="toShowRegistrationOrder"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">К оформлению заказа</div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
       </div>
     </div>
     <!--        <div class="warning-line-mobile">-->
@@ -325,6 +519,42 @@
           </q-btn>
         </div>
       </div>
+      <!-- главная страница -->
+      <div class="carosel-box">
+        <q-carousel
+          animated
+          v-model="slide"
+          navigation
+          infinite
+          :autoplay="autoplay"
+          arrows
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          @mouseenter="autoplay = false"
+          @mouseleave="autoplay = true"
+        >
+          <q-carousel-slide
+            class="carousel-slide"
+            :name="1"
+            img-src="..\assets\image\interiorCard\testimg.jpg"
+          />
+          <q-carousel-slide
+            class="carousel-slide"
+            :name="2"
+            img-src="..\assets\image\interiorCard\testimg2.jpg"
+          />
+          <q-carousel-slide
+            class="carousel-slide"
+            :name="3"
+            img-src="..\assets\image\interiorCard\testimg3.jpg"
+          />
+          <q-carousel-slide
+            class="carousel-slide"
+            :name="4"
+            img-src="..\assets\image\interiorCard\testimg4.jpg"
+          />
+        </q-carousel>
+      </div>
       <div class="row q-pb-lg">
         <template v-for="category in categoriesMenu">
           <q-btn
@@ -360,19 +590,66 @@
         </ProductItem>
       </div>
     </div>
-    <q-dialog :full-width="true" v-model="showMobileCart">
-      <q-card style="width: 100%; height: 95%">
-        <div class="col-12 cart-area">
-          <div class="row justify-between">
-            <div class="cart-h1 q-py-md">Корзина</div>
+        <!-- мобильная версия -->
+    <q-dialog :maximized="maximizedToggle"
+    :full-width="true" v-model="showMobileCart">
+      <q-card style="width: 100%; height: 100%">
+        <div class="cart-area" v-if="toShowRegistrationButton">
+          <div class="row justify-between items-center content-center vertical-line">
+            <div class="col-auto">
             <q-btn
               class=""
               color="grey-5"
               size="md"
               @click="showMobileCart = !showMobileCart"
               flat
-              icon="close"
-            ></q-btn>
+            >
+            <img class="" src="../assets/image/returnButton.png"></q-btn>
+            </div>
+            <div class="col-auto justify-center">
+              <div class="cart-h1 " >Корзина</div>
+            </div>
+            <div class="col-1"></div>
+          </div>
+          <q-scroll-area
+          :thumb-style="thumbStyle"
+          :content-style="contentStyle"
+          :content-active-style="contentActiveStyle"
+          style="height: 80%; padding-right: 20px"
+        >
+          <div class="row justify-center items-center content-center">
+            <q-input
+              :value="promoCode.value"
+              @input="setPromoCode"
+              label="Ввести промокод"
+              bg-color="white"
+              :disable="promoInputDisabled"
+              outlined
+              dense
+              class="col-9"
+            />
+            <q-btn
+              flat
+              size="md"
+              @click="usePromoCode('top')"
+              class="pho-btn-med-promo col"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === true"
+            >
+              <div>Применить</div>
+            </q-btn>
+            <q-btn
+              flat
+              size="md"
+              @click="removePromoFromBasket()"
+              class="pho-btn-med-promo col"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === false"
+            >
+              <div>Отменить</div>
+            </q-btn>
           </div>
           <div class="column">
             <q-separator />
@@ -387,7 +664,9 @@
               <q-separator />
             </div>
           </div>
-          <div class="row justify-end">
+          </q-scroll-area>
+          <div class="basket-bottom-additional-button">
+            <div class="column justify-end items-end content-end">
             <div class="total">
               Сумма заказа: <span class="total-sum">{{ totalSum }} ₽</span>
             </div>
@@ -395,10 +674,60 @@
               Минимальная сумма заказа 800 ₽
             </div>
           </div>
+          <additional-sale
+            :addToBasket="addProductToBasket"
+            :categoriesMenu="categoriesMenu"
+          ></additional-sale>
+          <q-btn
+            v-if="!showAddress"
+            flat
+            style="background: #ca17a8; color: #fff"
+            class="full-width q-my-md"
+            @click="toShowRegistrationOrder"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">К оформлению заказа</div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
+          </div>
         </div>
+        <div v-if="!toShowRegistrationButton">
         <div class="col-12 form-area" v-if="!thanks">
-          <div class="cart-h1">Оформление заказа</div>
-          <div class="pho-pb-2">
+          <div class="row justify-between items-center content-center vertical-line">
+            <div class="col-auto">
+            <img src="../assets/image/returnButton.png"
+            class=""
+            @click="toShowRegistrationOrder">
+            </div>
+            <div class="col-auto justify-center">
+              <div v-if="!showAddress" class="cart-h1">Оформление заказа</div>
+            </div>
+            <div class="col-auto"></div>
+          </div>
+
+          <div v-if="showAddress"
+          class="cart-h1 row justify-between items-center content-center vertical-line">
+          <div class="col-auto">
+            <img src="../assets/image/returnButton.png"
+          @click="showAddress = !showAddress">
+          </div>
+          <div class="col-auto justify-center">Адрес доставки</div>
+          <div col-auto></div>
+          </div>
+
+          <div v-if="!showAddress" class="pho-pb-2">
             <div class="name-field">Имя</div>
             <q-input
               :value="currentOrder.clientInfo.client.name"
@@ -406,11 +735,12 @@
               bg-color="white"
               outlined
               dense
+              placeholder="Введите имя"
             /><!--
               v-model="text" //вызывает ошибки
               -->
           </div>
-          <div class="pho-pb-2">
+          <div class="pho-pb-2" v-if="!showAddress">
             <div class="name-field">Телефон</div>
             <q-input
               :value="currentOrder.clientInfo.phone"
@@ -419,149 +749,423 @@
               bg-color="white"
               outlined
               dense
+              placeholder="+7 (___)-___-__-__"
             />
           </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Укажите тип оплаты</div>
-            <q-radio
-            name="paymentRadio"
-              :value="currentOrder.payments[0].type.id"
-              @input="switchPaymentType({id: PAIMENT_TYPES.CASH})"
-              :val="PAIMENT_TYPES.CASH"
-              label="Наличные"
-              color="yellow-14"
-            />
-            <q-radio
-            name="paymentRadio"
-              :value="currentOrder.payments[0].type.id"
-              @input="switchPaymentType({id: PAIMENT_TYPES.CARD})"
-              :val="PAIMENT_TYPES.CARD"
-              label="Карта"
-              color="yellow-14"
-            />
+          <div v-if="!showAddress" class="row button-box">
+            <div v-for="item in deliveryTypeButton" :key="item.type" class="row col-6">
+              <q-btn
+                v-if="
+                  activeDeliveryTypeButton !== null &&
+                  item === activeDeliveryTypeButton
+                "
+                flat
+                @click="changeDeliveryType(item)"
+                class="pho-btn-delivery col"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+              <q-btn
+                v-else
+                flat
+                @click="changeDeliveryType(item)"
+                class="pho-btn-delivery-outline col"
+                :key="item.type"
+                no-caps
+              >
+                <div class="pho-btn-delivery-text">{{ item.type }}</div>
+              </q-btn>
+            </div>
           </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Адрес</div>
-            <input-adress
-            :inputValue="currentOrder.clientInfo.addressString"
-            :getPriceZoneCoords="getPriceZoneCoords"
-                                        :inputFunc="updateClientAddressString"
-                                        :options="addressHint"
-                                        :valid="hasAddress"
-                                        :hasHouse="hasHouse"
-                                        :isInAdditionalZone="isInAdditionalZone"
-                                        :startBreak="startBreak"
-                                        :finishBreak="finishBreak"
-                                        :isInZone="isInZone"
-                                        ></input-adress>
-            <!-- <q-input
-              :value="currentOrder.clientInfo.address.dadata"
-              @input="setAddress"
-              bg-color="white"
-              outlined
-              dense
-            /> -->
-          </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Квартира</div>
-             <div class="row items-center">
-               <div class="col-5">
-            <q-input
-              :value="currentOrder.clientInfo.address.apartment"
-              @input="setApartment"
-              bg-color="white"
-              outlined
-              dense
-              :disable="apartmentDisabled"
-            />
-               </div>
-               <div class="col-grow">
-            <q-checkbox
-            v-model="apartmentDisabled"
-            @input="setApartment('')"
-                  :value="currentOrder.clientInfo.address.apartment"
-                  color="yellow-14"
-                  size="xs"
-                  label="Частный дом"
-                />
+          <div class="pho-pb-2 gutter" v-if="!showAddress">
+            <div>
+              <div v-if="showAddressInput">
+                <div
+                  v-if="!showAddress"
+                  class="pho-pb-2 address-animation"
+                  :class="{
+                    active: showAddressInput === true,
+                    noActive: showAddressInput === false,
+                  }"
+                >
+                  <div class="row name-field">
+                    <div class="col-6">Адрес доставки</div>
+                    <div
+                      @click="showMap = !showMap"
+                      class="col-6 row items-baseline justify-end"
+                    >
+                      <img
+                        src="/icons/location-baloon.svg"
+                        class="q-mr-xs baloon-order"
+                      />
+                      <div class="cursor">Зона доставки</div>
+                    </div>
+                  </div>
+                  <div @click="showCardAddress" class="orderMargin">
+                    <q-input
+                      :value="currentOrder.clientInfo.addressString"
+                      bg-color="white"
+                      outlined
+                      dense
+                      :disable="deliveryInputDisabled"
+                    />
+                  </div>
                 </div>
-             </div>
-          </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Кол-во персон</div>
-            <q-input
-              :value="currentOrder.forks"
-              @input="setForks"
-              bg-color="white"
-              outlined
-              dense
-            />
-          </div>
-          <div class="pho-pb-2">
-            <div class="name-field">Время доставки</div>
-            <div class="row items-center">
-              <div class="col-5">
+              </div>
+              <div v-if="showAddress" class="pho-pb-2">
+                <div class="name-field col-6">Улица и дом</div>
+                <input-adress
+                  :inputValue="currentOrder.clientInfo.addressString"
+                  :getPriceZoneCoords="getPriceZoneCoords"
+                  :inputFunc="updateClientAddressString"
+                  :options="addressHint"
+                  :valid="hasAddress"
+                  :hasHouse="hasHouse"
+                  :isInAdditionalZone="isInAdditionalZone"
+                  :startBreak="startBreak"
+                  :finishBreak="finishBreak"
+                  :isInZone="isInZone"
+                ></input-adress>
+              </div>
+              <div v-if="showAddress" class="row">
+                <div class="pho-pb-2">
+                  <div class="name-field">Квартира</div>
+                  <div class="row items-center q-col-gutter-md">
+                    <div class="col-6">
+                      <q-input
+                        :value="currentOrder.clientInfo.address.apartment"
+                        @input="setApartment"
+                        bg-color="white"
+                        outlined
+                        dense
+                        :disable="apartmentDisabled"
+                      />
+                    </div>
+                    <div class="col-6">
+                      <q-toggle
+                        v-model="apartmentDisabled"
+                        @input="setApartment('')"
+                        :value="currentOrder.clientInfo.address.apartment"
+                        color="yellow-14"
+                        size="xs"
+                        label="Частный дом"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row q-col-gutter-md">
+                <div v-if="showAddress" class="pho-pb-2 col-6">
+                  <div class="name-field">Этаж</div>
+                  <div class="col-5">
+                    <q-input
+                      :value="currentOrder.clientInfo.address.floor"
+                      @input="setFloor"
+                      bg-color="white"
+                      outlined
+                      dense
+                      :disable="apartmentDisabled"
+                    />
+                  </div>
+                </div>
+                <div v-if="showAddress" class="pho-pb-2 col-6">
+                  <div class="name-field">Подъезд</div>
+                  <div class="col-5">
+                    <q-input
+                      :value="currentOrder.clientInfo.address.entrance"
+                      @input="setEntrance"
+                      bg-color="white"
+                      outlined
+                      dense
+                      :disable="apartmentDisabled"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div v-if="!showAddress" class="pho-pb-2">
+                <div class="name-field">Кол-во персон</div>
                 <q-input
-                  :value="currentOrder.deliveryInfo.time"
-                  @input="setTime"
-                  mask="##:##"
+                  :value="currentOrder.forks"
+                  @input="setForks"
                   bg-color="white"
                   outlined
                   dense
                 />
               </div>
-              <div class="col-grow">
-                <q-checkbox
-                  :value="currentOrder.early"
-                  @input="setEarly"
-                  color="yellow-14"
-                  size="xs"
-                  label="Как можно скорее"
+              <div v-if="!showAddress" class="pho-pb-2">
+                <div class="name-field">Время доставки</div>
+                <div v-if="!showAddress" class="row button-box-time">
+                  <div
+                    v-for="item in deliveryTimeButton"
+                    :key="item.type"
+                    class="row col-6"
+                  >
+                    <q-btn
+                      v-if="
+                        activeDeliveryTimeButton !== null &&
+                        item === activeDeliveryTimeButton
+                      "
+                      flat
+                      @click="changeDeliveryTime(item)"
+                      class="pho-btn-delivery col"
+                      no-caps
+                    >
+                      <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                    </q-btn>
+                    <q-btn
+                      v-else
+                      flat
+                      @click="changeDeliveryTime(item)"
+                      class="pho-btn-delivery-outline col"
+                      :key="item.type"
+                      no-caps
+                    >
+                      <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                    </q-btn>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="row items-center time-animation"
+                v-if="!showTimeInput"
+                :class="{
+                  active: showTimeInput === false,
+                  noActive: showTimeInput === true,
+                }"
+              >
+                <div class="col-12" v-if="!showAddress">
+                  <q-input
+                    :value="currentOrder.deliveryInfo.time"
+                    @input="setTime"
+                    mask="##:##"
+                    bg-color="white"
+                    outlined
+                    dense
+                    placeholder="00:00"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="schedule" />
+                    </template>
+                  </q-input>
+                </div>
+                <div class="pho-caption" v-if="!showAddress">
+                  <!-- Доставка в среднем занимает 1,5 часа.<br />
+                Режим работы доставки: с 12:00 по 22:00 -->
+                  Среднее время доставки - 90 минут.
+                </div>
+                <div></div>
+              </div>
+              <div v-if="!showAddress" class="name-field">Способ оплаты</div>
+              <div v-if="!showAddress" class="row button-box-time">
+                <div
+                  v-for="item in deliveryPayButton"
+                  :key="item.type"
+                  class="row col-6"
+                >
+                  <q-btn
+                    v-if="
+                      activeDeliveryPayButton !== null &&
+                      item === activeDeliveryPayButton
+                    "
+                    flat
+                    :val="PAIMENT_TYPES.CASH"
+                    @click="changeDeliveryPay(item)"
+                    class="pho-btn-delivery col"
+                    no-caps
+                  >
+                    <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                  </q-btn>
+                  <q-btn
+                    v-else
+                    flat
+                    :val="PAIMENT_TYPES.CARD"
+                    @click="changeDeliveryPay(item)"
+                    class="pho-btn-delivery-outline col"
+                    :key="item.type"
+                    no-caps
+                  >
+                    <div class="pho-btn-delivery-text">{{ item.type }}</div>
+                  </q-btn>
+                </div>
+              </div>
+              <div v-if="showAddress">
+                <div class="name-field">Комментарий к адресу</div>
+                <q-input
+                  type="textarea"
+                  class="comment-input"
+                  :value="currentOrder.comment"
+                  @input="setComment"
+                  outlined
+                  bg-color="white"
                 />
               </div>
-              <div class="pho-caption">
-                Доставка в среднем занимает 1,5 часа
-                <br />
-                Режим работы доставки: с 12:00 о 22:00
-              </div>
-              <div></div>
+              <q-btn
+                v-if="showAddress"
+                flat
+                style="background: #fcd000; color: #fff"
+                class="full-width q-my-md"
+                @click="showCardAddress"
+              >
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-mr-md"
+                  :thickness="2"
+                />
+                <div class="bold">Сохранить</div>
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-ml-md"
+                  :thickness="2"
+                />
+              </q-btn>
+              <q-banner
+                inline-actions
+                class="text-white bg-red q-my-md"
+                v-if="error"
+              >
+                При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
+                ошибка повториться сообщите пожалуйста нам об этом.
+                <template v-slot:action>
+                  <q-btn
+                    flat
+                    color="white"
+                    @click="error = !error"
+                    label="ОК"
+                  />
+                </template>
+              </q-banner>
+              <q-btn
+                v-if="!showAddress"
+                flat
+                style="background: #ca17a8; color: #fff"
+                class="full-width q-my-md"
+                @click="proxySendOrder('top')"
+              >
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-mr-md"
+                  :thickness="2"
+                />
+                <div class="bold">Оформить заказ</div>
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-ml-md"
+                  :thickness="2"
+                />
+              </q-btn>
+              <q-btn
+                v-if="showAddress"
+                flat
+                style="background: #fcd000; color: #fff"
+                class="full-width q-my-md"
+                @click="showCardAddress"
+              >
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-mr-md"
+                  :thickness="2"
+                />
+                <div class="bold">Сохранить</div>
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-ml-md"
+                  :thickness="2"
+                />
+              </q-btn>
+              <!-- <div v-else>
+                <h6 class="bold">Спасибо за заказ!</h6>
+                <div>В ближайшее время с вами свяжется наш менеджер.</div>
+              </div> -->
+              <div class="name-field" v-if="showMap">Зона доставки</div>
             </div>
           </div>
-          <div class="pho-pb-2">
-            <q-input
-              :value="promoCode.value"
-              @input="setPromoCode"
-              label="Промокод"
-              bg-color="white"
-              :disable="promoInputDisabled"
-              outlined
-              dense
-            />
-            <q-btn
-              flat
-              size="md"
-              @click="usePromoCode('top')"
-              class="pho-btn-med"
-              no-caps
-              unelevated
-              v-if="hidePromoButton === true"
-            >
-              <div>Применить промокод</div>
-            </q-btn>
-            <q-btn
-              flat
-              size="md"
-              @click="removePromoFromBasket()"
-              class="pho-btn-med"
-              no-caps
-              unelevated
-              v-if="hidePromoButton === false"
-            >
-              <div>Отменить промокод</div>
-            </q-btn>
+          <div v-if="showAddress" class="pho-pb-2">
+            <div class="name-field col-6">Улица и дом</div>
+            <input-adress
+              :inputValue="currentOrder.clientInfo.addressString"
+              :getPriceZoneCoords="getPriceZoneCoords"
+              :inputFunc="updateClientAddressString"
+              :options="addressHint"
+              :valid="hasAddress"
+              :hasHouse="hasHouse"
+              :isInAdditionalZone="isInAdditionalZone"
+              :startBreak="startBreak"
+              :finishBreak="finishBreak"
+              :isInZone="isInZone"
+            ></input-adress>
           </div>
-          <div>
-            <div class="name-field">Комментарий</div>
+          <div v-if="showAddress" class="row">
+            <div class="pho-pb-2">
+              <div class="name-field">Квартира</div>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-6">
+                  <q-input
+                    :value="currentOrder.clientInfo.address.apartment"
+                    @input="setApartment"
+                    bg-color="white"
+                    outlined
+                    dense
+                    :disable="apartmentDisabled"
+                  />
+                </div>
+                <div class="col-6">
+                  <q-toggle
+                    v-model="apartmentDisabled"
+                    @input="setApartment('')"
+                    :value="currentOrder.clientInfo.address.apartment"
+                    color="yellow-14"
+                    size="xs"
+                    label="Частный дом"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">Этаж</div>
+              <div class="col-5">
+                <q-input
+                  :value="currentOrder.clientInfo.address.floor"
+                  @input="setFloor"
+                  bg-color="white"
+                  outlined
+                  dense
+                  :disable="apartmentDisabled"
+                />
+              </div>
+            </div>
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">Подъезд</div>
+              <div class="col-5">
+                <q-input
+                  :value="currentOrder.clientInfo.address.entrance"
+                  @input="setEntrance"
+                  bg-color="white"
+                  outlined
+                  dense
+                  :disable="apartmentDisabled"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="pho-pb-2 row" v-if="!showAddress">
+          </div>
+          <div v-if="showAddress">
+            <div class="name-field">Комментарий к адресу</div>
             <q-input
               type="textarea"
               class="comment-input"
@@ -571,6 +1175,29 @@
               bg-color="white"
             />
           </div>
+          <q-btn
+                v-if="showAddress"
+                flat
+                style="background: #fcd000; color: #fff"
+                class="full-width q-my-md"
+                @click="showCardAddress"
+              >
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-mr-md"
+                  :thickness="2"
+                />
+                <div class="bold">Сохранить</div>
+                <q-spinner
+                  v-if="loading"
+                  color="white"
+                  size="1em"
+                  class="q-ml-md"
+                  :thickness="2"
+                />
+              </q-btn>
           <q-banner
             inline-actions
             class="text-white bg-red q-my-md"
@@ -582,37 +1209,34 @@
               <q-btn flat color="white" @click="error = !error" label="ОК" />
             </template>
           </q-banner>
-          <q-btn
-            flat
-            style="background: #fcd000; color: #fff"
-            class="full-width q-my-md"
-            @click="proxySendOrder('top')"
-          >
-            <q-spinner
-              color="white"
-              size="1em"
-              :thickness="2"
-              class="q-mx-md"
-              v-if="loading"
-            />
-
-            <div class="bold">Оформить заказ</div>
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-mx-md"
-              :thickness="2"
-            />
-          </q-btn>
         </div>
-        <div v-else class="form-area">
+        </div>
+        <div v-if="thanks">
+        <div class="form-area">
+          <div class="row justify-between items-center content-center vertical-line">
+                  <div class="col-auto">
+                    <q-btn
+                    class=""
+                    color="grey-5"
+                    size="md"
+                    @click="showMobileCart = !showMobileCart"
+                    flat
+                    >
+                      <img class="" src="../assets/image/returnButton.png"></q-btn>
+                  </div>
+                  <div class="col-auto justify-center">
+                    <div class="cart-h1 " ></div>
+                  </div>
+                  <div class="col-1"></div>
+          </div>
           <h6 class="bold">Спасибо за заказ!</h6>
           <div>Дайте нам пару минут и наш менеджер свяжется с вами.</div>
           <div>Но если этого не произойдет, звоните по телефону 596-011.</div>
         </div>
+        </div>
       </q-card>
     </q-dialog>
+    <!-- зона доставки -->
     <q-dialog v-model="showMap">
       <q-card style="min-width: 80%">
         <q-card-section>
@@ -693,15 +1317,14 @@ import { dom } from 'quasar';
 const { height } = dom;
 import { loadYmap } from 'vue-yandex-maps';
 import {
-  mapState,
-  mapGetters,
-  mapMutations,
-  mapActions,
+  mapState, mapGetters, mapMutations, mapActions,
 } from 'vuex';
 import ProductItem from '../components/ProductItem';
 import BasketItem from '../components/BasketItem';
 import YmapConstructor from '../boot/yandex-map-constructor.json';
 import InputAdress from '../components/inputAdress.vue';
+import RightNavigateOrderPage from '../components/navigation/RightNavigateOrderPage.vue';
+import AdditionalSale from '../components/AdditionalSale.vue';
 
 export default {
   name: 'OrderPage',
@@ -709,6 +1332,8 @@ export default {
     ProductItem,
     BasketItem,
     InputAdress,
+    RightNavigateOrderPage,
+    AdditionalSale,
   },
   meta: {
     title: 'Pho me. Доставка из азиатского ресторана в Иркутске',
@@ -718,7 +1343,10 @@ export default {
       API_LINK: process.env.CLIENT_API_LINK,
       PAIMENT_TYPES: process.env.PAIMENT_TYPES,
       DELIVERY_TYPE_LIST: process.env.DELIVERY_TYPE_LIST,
+      slide: 1,
+      autoplay: true,
       paymentRadio: '',
+      deliveryInputDisabled: false,
       promoInputDisabled: false,
       apartmentDisabled: false,
       hidePromoButton: true,
@@ -732,6 +1360,43 @@ export default {
       activeCategoryProducts: [],
       activeCategory: null,
       showCart: false,
+      showAddress: false,
+      activeDeliveryTypeButton: null,
+      activeDeliveryTimeButton: null,
+      activeDeliveryPayButton: null,
+      toShowRegistrationButton: true,
+      ordering: true,
+      showTimeInput: true,
+      showAddressInput: true,
+      maximizedToggle: true,
+      deliveryTimeButton: [
+        {
+          type: 'Как можно скорее',
+        },
+        {
+          type: 'Указать время',
+        },
+      ],
+      deliveryTypeButton: [
+        {
+          type: 'Доставка',
+        },
+        {
+          type: 'Самовывоз',
+        },
+      ],
+      deliveryPayButton: [
+        {
+          type: 'Наличные',
+        },
+        {
+          type: 'Карта',
+        },
+        // {
+        //  type: 'На сайте',
+        // },
+      ],
+      backgroundBasket: '',
       contentStyle: {
         color: '#555',
       },
@@ -774,15 +1439,21 @@ export default {
       'promoCode',
       'promoCodes',
     ]),
-    ...mapGetters('order', ['totalSum', 'orderProductsNum',
+    ...mapGetters('order', [
+      'totalSum',
+      'orderProductsNum',
       'hasAddress',
       'hasHouse',
       'isAddressInZone',
-      'isValidPhone']),
+      'isValidPhone',
+    ]),
   },
   methods: {
-    ...mapActions('order', ['getAddressHints',
-      'getCoordsByString', 'sendOrder']),
+    ...mapActions('order', [
+      'getAddressHints',
+      'getCoordsByString',
+      'sendOrder',
+    ]),
     ...mapMutations('order', [
       'addProductToBasket',
       'removeProductToBasket',
@@ -804,10 +1475,61 @@ export default {
       'setBusinessLunch',
       'setPromoCode',
       'switchPaymentType',
+      'switchDeliveryType',
       'setPaymentSumm',
       'setDate',
       'addProducts',
+      'setEntrance',
+      'setFloor',
     ]),
+    changeBasketColor() {
+      if (this.orderProducts === 0) {
+        this.backgroundBasket = '#eab700';
+      } else if (this.orderProducts !== 0) {
+        this.backgroundBasket = '#ca17a8';
+      }
+    },
+    changeDeliveryTime(item) {
+      this.activeDeliveryTimeButton = item;
+      if (item.type === 'Как можно скорее') {
+        this.showTimeInput = true;
+        this.setEarly(true);
+      } else if (item.type === 'Указать время') {
+        this.setEarly(false);
+        this.showTimeInput = false;
+      }
+    },
+    changeDeliveryType(item) {
+      this.activeDeliveryTypeButton = item;
+      if (item.type === 'Доставка') {
+        this.switchDeliveryType({ id: 1 });
+        this.deliveryInputDisabled = false;
+        this.showAddressInput = true;
+      } else if (item.type === 'Самовывоз') {
+        this.switchDeliveryType({ id: 2 });
+        this.deliveryInputDisabled = true;
+        this.showAddressInput = false;
+      }
+    },
+    changeDeliveryPay(item) {
+      this.activeDeliveryPayButton = item;
+      if (item.type === 'Наличные') {
+        this.switchPaymentType({ id: 1 });
+      } else if (item.type === 'Карта') {
+        this.switchPaymentType({ id: 2 });
+      } else if (item.type === 'На сайте') {
+        this.switchPaymentType({ id: 3 });
+      }
+    },
+    showCardAddress() {
+      if (this.deliveryInputDisabled === false) {
+        this.showAddress = !this.showAddress;
+      }
+    },
+    toShowRegistrationOrder() {
+      this.toShowRegistrationButton = !this.toShowRegistrationButton;
+      this.ordering = !this.ordering;
+    },
     chooseCategory(category) {
       this.activeCategory = category.id;
       const prepareProducts = [...category.products];
@@ -829,9 +1551,12 @@ export default {
       const date = new Date();
       const limitDate = Date.parse(result.date_finish) - Date.parse(date);
       const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
-      if (result.min_sum <= this.totalSum
-      && limitDate >= 0
-      && filterOrder[0] === undefined) {
+      if (
+        result.min_sum <= this.totalSum
+        && limitDate >= 0
+        && filterOrder[0] === undefined
+        && this.showAddressInput === true
+      ) {
         this.setPromoCodeProduct(result.product);
         this.addPromocode(result, result.product);
         this.createNotifyPositive('Промокод добавлен');
@@ -839,6 +1564,8 @@ export default {
         this.hidePromoButton = false;
       } else if (result.min_sum > this.totalSum) {
         this.createNotify('Сумма меньше заявленной в акции');
+      } else if (this.showAddressInput === false) {
+        this.createNotify('К сожалению, промокод нельзя добавить в заказ самовывозом');
       } else if (filterOrder[0].number + 1 > 1) {
         this.createNotify('Можно добавить только один промокод');
       } else this.createNotify('Промокод не найден');
@@ -878,25 +1605,35 @@ export default {
       const checkHour = prepareTime.getHours();
       const checkMinuts = prepareTime.getMinutes();
       const isLessFinishBreak = (checkHour === this.finishBreak.getHours()
-        && checkMinuts < this.finishBreak.getMinutes())
-        || checkHour < this.finishBreak.getHours();
+      && checkMinuts < this.finishBreak.getMinutes())
+      || checkHour < this.finishBreak.getHours();
       const isBiggerFinishBreak = (checkHour === this.startBreak.getHours()
-        && checkMinuts > this.startBreak.getMinutes())
-        || checkHour > this.startBreak.getHours();
-      return isBiggerFinishBreak && isLessFinishBreak;
+      && checkMinuts > this.startBreak.getMinutes())
+      || checkHour > this.startBreak.getHours();
+      return isBiggerFinishBreak
+      && isLessFinishBreak;
     },
     proxySendOrder() {
+      const filterOrder = this.orderProducts.filter((item) => item.isGift === true);
       this.setPaymentSumm(this.totalSum);
       this.addProducts();
       if (!this.isValidPhone) {
         this.createNotify('Номер телефона указан некорректно');
-      } else if (this.orderProducts.length === 0) {
+      } else if (
+        this.orderProducts.length === 0
+        || (this.orderProducts.length === 1
+        && this.orderProducts[0].isGift === true)) {
         this.createNotify('Нет блюд в корзине');
-      } else if (this.currentOrder.clientInfo.address.dadata === null) {
+      } else if (
+        this.showAddressInput === true
+        && this.currentOrder.clientInfo.address.dadata === null) {
         this.createNotify('Адрес не определён');
+      } else if (
+        filterOrder[0] !== undefined
+        && this.currentOrder.deliveryInfo.type.id === 2) {
+        this.createNotify('Промокоды недействительны для самовывоза');
       } else if (this.isValidPhone
-      && this.orderProducts.length !== 0
-      && this.currentOrder.clientInfo.address.dadata !== null) {
+      && this.orderProducts.length !== 0) {
         this.sendOrder();
         this.thanks = true;
         this.loading = false;
@@ -913,7 +1650,8 @@ export default {
           {
             label: 'Ok',
             color: 'white',
-            handler: () => { /* ... */
+            handler: () => {
+              /* ... */
             },
           },
         ],
@@ -929,7 +1667,8 @@ export default {
           {
             label: 'Ok',
             color: 'white',
-            handler: () => { /* ... */
+            handler: () => {
+              /* ... */
             },
           },
         ],
@@ -950,7 +1689,8 @@ export default {
       this.coords = [dadataAddress.data.geo_lat, dadataAddress.data.geo_lon];
     }
     const chekZones = this.isTimeInBreak(this.currentOrder.deliveryInfo.time)
-      ? this.dsZoneWholeTime : this.dsZonesPriced;
+      ? this.dsZoneWholeTime
+      : this.dsZonesPriced;
     const checkNowZones = await this.checkAddressByZones(chekZones);
     console.log('test0');
     if (checkNowZones) {
@@ -973,6 +1713,15 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    if (this.deliveryPayButton[0] !== undefined) {
+      [this.activeDeliveryPayButton] = this.deliveryPayButton;
+    }
+    if (this.deliveryTypeButton[0] !== undefined) {
+      [this.activeDeliveryTypeButton] = this.deliveryTypeButton;
+    }
+    if (this.deliveryTimeButton[0] !== undefined) {
+      [this.activeDeliveryTimeButton] = this.deliveryTimeButton;
+    }
     this.setDate();
     this.$store.dispatch('order/getPromocode').then(() => {
       if (this.promoCodes[0] !== undefined) {
@@ -997,9 +1746,7 @@ export default {
 
     this.dsZonesPriced.features.forEach((feature, featureInd) => {
       if (
-        Array.isArray(
-          this.dsZonesPriced.features[featureInd].geometry.coordinates[0],
-        )
+        Array.isArray(this.dsZonesPriced.features[featureInd].geometry.coordinates[0])
       ) {
         this.dsZonesPriced.features[featureInd].geometry.coordinates[0].forEach(
           (item, idex) => {
@@ -1019,7 +1766,7 @@ export default {
 };
 </script >
 
-<style scoped >
+<style scoped lang='scss' >
 @font-face {
   font-family: lb;
   src: url(../font/TTLakes-Black.ttf);
@@ -1029,93 +1776,206 @@ export default {
   padding: 40px 0 0px 40px;
 }
 
-@media (min-width: 500px) {
-  .pho-h1 {
-    font-family: 'lb';
-    color: #fff;
-    font-style: italic;
-    font-weight: 900;
-    text-transform: uppercase;
-    font-size: 90px;
-    line-height: 145px;
-  }
+.q-carousel {
+  border-radius: 20px;
+}
 
-  .pho-btn {
-    font-family: lcb;
-    margin: 10px 10px 10px 0px;
-    border-radius: 10px;
-    background: #fcd000;
-    border: 2px solid #fcd000;
-    color: #4f4f4f;
-    font-size: 22px;
-  }
+.carosel-box {
+  margin: 38px 0 38px 0;
+}
 
-  .pho-btn-outline {
-    margin: 10px 10px 10px 0px;
-    border-radius: 10px;
-    border: 2px solid #ffffff;
-    color: #fff;
-    font-family: lcb;
-    font-size: 22px;
-  }
+.button-box {
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  margin: 8px 0 20px 0;
+}
 
-  .pho-btn-outline:hover {
-    margin: 10px 10px 10px 0px;
-    border-radius: 10px;
-    background: #fcd000;
-    border: 2px solid #fcd000;
-    color: #4f4f4f;
-  }
+.button-box-time {
+  border: 1px solid #dadada;
+  border-radius: 10px;
+  height: 42px;
+  margin: 8px 0 0 0;
+}
 
-  .pho-btn-outline:hover > div {
-    color: #4f4f4f;
+.pho-btn-delivery {
+  font-family: TT Lakes;
+  border-radius: 10px;
+  background: #fcd000;
+  border: 2px solid #fcd000;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 16px;
+  width: 145px;
+}
+
+.address-animation {
+  &.active {
+    animation: active-animation 0.1s;
+  }
+  &.noActive {
+    animation: noactive-animation 0.1s;
   }
 }
 
-@media (max-width: 499px) {
-  .container {
-    padding-top: 48px;
+.time-animation {
+  &.active {
+    animation: active-animation 0.1s;
   }
-
-  .pho-h1 {
-    font-family: 'lb';
-    color: #fff;
-    font-style: italic;
-    font-weight: 900;
-    font-size: 36px;
-  }
-
-  .pho-btn {
-    font-family: lcb;
-    margin: 10px 10px 0px 0px;
-    border-radius: 10px;
-    background: #fcd000;
-    border: 2px solid #fcd000;
-    color: #4f4f4f;
-    font-size: 14px;
-  }
-
-  .pho-btn-outline {
-    margin: 10px 10px 0px 0px;
-    border-radius: 10px;
-    border: 2px solid #ffffff;
-    color: #fff;
-    font-family: lcb;
-    font-size: 14px;
-  }
-
-  .pho-btn-outline:hover {
-    margin: 10px 10px 10px 0px;
-    border-radius: 10px;
-    background: #fcd000;
-    border: 2px solid #fcd000;
-    color: #4f4f4f;
-  }
-
-  .pho-btn-outline:hover > div {
-    color: #4f4f4f;
+  &.noActive {
+    animation: noactive-animation 0.1s;
   }
 }
+
+@keyframes active-animation {
+  from {
+    margin-top: -18px;
+  }
+  25% {
+    margin-top: -14px;
+  }
+  50% {
+    margin-top: -10px;
+  }
+  75% {
+    margin-top: -5px;
+  }
+  to {
+    margin-top: 0;
+  }
+}
+
+@keyframes noactive-animation {
+  from {
+    margin-top: 36px;
+  }
+  25% {
+    margin-top: 28px;
+  }
+  50% {
+    margin-top: 20px;
+  }
+  75% {
+    margin-top: 10px;
+  }
+  to {
+    margin-top: 5px;
+  }
+}
+
+.pho-btn-outline {
+  font-family: TT Lakes;
+  border-radius: 10px;
+  border: 2px solid #828282;
+  color: #fff;
+  font-family: lcb;
+  font-size: 12px;
+  line-height: 16px;
+  width: 145px;
+}
+
+.pho-btn-delivery-outline:hover {
+  font-family: TT Lakes;
+  border-radius: 10px;
+  background: #fcd000;
+  border: 2px solid #fcd000;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 16px;
+  width: 145px;
+}
+
+.pho-btn-delivery-text {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: TT Lakes;
+}
+.pho-btn-med-promo {
+  width: 85px;
+  font-family: TT Lakes;
+  border-radius: 0 10px 10px 0;
+  background: #fcd000;
+  border: 2px solid #fcd000;
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 16px;
+  text-transform: none;
+}
+.baloon-order {
+  width: 10px;
+  height: 12px;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.border-radius {
+  border-radius: 10px;
+}
+
+.orderMargin {
+  margin-bottom: 13px;
+}
+
+.vertical-line {
+  position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 48px;
+    width: 100%;
+    z-index: 3;
+    background-color: #f8c200;
+    color: white;
+    padding: 0 16px;
+  }
+
+.basket-bottom-additional-button {
+  bottom: 0;
+  right: 10px;
+  left: 10px;
+}
+
+.basket-cart-name {
+  margin: 0 auto;
+}
+  .cart {
+    z-index: 100;
+    position: fixed;
+    right: 95px;
+    top: 0;
+    width: 80%;
+    height: 100%;
+    background: #fff;
+  }
+
+.form-area {
+    padding: 32px 35px 32px 53px;
+    background: #fafafa;
+  }
+
+  .cart-area {
+    padding: 32px;
+  }
+.create-order-button {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .q-carousel {
+    height: 289px;
+  }
+  .logo {
+    display: none;
+  }
+  .form-area-display {
+    display: none;
+  }
+  .create-order-button {
+  display: block;
+}
+}
+
 .q-notifications__list--center {
   bottom: 55px;
 }
@@ -1124,15 +1984,12 @@ export default {
 }
 
 .q-notifications__list--top {
-    top: 0;
+  top: 0;
 }
 
 .main-container {
   background: #02bbbd;
   padding-bottom: 100px;
-}
-
-.container {
 }
 
 .product-area {
@@ -1142,15 +1999,15 @@ export default {
 
 .cart-widget {
   position: fixed;
-  width: 95px;
-  height: 95px;
+  width: 100px;
+  height: 100px;
   right: 0;
   top: 0;
   background: #ca17a8;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 3;
 }
 
 .cart-widget-m {
@@ -1209,81 +2066,6 @@ export default {
   z-index: 99;
 }
 
-@media (min-width: 1000px) {
-  .warning-line {
-    height: 95px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 0 40px 0 40px;
-    background: #fcd000;
-    font-family: lcb;
-    font-weight: 500;
-    color: #ca17a8;
-    font-size: 22px;
-  }
-  .warning-line-mobile {
-    display: none;
-  }
-  .cart {
-    z-index: 100;
-    position: fixed;
-    right: 95px;
-    top: 0;
-    width: 50%;
-    min-width: 900px;
-    max-width: 100%;
-    height: 100%;
-    background: #fff;
-  }
-
-  .cart-area {
-    padding: 32px;
-  }
-
-  .form-area {
-    padding: 32px 16px 32px 53px;
-    background: #fafafa;
-  }
-}
-
-@media (max-width: 999px) {
-  .warning-line {
-    display: none;
-  }
-  .warning-line-mobile {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    padding: 65px 20px 20px 20px;
-    background: #fcd000;
-    color: #ca17a8;
-    font-family: lcb;
-    font-weight: 500;
-    margin-bottom: -35px;
-  }
-  .cart {
-    position: fixed;
-    z-index: 100;
-    padding-top: 48px;
-    top: 48px;
-    width: 100%;
-    max-width: 100%;
-    background: #fff;
-  }
-
-  .form-area {
-    padding: 32px 15px 32px 15px;
-    background: #fafafa;
-  }
-
-  .cart-area {
-    padding: 10px;
-  }
-}
-
 .cart-h1 {
   font-family: 'lb';
   font-style: italic;
@@ -1309,6 +2091,9 @@ export default {
   color: #4f4f4f;
   padding-bottom: 2px;
   font-weight: 500;
+  font-size: 14px;
+  line-height: 19px;
+  font-family: TT Lakes;
 }
 
 .comment-input {
@@ -1399,6 +2184,130 @@ export default {
     max-width: 1140px;
     margin: auto;
     padding: 0;
+  }
+}
+
+@media (min-width: 1000px) {
+  .warning-line {
+    height: 95px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 40px 0 40px;
+    background: #fcd000;
+    font-family: lcb;
+    font-weight: 500;
+    color: #ca17a8;
+    font-size: 22px;
+  }
+  .warning-line-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 999px) {
+  .warning-line {
+    display: none;
+  }
+  .warning-line-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 65px 20px 20px 20px;
+    background: #fcd000;
+    color: #ca17a8;
+    font-family: lcb;
+    font-weight: 500;
+    margin-bottom: -35px;
+  }
+}
+
+@media (min-width: 500px) {
+  .pho-h1 {
+    font-family: 'lb';
+    color: #fff;
+    font-style: italic;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 90px;
+    line-height: 145px;
+  }
+
+  .pho-btn {
+    font-family: lcb;
+    margin: 10px 10px 10px 0px;
+    border-radius: 10px;
+    background: #fcd000;
+    border: 2px solid #fcd000;
+    color: #4f4f4f;
+    font-size: 22px;
+  }
+
+  .pho-btn-outline {
+    margin: 10px 10px 10px 0px;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+    color: #fff;
+    font-family: lcb;
+    font-size: 22px;
+  }
+
+  .pho-btn-outline:hover {
+    margin: 10px 10px 10px 0px;
+    border-radius: 10px;
+    background: #fcd000;
+    border: 2px solid #fcd000;
+    color: #4f4f4f;
+  }
+
+  .pho-btn-outline:hover > div {
+    color: #4f4f4f;
+  }
+}
+
+@media (max-width: 499px) {
+  .container {
+    padding-top: 48px;
+  }
+
+  .pho-h1 {
+    font-family: 'lb';
+    color: #fff;
+    font-style: italic;
+    font-weight: 900;
+    font-size: 36px;
+  }
+
+  .pho-btn {
+    margin: 10px 10px 0px 0px;
+    border-radius: 10px;
+    background: #fcd000;
+    border: 2px solid #fcd000;
+    color: #4f4f4f;
+    font-size: 14px;
+  }
+
+  .pho-btn-outline {
+    margin: 10px 10px 0px 0px;
+    border-radius: 10px;
+    border: 2px solid #ffffff;
+    color: #fff;
+    font-family: lcb;
+    font-size: 14px;
+  }
+
+  .pho-btn-outline:hover {
+    margin: 10px 10px 10px 0px;
+    border-radius: 10px;
+    background: #fcd000;
+    border: 2px solid #fcd000;
+    color: #4f4f4f;
+  }
+
+  .pho-btn-outline:hover > div {
+    color: #4f4f4f;
   }
 }
 </style >

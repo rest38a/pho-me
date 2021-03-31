@@ -5,6 +5,7 @@
         <action-page id="action-page"></action-page>
         <interior-page id="interior-page"></interior-page>
         <contacts-page id="contact-page"></contacts-page>
+        <feedback-page id="feedback-page"></feedback-page>
         <right-navigate id="right-navigate"></right-navigate>
         <left-navigate></left-navigate>
 <!--        <my-footer></my-footer>-->
@@ -12,6 +13,7 @@
 </template>
 
 <script>
+import FeedbackPage from '../pages/FeedbackPage.vue';
 import ActionPage from '../pages/ActionPage.vue';
 import ContactsPage from '../pages/ContactsPage.vue';
 import InteriorPage from '../pages/InteriorPage.vue';
@@ -35,6 +37,7 @@ export default {
     InteriorPage,
     RightNavigate,
     LeftNavigate,
+    FeedbackPage,
   },
   props: {
     msg: String,

@@ -3,6 +3,8 @@ import Vuex from 'vuex';
 
 import order from './order';
 import promotions from './promotions';
+import menus from './menus';
+import interiors from './interiors';
 
 Vue.use(Vuex);
 
@@ -20,6 +22,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       order,
       promotions,
+      menus,
+      interiors,
     },
 
     // enable strict mode (adds overhead!)

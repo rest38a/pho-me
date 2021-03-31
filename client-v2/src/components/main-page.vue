@@ -5,7 +5,7 @@
     </div>
     <div class="main-container container">
       <div class="text-col">
-        <h1>Мы ресторан и доставка</h1>
+        <h1>Мы ресторан <nobr>и доставка</nobr></h1>
         <h2>Азиатская кухня и напитки.</h2>
 				<div class="delivery-btn" @click="gotoDelivery()">Заказать доставку</div >
 				<div class="row q-mt-lg">
@@ -18,11 +18,15 @@
 				<div class="image"><img src="../assets/image/dish.png" alt=""></div>
 			</div>
         </div >
+        <bottom-navigation></bottom-navigation>
     </div >
 </template >
 
 <script >
+import BottomNavigation from './navigation/BottomNavigation.vue';
+
 export default {
+  components: { BottomNavigation },
   name: 'main-page',
   methods: {
     gotoDelivery() {
@@ -122,7 +126,7 @@ h2 {
   position: absolute;
   top: 23px;
   left: 50px;
-  z-index: 10;
+  z-index: 2;
 }
 .text-col {
   align-self: center;

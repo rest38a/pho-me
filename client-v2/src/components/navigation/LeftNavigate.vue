@@ -59,6 +59,11 @@ export default {
           id: 5,
           dTitle: 'Контакты',
         },
+        {
+          page: '#feedback-page',
+          id: 6,
+          dTitle: 'Отзывы',
+        },
       ],
     };
   },

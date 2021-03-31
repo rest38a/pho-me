@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="cardBox">
-        <div>
+        <div class="relative-box">
           <div class="row descriptionZones" v-if="!showMap">
             <div class="row items-center">
               <div class="yellow-zone"></div>
@@ -121,16 +121,18 @@
         /></a>
       </div>
     </div>
+    <bottom-navigation></bottom-navigation>
   </div>
 </template >
 
 <script >
 import { loadYmap } from 'vue-yandex-maps';
 import YmapConstructor from '../boot/yandex-map-constructor.json';
+import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
 export default {
-  components: { logo },
+  components: { logo, BottomNavigation },
   name: 'ContactsPage',
   data() {
     return {
@@ -226,6 +228,10 @@ a {
   color: #fff;
 }
 
+.relative-box {
+  position: relative;
+}
+
 .yandex-map-user {
   width: 100%;
   height: 310px;
@@ -313,13 +319,6 @@ a {
     padding-bottom: 31px;
   }
 
-  .yandex-map-user {
-    margin: 0 -100px 0 -100px;
-    border-radius: 0;
-    width: 150%;
-    height: 226px;
-  }
-
   .icon-img {
     margin-left: 26.04px;
     height: 22.18px;
@@ -328,12 +327,15 @@ a {
 
 @media only screen and (max-width: 919.98px) {
   .background {
-    padding: 25.51px 14.83px 64px 14.83px;
+    padding: 25.51px 14.83px 96px 14.83px;
+  }
+  .relative-box {
+    width: 140%;
+    margin: 0 0px 0 -110px;
   }
   .yandex-map-user {
-    margin: 0 0 0 -171px;
     border-radius: 0;
-    width: 200%;
+    width: 140%;
   }
 }
 

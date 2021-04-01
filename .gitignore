@@ -1,0 +1,6 @@
+.DS_Store
+.env
+.idea/
+
+/db
+/server-v2

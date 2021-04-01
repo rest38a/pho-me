@@ -5,7 +5,7 @@
       <VueSlickCarousel
         ref="slick"
         :arrows="true"
-        :slidesToShow="2.05"
+        :slidesToShow="slidesToShow"
         :focusOnSelect="true"
         :speed="500"
         :accessibility="true"
@@ -66,6 +66,10 @@ export default {
         size: { product: {} },
         add: [],
       },
+      window: {
+        width: 0,
+      },
+      slidesToShow: 0,
     };
   },
   methods: {
@@ -81,6 +85,26 @@ export default {
       };
       this.addProductToBasket(cartItem);
     },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      if (this.window.width >= 1400) {
+        this.slidesToShow = 3;
+      } else if (this.window.width >= 1190) {
+        this.slidesToShow = 2.5;
+      } else if (this.window.width >= 1028) {
+        this.slidesToShow = 2.1;
+      } else if (this.window.width >= 1023) {
+        this.slidesToShow = 4;
+      } else if (this.window.width >= 875) {
+        this.slidesToShow = 3.5;
+      } else if (this.window.width >= 750) {
+        this.slidesToShow = 3;
+      } else if (this.window.width >= 650) {
+        this.slidesToShow = 2.1;
+      } else if (this.window.width >= 500) {
+        this.slidesToShow = 1.5;
+      }
+    },
   },
   computed: {
     ...mapState('order', ['categoriesMenu', 'orderProducts']),
@@ -94,7 +118,12 @@ export default {
       return productsUpSales;
     },
   },
-  mounted() {
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 };
 </script>
@@ -110,6 +139,7 @@ export default {
   line-height: 22px;
   font-weight: 900;
   margin: 10px 0 10px 0;
+  padding-top: 10px;
 }
 .VueSlickCarousel {
   width: 603px;

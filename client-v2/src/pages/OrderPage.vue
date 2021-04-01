@@ -9,46 +9,73 @@
       <!-- <div class="col-3 q-pa-sm items-center row">
         <img src="/icons/logo.svg" alt="" class="logo-m" />
       </div> -->
-      <div
-        v-ripple
-        class="cart-widget-m"
-        @click="showMobileCart = !showMobileCart"
-      >
-        <img src="/icons/basket.svg" alt="" class="cart-logo" />
-        <div class="cart-product-num-m">{{ orderProductsNum }}</div>
-      </div>
     </div>
     <div>
+      <div class="yelow-line" v-if="showCart"></div>
       <div
         v-ripple
-        class="cart-widget mobile-hide"
+        class="cart-widget "
         @click="showCart = !showCart"
       >
         <img src="/icons/basket.svg" alt="" class="cart-logo" />
         <div class="cart-product-num">{{ orderProductsNum }}</div>
       </div>
-      <div class="yelow-line mobile-hide" v-if="showCart"></div>
       <div
-        class="shadow-cart mobile-hide"
+        class="shadow-cart "
         v-if="showCart"
         @click.stop="showCart = !showCart"
       ></div>
     </div>
     <right-navigate-order-page></right-navigate-order-page>
     <!-- корзина десктоп -->
-    <div class="cart row col-8" v-if="showCart">
-      <div class="col-md-5 form-area mobile-hide"
+    <div class="cart row col-8 col-lg-5" v-if="showCart">
+      <div class="col-md-5 form-area "
       :class="{'col-sm-12': ordering === false, 'form-area-display': ordering === true}">
+      <div class=""
+          :class="{'display-none-class': ordering === true,
+          'row justify-between items-center content-center vertical-line absolute-top':
+          ordering === false}">
+            <div class="col-auto">
+            <q-btn
+              class=""
+              color="grey-5"
+              size="md"
+              @click="toShowRegistrationOrder"
+              flat
+            >
+            <img class="" src="../assets/image/returnButton.png"></q-btn>
+            </div>
+            <div class="col-auto justify-center">
+              <div class="cart-h1 " >Оформление заказа</div>
+            </div>
+            <div class="col-1"></div>
+          </div>
+
+          <div v-if="showAddress"
+          :class="{'display-none-class': ordering === true,
+          'row justify-between items-center content-center vertical-line absolute-top':
+          ordering === false}">
+          <div class="col-auto">
+            <img src="../assets/image/returnButton.png"
+          @click="showAddress = !showAddress">
+          </div>
+          <div class="col-auto cart-h1 justify-center">Адрес доставки</div>
+          <div col-auto></div>
+          </div>
+
         <q-scroll-area
           :thumb-style="thumbStyle"
           :content-style="contentStyle"
           :content-active-style="contentActiveStyle"
-          style="height: 100%; padding-right: 20px"
+          style="height: 100%; padding-right: 20px; "
           v-if="!thanks"
         >
           <div v-if="!showAddress" class="cart-h1"
+          :class="{'': ordering === true, 'form-area-display': ordering === false}"
           >Оформление заказа</div>
-          <div v-if="showAddress" class="cart-h1">Адрес доставки</div>
+          <div v-if="showAddress" class=""
+          :class="{'cart-h1': ordering === true, 'form-area-display': ordering === false}"
+          >Адрес доставки</div>
           <div v-if="!showAddress" class="pho-pb-2">
             <div class="name-field">Имя</div>
             <q-input
@@ -79,7 +106,7 @@
             <div
               v-for="item in deliveryTypeButton"
               :key="item.type"
-              class="row col-6"
+              class="row col-6 button-parent"
             >
               <q-btn
                 v-if="
@@ -153,8 +180,8 @@
               :isInZone="isInZone"
             ></input-adress>
           </div>
-          <div v-if="showAddress" class="row">
-            <div class="pho-pb-2">
+          <div v-if="showAddress" class="row col-12">
+            <div class="pho-pb-2 col-12">
               <div class="name-field">Квартира</div>
               <div class="row items-center q-col-gutter-md">
                 <div class="col-6">
@@ -388,10 +415,63 @@
           <div>В ближайшее время с вами свяжется наш менеджер.</div>
         </div>
       </div>
-      <div class="col-12 col-md-7 col-sm-12 cart-area mobile-hide"
+      <div class="col-12 col-md-7 col-sm-12  cart-area"
         :class="{'col-sm-12': ordering === true, 'form-area-display': ordering === false}">
-        <div class="cart-h1"
+        <div class="row justify-between items-center content-center vertical-line">
+            <div class="col-auto">
+            <q-btn
+              class=""
+              color="grey-5"
+              size="md"
+              @click="showCart = !showCart"
+              flat
+            >
+            <img class="" src="../assets/image/returnButton.png"></q-btn>
+            </div>
+            <div class="col-auto justify-center">
+              <div class="cart-h1 " >Корзина</div>
+            </div>
+            <div class="col-1"></div>
+          </div>
+
+        <div class="cart-h1 form-area-display"
         >Корзина</div>
+
+        <div class="row justify-center items-center content-center display-none-class mob-promo">
+            <q-input
+              :value="promoCode.value"
+              @input="setPromoCode"
+              label="Ввести промокод"
+              bg-color="white"
+              :disable="promoInputDisabled"
+              outlined
+              dense
+              class="col-9"
+            />
+            <q-btn
+              flat
+              size="md"
+              @click="usePromoCode('top')"
+              class="pho-btn-med-promo col"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === true"
+            >
+              <div>Применить</div>
+            </q-btn>
+            <q-btn
+              flat
+              size="md"
+              @click="removePromoFromBasket()"
+              class="pho-btn-med-promo col"
+              no-caps
+              unelevated
+              v-if="hidePromoButton === false"
+            >
+              <div>Отменить</div>
+            </q-btn>
+          </div>
+
         <q-scroll-area
           :thumb-style="thumbStyle"
           :content-style="contentStyle"
@@ -416,8 +496,8 @@
             :categoriesMenu="categoriesMenu"
           ></additional-sale>
         </q-scroll-area>
-        <div class="row justify-between items-center">
-          <div class="row">
+        <div class="row justify-between items-center ">
+          <div class="row form-area-display">
             <q-input
               :value="promoCode.value"
               @input="setPromoCode"
@@ -452,7 +532,7 @@
           </div>
           <div>
             <div class="total text-right">
-              Сумма заказа: <span class="total-sum">{{ totalSum }} ₽</span>
+              Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
             <div class="pho-caption" v-if="totalSum < 800">
               Минимальная сумма заказа от 800 ₽
@@ -496,7 +576,7 @@
             flat
             style="background: #fcd000; color: #4f4f4f"
             @click="showMap = !showMap"
-            class="q-ml-lg q-px-sm mobile-hide"
+            class="q-ml-lg q-px-sm "
           >
             <img src="/icons/location-baloon.svg" alt="" class="q-mr-sm" />
             <div>Зона доставки</div>
@@ -591,651 +671,6 @@
       </div>
     </div>
         <!-- мобильная версия -->
-    <q-dialog :maximized="maximizedToggle"
-    :full-width="true" v-model="showMobileCart">
-      <q-card style="width: 100%; height: 100%">
-        <div class="cart-area" v-if="toShowRegistrationButton">
-          <div class="row justify-between items-center content-center vertical-line">
-            <div class="col-auto">
-            <q-btn
-              class=""
-              color="grey-5"
-              size="md"
-              @click="showMobileCart = !showMobileCart"
-              flat
-            >
-            <img class="" src="../assets/image/returnButton.png"></q-btn>
-            </div>
-            <div class="col-auto justify-center">
-              <div class="cart-h1 " >Корзина</div>
-            </div>
-            <div class="col-1"></div>
-          </div>
-          <q-scroll-area
-          :thumb-style="thumbStyle"
-          :content-style="contentStyle"
-          :content-active-style="contentActiveStyle"
-          style="height: 80%; padding-right: 20px"
-        >
-          <div class="row justify-center items-center content-center">
-            <q-input
-              :value="promoCode.value"
-              @input="setPromoCode"
-              label="Ввести промокод"
-              bg-color="white"
-              :disable="promoInputDisabled"
-              outlined
-              dense
-              class="col-9"
-            />
-            <q-btn
-              flat
-              size="md"
-              @click="usePromoCode('top')"
-              class="pho-btn-med-promo col"
-              no-caps
-              unelevated
-              v-if="hidePromoButton === true"
-            >
-              <div>Применить</div>
-            </q-btn>
-            <q-btn
-              flat
-              size="md"
-              @click="removePromoFromBasket()"
-              class="pho-btn-med-promo col"
-              no-caps
-              unelevated
-              v-if="hidePromoButton === false"
-            >
-              <div>Отменить</div>
-            </q-btn>
-          </div>
-          <div class="column">
-            <q-separator />
-            <div :key="cartItem.id" v-for="cartItem in orderProducts">
-              <BasketItem
-                :addToBasket="addProductToBasket"
-                :removeFromBasket="removeProductToBasket"
-                :removeOneProduct="removeOneProduct"
-                :cartItem="cartItem"
-                :orderProducts="orderProducts"
-              ></BasketItem>
-              <q-separator />
-            </div>
-          </div>
-          </q-scroll-area>
-          <div class="basket-bottom-additional-button">
-            <div class="column justify-end items-end content-end">
-            <div class="total">
-              Сумма заказа: <span class="total-sum">{{ totalSum }} ₽</span>
-            </div>
-            <div class="pho-caption" v-if="totalSum < 800">
-              Минимальная сумма заказа 800 ₽
-            </div>
-          </div>
-          <additional-sale
-            :addToBasket="addProductToBasket"
-            :categoriesMenu="categoriesMenu"
-          ></additional-sale>
-          <q-btn
-            v-if="!showAddress"
-            flat
-            style="background: #ca17a8; color: #fff"
-            class="full-width q-my-md"
-            @click="toShowRegistrationOrder"
-          >
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-mr-md"
-              :thickness="2"
-            />
-            <div class="bold">К оформлению заказа</div>
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-ml-md"
-              :thickness="2"
-            />
-          </q-btn>
-          </div>
-        </div>
-        <div v-if="!toShowRegistrationButton">
-        <div class="col-12 form-area" v-if="!thanks">
-          <div class="row justify-between items-center content-center vertical-line">
-            <div class="col-auto">
-            <img src="../assets/image/returnButton.png"
-            class=""
-            @click="toShowRegistrationOrder">
-            </div>
-            <div class="col-auto justify-center">
-              <div v-if="!showAddress" class="cart-h1">Оформление заказа</div>
-            </div>
-            <div class="col-auto"></div>
-          </div>
-
-          <div v-if="showAddress"
-          class="cart-h1 row justify-between items-center content-center vertical-line">
-          <div class="col-auto">
-            <img src="../assets/image/returnButton.png"
-          @click="showAddress = !showAddress">
-          </div>
-          <div class="col-auto justify-center">Адрес доставки</div>
-          <div col-auto></div>
-          </div>
-
-          <div v-if="!showAddress" class="pho-pb-2">
-            <div class="name-field">Имя</div>
-            <q-input
-              :value="currentOrder.clientInfo.client.name"
-              @input="setName"
-              bg-color="white"
-              outlined
-              dense
-              placeholder="Введите имя"
-            /><!--
-              v-model="text" //вызывает ошибки
-              -->
-          </div>
-          <div class="pho-pb-2" v-if="!showAddress">
-            <div class="name-field">Телефон</div>
-            <q-input
-              :value="currentOrder.clientInfo.phone"
-              @input="setPhone"
-              mask="+7 (###) ###-##-##"
-              bg-color="white"
-              outlined
-              dense
-              placeholder="+7 (___)-___-__-__"
-            />
-          </div>
-          <div v-if="!showAddress" class="row button-box">
-            <div v-for="item in deliveryTypeButton" :key="item.type" class="row col-6">
-              <q-btn
-                v-if="
-                  activeDeliveryTypeButton !== null &&
-                  item === activeDeliveryTypeButton
-                "
-                flat
-                @click="changeDeliveryType(item)"
-                class="pho-btn-delivery col"
-                no-caps
-              >
-                <div class="pho-btn-delivery-text">{{ item.type }}</div>
-              </q-btn>
-              <q-btn
-                v-else
-                flat
-                @click="changeDeliveryType(item)"
-                class="pho-btn-delivery-outline col"
-                :key="item.type"
-                no-caps
-              >
-                <div class="pho-btn-delivery-text">{{ item.type }}</div>
-              </q-btn>
-            </div>
-          </div>
-          <div class="pho-pb-2 gutter" v-if="!showAddress">
-            <div>
-              <div v-if="showAddressInput">
-                <div
-                  v-if="!showAddress"
-                  class="pho-pb-2 address-animation"
-                  :class="{
-                    active: showAddressInput === true,
-                    noActive: showAddressInput === false,
-                  }"
-                >
-                  <div class="row name-field">
-                    <div class="col-6">Адрес доставки</div>
-                    <div
-                      @click="showMap = !showMap"
-                      class="col-6 row items-baseline justify-end"
-                    >
-                      <img
-                        src="/icons/location-baloon.svg"
-                        class="q-mr-xs baloon-order"
-                      />
-                      <div class="cursor">Зона доставки</div>
-                    </div>
-                  </div>
-                  <div @click="showCardAddress" class="orderMargin">
-                    <q-input
-                      :value="currentOrder.clientInfo.addressString"
-                      bg-color="white"
-                      outlined
-                      dense
-                      :disable="deliveryInputDisabled"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div v-if="showAddress" class="pho-pb-2">
-                <div class="name-field col-6">Улица и дом</div>
-                <input-adress
-                  :inputValue="currentOrder.clientInfo.addressString"
-                  :getPriceZoneCoords="getPriceZoneCoords"
-                  :inputFunc="updateClientAddressString"
-                  :options="addressHint"
-                  :valid="hasAddress"
-                  :hasHouse="hasHouse"
-                  :isInAdditionalZone="isInAdditionalZone"
-                  :startBreak="startBreak"
-                  :finishBreak="finishBreak"
-                  :isInZone="isInZone"
-                ></input-adress>
-              </div>
-              <div v-if="showAddress" class="row">
-                <div class="pho-pb-2">
-                  <div class="name-field">Квартира</div>
-                  <div class="row items-center q-col-gutter-md">
-                    <div class="col-6">
-                      <q-input
-                        :value="currentOrder.clientInfo.address.apartment"
-                        @input="setApartment"
-                        bg-color="white"
-                        outlined
-                        dense
-                        :disable="apartmentDisabled"
-                      />
-                    </div>
-                    <div class="col-6">
-                      <q-toggle
-                        v-model="apartmentDisabled"
-                        @input="setApartment('')"
-                        :value="currentOrder.clientInfo.address.apartment"
-                        color="yellow-14"
-                        size="xs"
-                        label="Частный дом"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row q-col-gutter-md">
-                <div v-if="showAddress" class="pho-pb-2 col-6">
-                  <div class="name-field">Этаж</div>
-                  <div class="col-5">
-                    <q-input
-                      :value="currentOrder.clientInfo.address.floor"
-                      @input="setFloor"
-                      bg-color="white"
-                      outlined
-                      dense
-                      :disable="apartmentDisabled"
-                    />
-                  </div>
-                </div>
-                <div v-if="showAddress" class="pho-pb-2 col-6">
-                  <div class="name-field">Подъезд</div>
-                  <div class="col-5">
-                    <q-input
-                      :value="currentOrder.clientInfo.address.entrance"
-                      @input="setEntrance"
-                      bg-color="white"
-                      outlined
-                      dense
-                      :disable="apartmentDisabled"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div v-if="!showAddress" class="pho-pb-2">
-                <div class="name-field">Кол-во персон</div>
-                <q-input
-                  :value="currentOrder.forks"
-                  @input="setForks"
-                  bg-color="white"
-                  outlined
-                  dense
-                />
-              </div>
-              <div v-if="!showAddress" class="pho-pb-2">
-                <div class="name-field">Время доставки</div>
-                <div v-if="!showAddress" class="row button-box-time">
-                  <div
-                    v-for="item in deliveryTimeButton"
-                    :key="item.type"
-                    class="row col-6"
-                  >
-                    <q-btn
-                      v-if="
-                        activeDeliveryTimeButton !== null &&
-                        item === activeDeliveryTimeButton
-                      "
-                      flat
-                      @click="changeDeliveryTime(item)"
-                      class="pho-btn-delivery col"
-                      no-caps
-                    >
-                      <div class="pho-btn-delivery-text">{{ item.type }}</div>
-                    </q-btn>
-                    <q-btn
-                      v-else
-                      flat
-                      @click="changeDeliveryTime(item)"
-                      class="pho-btn-delivery-outline col"
-                      :key="item.type"
-                      no-caps
-                    >
-                      <div class="pho-btn-delivery-text">{{ item.type }}</div>
-                    </q-btn>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="row items-center time-animation"
-                v-if="!showTimeInput"
-                :class="{
-                  active: showTimeInput === false,
-                  noActive: showTimeInput === true,
-                }"
-              >
-                <div class="col-12" v-if="!showAddress">
-                  <q-input
-                    :value="currentOrder.deliveryInfo.time"
-                    @input="setTime"
-                    mask="##:##"
-                    bg-color="white"
-                    outlined
-                    dense
-                    placeholder="00:00"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="schedule" />
-                    </template>
-                  </q-input>
-                </div>
-                <div class="pho-caption" v-if="!showAddress">
-                  <!-- Доставка в среднем занимает 1,5 часа.<br />
-                Режим работы доставки: с 12:00 по 22:00 -->
-                  Среднее время доставки - 90 минут.
-                </div>
-                <div></div>
-              </div>
-              <div v-if="!showAddress" class="name-field">Способ оплаты</div>
-              <div v-if="!showAddress" class="row button-box-time">
-                <div
-                  v-for="item in deliveryPayButton"
-                  :key="item.type"
-                  class="row col-6"
-                >
-                  <q-btn
-                    v-if="
-                      activeDeliveryPayButton !== null &&
-                      item === activeDeliveryPayButton
-                    "
-                    flat
-                    :val="PAIMENT_TYPES.CASH"
-                    @click="changeDeliveryPay(item)"
-                    class="pho-btn-delivery col"
-                    no-caps
-                  >
-                    <div class="pho-btn-delivery-text">{{ item.type }}</div>
-                  </q-btn>
-                  <q-btn
-                    v-else
-                    flat
-                    :val="PAIMENT_TYPES.CARD"
-                    @click="changeDeliveryPay(item)"
-                    class="pho-btn-delivery-outline col"
-                    :key="item.type"
-                    no-caps
-                  >
-                    <div class="pho-btn-delivery-text">{{ item.type }}</div>
-                  </q-btn>
-                </div>
-              </div>
-              <div v-if="showAddress">
-                <div class="name-field">Комментарий к адресу</div>
-                <q-input
-                  type="textarea"
-                  class="comment-input"
-                  :value="currentOrder.comment"
-                  @input="setComment"
-                  outlined
-                  bg-color="white"
-                />
-              </div>
-              <q-btn
-                v-if="showAddress"
-                flat
-                style="background: #fcd000; color: #fff"
-                class="full-width q-my-md"
-                @click="showCardAddress"
-              >
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-mr-md"
-                  :thickness="2"
-                />
-                <div class="bold">Сохранить</div>
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-ml-md"
-                  :thickness="2"
-                />
-              </q-btn>
-              <q-banner
-                inline-actions
-                class="text-white bg-red q-my-md"
-                v-if="error"
-              >
-                При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
-                ошибка повториться сообщите пожалуйста нам об этом.
-                <template v-slot:action>
-                  <q-btn
-                    flat
-                    color="white"
-                    @click="error = !error"
-                    label="ОК"
-                  />
-                </template>
-              </q-banner>
-              <q-btn
-                v-if="!showAddress"
-                flat
-                style="background: #ca17a8; color: #fff"
-                class="full-width q-my-md"
-                @click="proxySendOrder('top')"
-              >
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-mr-md"
-                  :thickness="2"
-                />
-                <div class="bold">Оформить заказ</div>
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-ml-md"
-                  :thickness="2"
-                />
-              </q-btn>
-              <q-btn
-                v-if="showAddress"
-                flat
-                style="background: #fcd000; color: #fff"
-                class="full-width q-my-md"
-                @click="showCardAddress"
-              >
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-mr-md"
-                  :thickness="2"
-                />
-                <div class="bold">Сохранить</div>
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-ml-md"
-                  :thickness="2"
-                />
-              </q-btn>
-              <!-- <div v-else>
-                <h6 class="bold">Спасибо за заказ!</h6>
-                <div>В ближайшее время с вами свяжется наш менеджер.</div>
-              </div> -->
-              <div class="name-field" v-if="showMap">Зона доставки</div>
-            </div>
-          </div>
-          <div v-if="showAddress" class="pho-pb-2">
-            <div class="name-field col-6">Улица и дом</div>
-            <input-adress
-              :inputValue="currentOrder.clientInfo.addressString"
-              :getPriceZoneCoords="getPriceZoneCoords"
-              :inputFunc="updateClientAddressString"
-              :options="addressHint"
-              :valid="hasAddress"
-              :hasHouse="hasHouse"
-              :isInAdditionalZone="isInAdditionalZone"
-              :startBreak="startBreak"
-              :finishBreak="finishBreak"
-              :isInZone="isInZone"
-            ></input-adress>
-          </div>
-          <div v-if="showAddress" class="row">
-            <div class="pho-pb-2">
-              <div class="name-field">Квартира</div>
-              <div class="row items-center q-col-gutter-md">
-                <div class="col-6">
-                  <q-input
-                    :value="currentOrder.clientInfo.address.apartment"
-                    @input="setApartment"
-                    bg-color="white"
-                    outlined
-                    dense
-                    :disable="apartmentDisabled"
-                  />
-                </div>
-                <div class="col-6">
-                  <q-toggle
-                    v-model="apartmentDisabled"
-                    @input="setApartment('')"
-                    :value="currentOrder.clientInfo.address.apartment"
-                    color="yellow-14"
-                    size="xs"
-                    label="Частный дом"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row q-col-gutter-md">
-            <div v-if="showAddress" class="pho-pb-2 col-6">
-              <div class="name-field">Этаж</div>
-              <div class="col-5">
-                <q-input
-                  :value="currentOrder.clientInfo.address.floor"
-                  @input="setFloor"
-                  bg-color="white"
-                  outlined
-                  dense
-                  :disable="apartmentDisabled"
-                />
-              </div>
-            </div>
-            <div v-if="showAddress" class="pho-pb-2 col-6">
-              <div class="name-field">Подъезд</div>
-              <div class="col-5">
-                <q-input
-                  :value="currentOrder.clientInfo.address.entrance"
-                  @input="setEntrance"
-                  bg-color="white"
-                  outlined
-                  dense
-                  :disable="apartmentDisabled"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="pho-pb-2 row" v-if="!showAddress">
-          </div>
-          <div v-if="showAddress">
-            <div class="name-field">Комментарий к адресу</div>
-            <q-input
-              type="textarea"
-              class="comment-input"
-              :value="currentOrder.comment"
-              @input="setComment"
-              outlined
-              bg-color="white"
-            />
-          </div>
-          <q-btn
-                v-if="showAddress"
-                flat
-                style="background: #fcd000; color: #fff"
-                class="full-width q-my-md"
-                @click="showCardAddress"
-              >
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-mr-md"
-                  :thickness="2"
-                />
-                <div class="bold">Сохранить</div>
-                <q-spinner
-                  v-if="loading"
-                  color="white"
-                  size="1em"
-                  class="q-ml-md"
-                  :thickness="2"
-                />
-              </q-btn>
-          <q-banner
-            inline-actions
-            class="text-white bg-red q-my-md"
-            v-if="error"
-          >
-            При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
-            ошибка повториться сообщите пожалуйста нам об этом.
-            <template v-slot:action>
-              <q-btn flat color="white" @click="error = !error" label="ОК" />
-            </template>
-          </q-banner>
-        </div>
-        </div>
-        <div v-if="thanks">
-        <div class="form-area">
-          <div class="row justify-between items-center content-center vertical-line">
-                  <div class="col-auto">
-                    <q-btn
-                    class=""
-                    color="grey-5"
-                    size="md"
-                    @click="showMobileCart = !showMobileCart"
-                    flat
-                    >
-                      <img class="" src="../assets/image/returnButton.png"></q-btn>
-                  </div>
-                  <div class="col-auto justify-center">
-                    <div class="cart-h1 " ></div>
-                  </div>
-                  <div class="col-1"></div>
-          </div>
-          <h6 class="bold">Спасибо за заказ!</h6>
-          <div>Дайте нам пару минут и наш менеджер свяжется с вами.</div>
-          <div>Но если этого не произойдет, звоните по телефону 596-011.</div>
-        </div>
-        </div>
-      </q-card>
-    </q-dialog>
     <!-- зона доставки -->
     <q-dialog v-model="showMap">
       <q-card style="min-width: 80%">
@@ -1928,6 +1363,7 @@ export default {
     background-color: #f8c200;
     color: white;
     padding: 0 16px;
+    display: none;
   }
 
 .basket-bottom-additional-button {
@@ -1955,25 +1391,14 @@ export default {
   }
 
   .cart-area {
-    padding: 32px;
+    padding: 32px 0 32px 32px;
   }
 .create-order-button {
   display: none;
 }
 
-@media (max-width: 1023px) {
-  .q-carousel {
-    height: 289px;
-  }
-  .logo {
-    display: none;
-  }
-  .form-area-display {
-    display: none;
-  }
-  .create-order-button {
-  display: block;
-}
+.display-none-class {
+  display: none;
 }
 
 .q-notifications__list--center {
@@ -2007,31 +1432,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 3;
-}
-
-.cart-widget-m {
-  position: fixed;
-  width: 48px;
-  height: 48px;
-  right: 0;
-  top: 0;
-  background: #ca17a8;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.cart-product-num-m {
-  position: absolute;
-  font-family: lcb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 4px;
-  color: #fff;
-  font-size: 9px;
+  z-index: 100;
 }
 
 .cart-product-num {
@@ -2127,14 +1528,6 @@ export default {
   border-radius: 10px;
 }
 
-.header-mobile {
-  z-index: 100;
-  width: 100%;
-  height: 48px;
-  position: fixed;
-  background: #f8c200;
-}
-
 .logo-m {
   width: 100%;
 }
@@ -2177,6 +1570,14 @@ export default {
   color: #4f4f4f;
   font-size: 16px;
   text-transform: none;
+}
+
+.pho-btn-delivery:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.pho-btn-delivery:last-child {
+  border-radius: 0 10px 10px 0;
 }
 
 @media (min-width: 1199.98px) {
@@ -2308,6 +1709,66 @@ export default {
 
   .pho-btn-outline:hover > div {
     color: #4f4f4f;
+  }
+}
+
+@media (max-width: 1023px) {
+  .q-carousel {
+    height: 289px;
+  }
+  .logo {
+    display: none;
+  }
+
+  .form-area {
+    padding-top: 60px;
+  }
+  .form-area-display {
+    display: none;
+  }
+  .create-order-button {
+  display: block;
+}
+
+.cart {
+  right: 0px;
+  width: 100%;
+}
+
+.cart-area {
+    padding-top: 69px;
+  }
+.yelow-line {
+  width: 48px;
+  display: none;
+}
+
+.vertical-line {
+  display: flex;
+}
+.cart-widget {
+  width: 48px;
+  height: 48px;
+  z-index: 99999;
+}
+
+.cart-product-num {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 4px;
+  font-size: 9px;
+}
+
+.display-none-class {
+  display: flex;
+}
+
+}
+
+@media (min-width: 1919px) {
+  .cart {
+    width: 60%;
   }
 }
 </style >

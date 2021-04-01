@@ -70,12 +70,12 @@ export default {
     toggleVisible() {
       this.isSideMenuVisible = !this.isSideMenuVisible;
       document.body.style.overflow = 'hidden';
-      this.zIndex = 3;
+      this.zIndex = 101;
     },
     toggleVisibleClose() {
       this.isSideMenuVisible = !this.isSideMenuVisible;
       document.body.style.overflow = 'auto';
-      this.zIndex = 1;
+      this.zIndex = 99;
     },
     scrollToMenu(id) {
       this.isSideMenuVisible = !this.isSideMenuVisible;
@@ -237,7 +237,7 @@ export default {
   }
 }
 
-@media (max-width: 919px) {
+@media (max-width: 1023px) {
   .title {
     font-family: lb;
     font-size: 70px;
@@ -252,7 +252,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 919px) {
+@media only screen and (max-width: 1023px) {
   .logo {
     width: 50px;
   }

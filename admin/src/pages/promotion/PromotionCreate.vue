@@ -80,6 +80,13 @@
                 </div>
             </div>
             <div class="row">
+                <div class="col-3">
+                    <q-select v-model="promotion.type" :options="typeVariants"
+                              option-label="name"
+                              label="Тип акции" />
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-4">
                     <q-input v-model="promotion.sortIndex" label="Сортировка"/>
                 </div>
@@ -129,7 +136,12 @@ export default {
     if (this.edit) {
       this.$axios.get(`/api/promotion/${this.$route.params.id}`)
         .then(({ data }) => {
-          this.promotion = keysToCamel(data.promotion);
+          const prepare = keysToCamel(data.promotion);
+          if (prepare.type) {
+            prepare.type = JSON.parse(prepare.type);
+          }
+
+          this.promotion = {...prepare};
         });
     }
   },
@@ -148,6 +160,15 @@ export default {
         isActive: true,
         isDelete: false,
       },
+      typeVariants: [{
+        id: 1,
+        name: 'Ресторан',
+      },
+        {
+          id: 2,
+          name: 'Доставка',
+        }
+      ],
       alert: {
         massageText: '',
         massageType: '',

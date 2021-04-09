@@ -2,7 +2,7 @@
     <div>
         <div class='black_blk'>
             <div class='container full-height justify-center justify-md-center'>
-                <div class='row justify-center justify-md-center full-height'>
+                <div class='row justify-right justify-md-center full-height'>
                     <div class='col-md-4 col-sm-6 col-12 text-md-left
                     justify-center contact-col'>
                         <div class='zag11720 text-md-left'>
@@ -30,12 +30,12 @@
                             596-011
                         </div>
                     </div>
-                    <div class='socials-wrap col-sm-6 contact-col'>
+                    <!-- <div class='socials-wrap col-sm-6 contact-col'>
 						<div class='socials'>
                             <a href='https://www.facebook.com/phome.irk/'><div class='faced '></div></a>
                             <a href='https://www.instagram.com/pho_me_/'><div class='instd'></div></a>
 						</div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -67,11 +67,12 @@ export default {
 
 <style scoped >
 	.black_blk {
-		background: #F8C200;
+		background: #18a3a1;
 		color: #fff;
 		font-family:lcb;
 		padding: 12px 0;
 		position: relative;
+    margin-top: 50px;
 	}
 
     .zag11720 {

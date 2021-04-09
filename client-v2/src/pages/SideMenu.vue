@@ -1,10 +1,10 @@
 <template>
   <div class="side-container row">
     <div class="photo-box col-4">
-      <img src="..\assets\image\SideMenu.png" class="photo" />
+      <img src="../assets/image/SideMenu.png" class="photo" />
     </div>
     <div class="side-menu col-grow">
-      <img src="..\assets\icon\logo.png" class="logo" />
+      <img src="../assets/icon/logo.png" class="logo" />
       <ul class="title column">
         <li class="title" @click="gotoMenu('main-page-page')">МЕНЮ</li>
         <li class="title">АКЦИИ</li>

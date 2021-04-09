@@ -1,8 +1,8 @@
 <template>
   <div class="main-box">
-    <div class="cart-h1">Добавить к заказу?</div>
+    <div class="cart-h1 column">Добавить к заказу?</div>
     <div class="">
-      <VueSlickCarousel
+      <vue-slick-carousel
         ref="slick"
         :arrows="true"
         :slidesToShow="slidesToShow"
@@ -34,8 +34,7 @@
               </div>
             </div>
           </div>
-        </div>
-      </VueSlickCarousel>
+        </div>></vue-slick-carousel>
     </div>
   <div>
   </div>
@@ -97,12 +96,16 @@ export default {
         this.slidesToShow = 4;
       } else if (this.window.width >= 875) {
         this.slidesToShow = 3.5;
-      } else if (this.window.width >= 750) {
-        this.slidesToShow = 3;
+      } else if (this.window.width >= 700) {
+        this.slidesToShow = 3.1;
       } else if (this.window.width >= 650) {
-        this.slidesToShow = 2.1;
-      } else if (this.window.width >= 500) {
-        this.slidesToShow = 1.5;
+        this.slidesToShow = 2.7;
+      } else if (this.window.width >= 520) {
+        this.slidesToShow = 2.2;
+      } else if (this.window.width >= 430) {
+        this.slidesToShow = 1.7;
+      } else if (this.window.width >= 320) {
+        this.slidesToShow = 1.2;
       }
     },
   },
@@ -139,7 +142,8 @@ export default {
   line-height: 22px;
   font-weight: 900;
   margin: 10px 0 10px 0;
-  padding-top: 10px;
+  margin-top: 10px;
+  color: #333333;
 }
 .VueSlickCarousel {
   width: 603px;

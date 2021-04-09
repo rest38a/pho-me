@@ -1,70 +1,58 @@
-<template >
-    <q-page class="main-container" >
-        <div class="row items-center q-col-gutter-lg">
-            <div class="col-auto row">
-
-                <div class="q-pa-md" style="max-width: 300px">
-                    <q-input filled v-model="startId" label="первый id">
-                    </q-input>
-                </div>
-                <div class="q-pa-md" style="max-width: 300px">
-                    <q-input filled v-model="endId"
-                             label="последний id">
-                    </q-input>
-                </div>
-
-                <!--                <q-toggle-->
-                <!--                        label="Только сегодня"-->
-                <!--                        v-model="onlyToday"-->
-                <!--                        color="amber"-->
-                <!--                />-->
-            </div>
-            <div class="col-auto">
-                <q-btn color="primary"
-
-                       @click="getOrders(dateStart, dateFinish)">
-                    <div>
-                        обновить
-                    </div>
-                    <div>
-                        <q-spinner
-                                color="white"
-                                class="q-ml-md"
-                                v-if="loading"
-                        />
-                    </div>
-                </q-btn>
-            </div>
+<template>
+  <q-page class="main-container">
+    <div class="row items-center q-col-gutter-lg">
+      <div class="col-auto row">
+        <div class="q-pa-md" style="max-width: 300px">
+          <q-input filled v-model="startId" label="первый id"> </q-input>
         </div>
-        <q-table
-                class="my-sticky-virtscroll-table"
-                row-key="index"
-                title="Заказы"
-                :data="orders"
-                :columns="columns"
-                :pagination="initialPagination"
-        >
-            <template v-slot:top-right>
-                <q-btn
-                        color="primary"
-                        icon-right="archive"
-                        label="Export to excel"
-                        no-caps
-                        @click="downXls"
-                />
-            </template>
-            <template v-slot:body-cells-composition="props">
-                <q-td :props="props">
-                    <div class="my-table-details">
-                        {{ getConsist(props.row) }}
-                    </div>
-                </q-td>
-            </template>
-        </q-table>
-    </q-page>
-</template >
+        <div class="q-pa-md" style="max-width: 300px">
+          <q-input filled v-model="endId" label="последний id"> </q-input>
+        </div>
 
-<script >
+        <!--                <q-toggle-->
+        <!--                        label="Только сегодня"-->
+        <!--                        v-model="onlyToday"-->
+        <!--                        color="amber"-->
+        <!--                />-->
+      </div>
+      <div class="col-auto">
+        <q-btn color="primary" @click="getOrders(dateStart, dateFinish)">
+          <div>обновить</div>
+          <div>
+            <q-spinner color="white" class="q-ml-md" v-if="loading" />
+          </div>
+        </q-btn>
+      </div>
+    </div>
+    <q-table
+      class="my-sticky-virtscroll-table"
+      row-key="index"
+      title="Заказы"
+      :data="orders"
+      :columns="columns"
+      :pagination="initialPagination"
+    >
+      <template v-slot:top-right>
+        <q-btn
+          color="primary"
+          icon-right="archive"
+          label="Export to excel"
+          no-caps
+          @click="downXls"
+        />
+      </template>
+      <template v-slot:body-cells-composition="props">
+        <q-td :props="props">
+          <div class="my-table-details">
+            {{ getConsist(props.row) }}
+          </div>
+        </q-td>
+      </template>
+    </q-table>
+  </q-page>
+</template>
+
+<script>
 import { json2excel } from 'js2excel';
 import { date } from 'quasar';
 
@@ -180,14 +168,14 @@ export default {
         const row = {
           'Дата создания': this.formatDate(item.created_at),
           'Дата и время доставки': this.getTime(item),
-          'ближайщее': item.can_early ? 'да' : 'нет',
-          'Телефон': item.phone,
-          'Имя': item.address,
-          'Итого': item.sum_order,
-          'Состав': this.getConsist(item),
+          ближайщее: item.can_early ? 'да' : 'нет',
+          Телефон: item.phone,
+          Имя: item.address,
+          Итого: item.sum_order,
+          Состав: this.getConsist(item),
           'Кол-во персон': this.getNumPerson(item),
-          'Промокод': this.getPromocode(item),
-          'Комментарий': this.getComment(item),
+          Промокод: this.getPromocode(item),
+          Комментарий: this.getComment(item),
         };
 
         return row;
@@ -219,9 +207,12 @@ export default {
       // const start = moment(this.dateStart, 'DD.MM.YYYY').toDate();
       // const dateStartReq = `${this.qDate.formatDate(start, 'YYYY-MM-DD')} 00:00:00`;
 
-      axios.get(`${process.env.CLIENT_API_LINK}/orders?id_gte=${this.startId}&id_lte=${this.endId}&_limit=999`).then(({ data }) => {
-        this.orders = [...data];
-      });
+      axios
+        .get(
+          `${process.env.CLIENT_API_LINK}/orders?id_gte=${this.startId}&id_lte=${this.endId}&_limit=999`,
+        ).then(({ data }) => {
+          this.orders = [...data];
+        });
     },
     parseString(order) {
       if (order.id < 2357) {
@@ -253,9 +244,7 @@ export default {
 
       return stringProduct;
     },
-    getNumPerson() {
-
-    },
+    getNumPerson() {},
     getPromocode() {
       return '';
     },
@@ -281,17 +270,16 @@ export default {
     this.getOrders();
   },
 };
-</script >
+</script>
 
-<style >
-    .my-table-details {
-        max-width: 200px;
-        white-space: normal;
-        color: #555;
-        margin-top: 4px;
-    }
-    .q-table--no-wrap td{
-        white-space: pre-wrap;
-    }
-
-</style >
+<style scoped>
+.my-table-details {
+  max-width: 200px;
+  white-space: normal;
+  color: #555;
+  margin-top: 4px;
+}
+.q-table--no-wrap td {
+  white-space: pre-wrap;
+}
+</style>

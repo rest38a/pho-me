@@ -1,74 +1,81 @@
 <template >
-    <div class=" col-md-3 col-sm-6 col-12" >
-        <div class="pho-card column mobile-hide" >
-            <div class="pho-img-wrapper col-auto">
-                <q-img
-                        :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
-                        :ratio="4/3"
-                />
-            </div >
-            <div class="pho-card-info-area col-grow column justify-between">
-                <div class="row justify-between" >
-                    <div class="pho-card-product-name">{{product.name}}</div >
-                    <div class="pho-card-product-weight">{{product.weight}} гр.</div >
-                </div >
-                <div class="pho-card-description">
-                    {{product.description}}
-                </div >
-                <modifiers-block
-                :modifiers="product.modifiers"
-                :userModifiers="userModifiers"
-                :setModifierFunction="setModifier"
-            ></modifiers-block>
-                <div class="row justify-between items-center" >
-                    <div class="pho-card-price">
-                        {{ finalPrice }} ₽
-                    </div >
-                    <div>
-                        <q-btn flat
-                               @click="proxyAddBasket(product)"
-                               class="pho-btn-med" >
-                            <div >
-                                {{getName(product.id)}}
-                            </div >
-                        </q-btn >
-                    </div >
-                </div >
-            </div >
-        </div >
-        <div class="pho-card-m row desktop-hide" >
-            <div class="pho-img-wrapper-row col-5">
-                <q-img
-                        :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
-                        style="height: 100%"
-                />
-            </div >
-            <div class="pho-card-info-area col-7 column justify-between">
-                <div class="row justify-between items-center" >
-                    <div class="pho-card-product-name col-9">{{product.name}}</div >
-                    <div class="pho-card-product-weight col-3">{{product.weight}} гр.</div >
-                </div >
-                <div class="pho-card-description">
-                    {{product.description}}
-                </div >
-                <div class="row justify-between items-center" >
-                    <div class="pho-card-price">
-                        {{ finalPrice }} ₽
-                    </div >
-                    <div>
-                        <q-btn flat
-                               size="sm"
-                               @click="proxyAddBasket(product)"
-                               class="pho-btn-med" >
-                            <div >
-                                {{getName(product.id)}}
-                            </div >
-                        </q-btn >
-                    </div >
-                </div >
-            </div >
-        </div >
-    </div >
+  <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+    <div class="pho-card column mobile-hide">
+      <div class="pho-img-wrapper col-auto">
+        <q-img
+          :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
+          :ratio="4 / 3"
+        />
+      </div>
+      <div class="pho-card-info-area col-grow column justify-between">
+        <div class="row justify-between">
+          <div class="pho-card-product-name">{{ product.name }}</div>
+          <div class="pho-card-product-weight">{{ product.weight }} гр.</div>
+        </div>
+        <div class="pho-card-description">
+          {{ product.description }}
+        </div>
+        <modifiers-block
+          :modifiers="product.modifiers"
+          :userModifiers="userModifiers"
+          :setModifierFunction="setModifier"
+        ></modifiers-block>
+        <div class="row justify-between items-center q-mt-xs">
+          <div class="pho-card-price">{{ finalPrice }} ₽</div>
+          <div>
+            <q-btn
+              flat
+              @click="proxyAddBasket(product)"
+              class="pho-btn pho-btn-med"
+            >
+              <div class="row">
+                {{ getName(product.id) }}
+                <img class="q-ml-sm" src="../assets/image/basketimage.png" />
+              </div>
+            </q-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pho-card-m row desktop-hide">
+      <div class="pho-img-wrapper-row col-5">
+        <q-img
+          :src="`${CLIENT_API_LINK}/uploads/${product.main_photo}`"
+          style="height: 100%"
+        />
+      </div>
+      <div class="pho-card-info-area col-7 column justify-between">
+        <div class="row justify-between items-center">
+          <div class="pho-card-product-name col-12">{{ product.name }}</div>
+          <div class="pho-card-product-weight col-12">
+            {{ product.weight }} гр.
+          </div>
+        </div>
+        <div class="pho-card-description">
+          {{ product.description }}
+        </div>
+        <modifiers-block
+          :modifiers="product.modifiers"
+          :userModifiers="userModifiers"
+          :setModifierFunction="setModifier"
+        ></modifiers-block>
+        <div class="row justify-between items-center q-mt-xs">
+          <div class="pho-card-price">{{ finalPrice }} ₽</div>
+          <div>
+            <q-btn
+              flat
+              @click="proxyAddBasket(product)"
+              class="pho-btn pho-btn-med"
+            >
+              <div class="row items-center">
+                {{ getName(product.id) }}
+              </div>
+            </q-btn>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template >
 
 <script >
@@ -94,13 +101,10 @@ export default {
     };
   },
   methods: {
-    ...mapMutations('order', ['addProductToBasket',
-      'removeProductToBasket']),
+    ...mapMutations('order', ['addProductToBasket', 'removeProductToBasket']),
     getName(productId) {
       const searchProduct = this.orderProducts.find((item) => item.product.id === productId);
-
       if (searchProduct !== undefined) return `В корзине ${searchProduct.number}`;
-
       return 'В корзину';
     },
     proxyAddBasket(productItem) {
@@ -115,7 +119,10 @@ export default {
       cartItem.id = this.buildIdToBasket(this.product, this.userModifiers);
       cartItem.userModifiers = JSON.parse(JSON.stringify(this.userModifiers));
       cartItem.finalPrice = this.finalPrice;
-      cartItem.comment = this.buildCommentToBasket(this.product, this.userModifiers);
+      cartItem.comment = this.buildCommentToBasket(
+        this.product,
+        this.userModifiers,
+      );
       this.addProductToBasket(cartItem);
     },
     buildIdToBasket(product, userModifiers) {
@@ -187,12 +194,16 @@ export default {
     },
     finalPrice() {
       let preparePrice = this.product.base_price;
-      if (this.userModifiers.main !== undefined
-          && this.userModifiers.main.addPrice !== undefined) {
+      if (
+        this.userModifiers.main !== undefined
+        && this.userModifiers.main.addPrice !== undefined
+      ) {
         preparePrice += +this.userModifiers.main.addPrice;
       }
-      if (this.userModifiers.size !== undefined
-          && this.userModifiers.size.addPrice !== undefined) {
+      if (
+        this.userModifiers.size !== undefined
+        && this.userModifiers.size.addPrice !== undefined
+      ) {
         preparePrice += +this.userModifiers.size.addPrice;
       }
       for (let i = 0; i < this.userModifiers.add.length; i += 1) {
@@ -218,117 +229,154 @@ export default {
 </script >
 
 <style scoped >
-    .pho-card {
-        background: #FFFFFF;
-        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
-        border-radius: 24px;
-        overflow: hidden;
-        height: 100%;
-    }
-    .pho-card-m{
-        background: #FFFFFF;
-        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
-        border-radius: 24px;
-        overflow: hidden;
-        padding: 7px;
-        height: 100%;
-    }
-    .pho-img-wrapper{
-        border-radius: 24px;
-        overflow: hidden;
-        width: 100%;
-    }
-    .pho-img-wrapper-row{
-        padding: ;
-        border-radius: 24px;
-        overflow: hidden;
-        height: 100%;
-    }
-    @media (min-width: 500px) {
-        .pho-card-info-area{
-            padding: 19px;
-        }
-        .pho-card-product-name {
-            font-family: lcb;
-            font-size: 18px;
-            line-height: 24px;
-            color: #4F4F4F;
-        }
-    }
-    @media (max-width: 500px) {
-        .pho-card-info-area{
-            padding: 4px 10px;
-        }
-        .pho-card-product-name {
-            font-family: lcb;
-            font-size: 14px;
-            line-height: 14px;
-            padding-right:5px;
-            padding-bottom: 5px;
-            color: #4F4F4F;
-        }
-    }
-    .pho-card-product-weight{
-        font-family: lcm;
-        font-size: 10px;
-        line-height: 19px;
-        color: #333333;
-    }
-    .pho-card-description{
-        font-family: lcm;
-        padding: 5px 0 10px;
-        font-weight: 500;
-        font-size: 15px;
-        line-height: 20px;
+.pho-card {
+  background: #ffffff;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+}
+.pho-card-m {
+  background: #ffffff;
+  box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 7px;
+  height: 100%;
+}
+.pho-img-wrapper {
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+.pho-img-wrapper-row {
+  border-radius: 10px;
+  overflow: hidden;
+  height: 100%;
+  max-height: 180px;
+}
 
-        /* Gray 3 */
-        color: #828282;
-    }
-    .pho-card-price{
-        font-family: lcb;
-        font-size: 18px;
-        line-height: 24px;
+.pho-btn {
+  margin: 10px 10px 10px 0px;
+  border-radius: 10px;
+  background: #fcd000;
+  border: 2px solid #fcd000;
+  color: #4f4f4f;
+  font-size: 22px;
+  line-height: 29, 7px;
+  font-family: TT Lakes;
+  font-weight: 700;
+}
 
-        /* Gray 1 */
-        color: #333333;
-    }
-    .pho-btn-med{
-        font-family: lcb;
-        border-radius: 10px;
-        background: #FCD000;
-        border: 2px solid #FCD000;
-        color: #4F4F4F;
-        font-size: 16px;
-        text-transform: none;
-    }
-    .cart-logo{
-        width: 22px;
-        margin-left: 10px;
-    }
-    .cart-icon-m{
-        width: 15px;
-        margin-left: 10px;
-    }
-    switch_item {
-        cursor: pointer;
-    }
+.pho-btn-med {
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: none;
+  line-height: 22px;
+  color: #333333;
+  margin: 0;
+}
 
-    switch_area {
-    background: #f2f2f2;
-    border-radius: 10px;
-    font-size: 12px;
-    line-height: 22px;
-    text-align: center;
-    letter-spacing: 0.05em;
-    color: #828282;
-    padding: 3px;
-    }
+.pho-card-price {
+  font-family: lcb;
+  font-size: 22px;
+  line-height: 22px;
+  /* Gray 1 */
+  color: #333333;
+}
+.pho-card-product-name {
+    font-family: TT Lakes;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    color: #4f4f4f;
+}
 
-    .active_switch {
-    background: #fff;
-    box-shadow: 4px 4px 5px rgb(0 0 0 / 15%);
-    border-radius: 9px;
-    padding: 4px;
-    cursor: pointer;
+.pho-card-product-weight {
+  font-family: TT Lakes;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #333333;
+  text-align: right;
+}
+  .pho-card-info-area {
+    padding: 16px 20px 20px 20px;
+  }
+
+@media (max-width: 1023px) {
+.pho-card-info-area {
+    padding: 7px 2px 10px 11px;
+  }
+  .pho-card-product-name {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+  }
+
+.pho-card-product-weight {
+  font-size: 10px;
+  line-height: 16px;
+  text-align: left;
+}
+.pho-card-description {
+  font-family: lcm;
+  padding: 5px 0 10px;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+
+  /* Gray 3 */
+  color: #828282;
+}
+.pho-card-price {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.pho-btn-med {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  max-height: 28px;
+}
+
+.q-btn__wrapper {
+  padding: 0;
+  min-height: none;
+}
+
+.cart-logo {
+  width: 22px;
+  margin-left: 10px;
+}
+.cart-icon-m {
+  width: 15px;
+  margin-left: 10px;
+}
+switch_item {
+  cursor: pointer;
+}
+
+switch_area {
+  background: #f2f2f2;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  color: #828282;
+  padding: 3px;
+}
+
+.active_switch {
+  background: #fff;
+  box-shadow: 4px 4px 5px rgb(0 0 0 / 15%);
+  border-radius: 9px;
+  padding: 4px;
+  cursor: pointer;
+}
 }
 </style >

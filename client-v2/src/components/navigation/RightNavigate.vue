@@ -2,43 +2,43 @@
   <div class="right-Navigate">
     <div class="vertical-line column items-center">
       <img
-        src="..\..\assets\icon\logo.png"
+        src="../../assets/icon/logo.png"
         class="logo-mobile"
         @click="scrollToMenu('main-page')"
       />
       <div class="icon-box column items-center">
         <a href="https://www.facebook.com/phome.irk/" target="blank">
-          <img src="..\..\assets\icon\fb-icon.png" class="icon-img"
+          <img src="../../assets/icon/fb-icon.png" class="icon-img"
         /></a>
         <a href="https://www.instagram.com/pho_me_/" target="blank">
-          <img src="..\..\assets\icon\inst-icon.png" class="icon-img"
+          <img src="../../assets/icon/inst-icon.png" class="icon-img"
         /></a>
       </div>
       <div class="center column justify-center">
         <div class="column" @click="toggleVisible" v-show="!isSideMenuVisible">
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
+          <img src="../../assets/image/sandLine.png" class="sand-line" />
+          <img src="../../assets/image/sandLine.png" class="sand-line" />
+          <img src="../../assets/image/sandLine.png" class="sand-line" />
         </div>
         <div
           class="close-img"
           @click="toggleVisibleClose"
           v-show="isSideMenuVisible"
         >
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img class="close" src="..\..\assets\image\close-menu.png" />
+          <img src="../../assets/image/sandLine.png" class="sand-line-mobile" />
+          <img src="../../assets/image/sandLine.png" class="sand-line-mobile" />
+          <img src="../../assets/image/sandLine.png" class="sand-line-mobile" />
+          <img class="close" src="../../assets/image/close-menu.png" />
         </div>
       </div>
     </div>
     <div class="side-container row" v-show="isSideMenuVisible">
       <div class="photo-box col-4">
-        <img src="..\..\assets\image\SideMenu.png" class="photo" />
+        <img src="../../assets/image/SideMenu.png" class="photo" />
       </div>
       <div class="side-menu col-grow">
         <img
-          src="..\..\assets\icon\logo.png"
+          src="../../assets/icon/logo.png"
           class="logo"
           @click="scrollToMenu('main-page')"
         />
@@ -84,7 +84,8 @@ export default {
       document.body.style.overflow = 'auto';
     },
     gotoDelivery() {
-      this.$router.push('delivery');
+      window.location = '/delivery';
+      // this.$router.push('delivery');
     },
   },
 };
@@ -227,7 +228,7 @@ export default {
   }
 }
 
-@media (max-width: 919px) {
+@media (max-width: 1023px) {
   .title {
     font-family: lb;
     font-size: 70px;
@@ -242,7 +243,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 919px) {
+@media only screen and (max-width: 1023px) {
   .logo {
     width: 50px;
   }

@@ -63,7 +63,7 @@ module.exports = {
     'prefer-promise-reject-errors': 'off',
     'no-tabs': 0,
     'quote-props': 'off',
-    'linebreak-style': '0',
+    'linebreak-style': 0,
 
 
     // allow debugger during development only

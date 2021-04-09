@@ -30,7 +30,7 @@ export default {
   }
 }
 
-@media (max-width: 992px) {
+@media (max-width: 1023px) {
   .logo {
     display: none;
   }

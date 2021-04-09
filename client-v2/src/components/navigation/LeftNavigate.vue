@@ -72,7 +72,6 @@ export default {
       // quasar
       const el = document.getElementById(id);
       const scrollTarget = getScrollTarget(el);
-      console.log(el, scrollTarget);
       getScrollPosition(el);
       setScrollPosition(scrollTarget, el.offsetTop, 500);
     },
@@ -176,7 +175,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 919px) {
+@media only screen and (max-width: 1023px) {
   .left-navigate {
     display: none;
   }

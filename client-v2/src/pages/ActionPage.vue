@@ -11,24 +11,30 @@
           v-for="promo in promotions"
           :key="promo.id"
         >
-          <div
+          <div v-if="promo.image !== null"
             class="render-card"
-            :style="{
-              background: promo.short_text}"
+              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${promo.image})`}"
           >
+          <!-- <div
+            class="render-card"
+          >
+          <img
+                  class="image"
+                  :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
+                /> -->
             <div class="titles-btn column justify-between">
               <div class="titles">
-                <div class="under-title">{{ promo.name }}</div>
-                <div class="description">{{ promo.long_text }}</div>
+                <!-- <div class="under-title">{{ promo.name }}</div>
+                <div class="description">{{ promo.long_text }}</div> -->
               </div>
-              <div>
+              <!-- <div>
                 <img
                   class="image"
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
                 />
-              </div>
+              </div> -->
               <div class="btn-image" @click="chooseCard(promo)">
-                <img src="..\assets\image\actionCard\actionButton.png" />
+                <img src="../assets/image/actionCard/actionButton.png" />
               </div>
             </div>
           </div>
@@ -37,27 +43,31 @@
         <q-dialog v-model="medium" class="q-dialog">
           <q-card style="width: 700px; max-width: 80vw" class="q-card">
             <q-card-section class="q-card-section">
-              <div
+              <!-- <div
                 class="render-card justify-between"
                 :style="{
                   background: activePromo.short_text}"
-              >
+              > -->
+               <div
+            class="render-card"
+              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${activePromo.image})`}"
+          >
                 <div class="titles-btn column justify-between">
                   <div class="titles">
-                    <div class="under-title">{{ activePromo.name }}</div>
+                    <!-- <div class="under-title">{{ activePromo.name }}</div>
                     <div class="description">
                       {{ activePromo.long_text }}
-                    </div>
+                    </div> -->
                   </div>
-                  <div>
+                  <!-- <div>
                     <img
                       class="image"
                       :src="`${CLIENT_API_LINK}/uploads/${activePromo.image}`"
                     />
-                  </div>
+                  </div> -->
                   <div class="btn-image" @click="medium = false">
                     <img
-                      src="..\assets\image\actionCard\actionButtonreturn.png"
+                      src="../assets/image/actionCard/actionButtonreturn.png"
                     />
                   </div>
                 </div>
@@ -137,6 +147,8 @@ export default {
   height: 286px;
   position: relative;
   z-index: 1;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .titles-btn {

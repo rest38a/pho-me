@@ -16,8 +16,8 @@
               <div class="description">{{ item.description }}</div>
               <div class="row rating-box">
                 <star-rating
-                  :rating="`${item.rating}`"
-                  :star-style="starStyle"
+                  :rating="item.rating"
+                  :starStyle="style"
                   class="star-rating"
                 ></star-rating>
                 <!-- <div class="rating">{{ item.rating }}</div> -->
@@ -45,7 +45,7 @@
                 @click="clickHandle()"
               >
                 <div class="img-feedback-wrap img-wrap-whatsapp">
-                  <img src="..\assets\image\feedback\WhatsApp.png" />
+                  <img src="../assets/image/feedback/WhatsApp.png" />
                 </div>
                 <div class="text-feedback-wrap text-color-white">
                   написать нам<br />
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="photo-box">
-          <img src="..\assets\image\feedbackImage.png" class="photo" />
+          <img src="../assets/image/feedbackImage.png" class="photo" />
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ export default {
         {
           id: '1',
           description: 'Наш рейтинг в 2GIS',
-          rating: '4.8',
+          rating: 4.8,
           socialImage: '../assets/image/feedback/gis.png',
           title: 'в 2gis',
           image: '/image/icon-2gis.svg',
@@ -98,7 +98,7 @@ export default {
         {
           id: '2',
           description: 'Наш рейтинг в Яндекс',
-          rating: '4.4',
+          rating: 4.4,
           socialImage: '../assets/image/feedback/Yandex.png',
           title: 'в яндекс.карты',
           image: '/image/icon-yandex.svg',
@@ -110,7 +110,7 @@ export default {
         {
           id: '3',
           description: 'Наш рейтинг в Google',
-          rating: '4.7',
+          rating: 4.7,
           socialImage: '../assets/image/feedback/Google.png',
           title: 'в google.карты',
           image: '/image/icon-google.svg',
@@ -122,7 +122,7 @@ export default {
         {
           id: '4',
           description: 'Наш рейтинг в Flamp',
-          rating: '4.7',
+          rating: 4.7,
           socialImage: '../assets/image/feedback/Flamp.png',
           title: 'на flamp',
           image: '/image/icon-flamp.svg',
@@ -134,7 +134,7 @@ export default {
         {
           id: '5',
           description: 'Наш рейтинг в Trip Advisor',
-          rating: '4.0',
+          rating: 4.0,
           socialImage: '../assets/image/feedback/tripadvisor.png',
           title: 'на trip advisor',
           image: '/image/icon-advisor.svg',
@@ -179,10 +179,10 @@ export default {
 
 .feedback-box {
   background-color: white;
-  height: 571px;
+  height: auto;
   z-index: 2;
   border-radius: 10px 0 0 10px;
-  padding: 37px 55px 100.37px 55px;
+  padding: 37px 55px 88px 55px;
   width: 940px;
 }
 
@@ -192,7 +192,7 @@ export default {
 }
 
 .photo {
-  height: 571px;
+  height: 574px;
   object-fit: cover;
   max-width: 100%;
 }

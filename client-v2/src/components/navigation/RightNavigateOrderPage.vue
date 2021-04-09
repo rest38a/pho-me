@@ -1,63 +1,150 @@
 <template>
-  <div class="right-Navigate" :style="{ 'zIndex': zIndex}">
+  <div
+    class="right-Navigate"
+    :style="{ 'zIndex': zIndex}"
+  >
     <div class="vertical-line column items-center">
       <img
         src="..\..\assets\icon\logo.png"
         class="logo-mobile"
         @click="gotoDelivery()"
-      />
-      <div class="icon-box column items-center" v-show="isSideMenuVisible">
-        <a href="https://www.facebook.com/phome.irk/" target="blank">
-          <img src="..\..\assets\icon\fb-icon.png" class="icon-img"
-        /></a>
-        <a href="https://www.instagram.com/pho_me_/" target="blank">
-          <img src="..\..\assets\icon\inst-icon.png" class="icon-img"
-        /></a>
+      >
+      <div
+        v-show="isSideMenuVisible"
+        class="icon-box column items-center"
+      >
+        <a
+          href="https://www.facebook.com/phome.irk/"
+          target="blank"
+        >
+          <img
+            src="..\..\assets\icon\fb-icon.png"
+            class="icon-img"
+          ></a>
+        <a
+          href="https://www.instagram.com/pho_me_/"
+          target="blank"
+        >
+          <img
+            src="..\..\assets\icon\inst-icon.png"
+            class="icon-img"
+          ></a>
       </div>
       <div class="center column justify-center">
-        <div class="column" @click="toggleVisible" v-show="!isSideMenuVisible">
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line" />
+        <div
+          v-show="!isSideMenuVisible"
+          class="column"
+          @click="toggleVisible"
+        >
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line"
+          >
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line"
+          >
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line"
+          >
         </div>
         <div
+          v-show="isSideMenuVisible"
           class="close-img"
           @click="toggleVisibleClose"
-          v-show="isSideMenuVisible"
         >
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img src="..\..\assets\image\sandLine.png" class="sand-line-mobile" />
-          <img class="close" src="..\..\assets\image\close-menu.png" />
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line-mobile"
+          >
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line-mobile"
+          >
+          <img
+            src="..\..\assets\image\sandLine.png"
+            class="sand-line-mobile"
+          >
+          <img
+            class="close"
+            src="..\..\assets\image\close-menu.png"
+          >
         </div>
       </div>
     </div>
-    <div class="side-container row" v-show="isSideMenuVisible">
+    <div
+      v-show="isSideMenuVisible"
+      class="side-container row"
+    >
       <div class="photo-box col-4">
-        <img src="..\..\assets\image\SideMenu.png" class="photo" />
+        <img
+          src="..\..\assets\image\SideMenu.png"
+          class="photo"
+        >
       </div>
       <div class="side-menu col-grow">
         <img
           src="..\..\assets\icon\logo.png"
           class="logo"
           @click="sgotoDelivery()"
-        />
+        >
         <ul class="column title-list">
-          <li class="title" @click="gotoDelivery()">РЕСТОРАН</li>
-          <li class="title" @click="gotoDelivery()">МЕНЮ</li>
-          <li class="title" @click="scrollToMenu('action-page')">АКЦИИ</li>
-          <li class="title" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
-          <li class="title" @click="scrollToMenu('contact-page')">КОНТАКТЫ</li>
-          <li class="title" @click="scrollToMenu('feedback-page')">ОТЗЫВЫ</li>
-          <li class="title" @click="scrollToMenu('')">ВАКАНСИИ</li>
+          <li
+            class="title"
+            @click="gotoDelivery()"
+          >
+            РЕСТОРАН
+          </li>
+          <li
+            class="title"
+            @click="gotoDelivery()"
+          >
+            МЕНЮ
+          </li>
+          <li
+            class="title"
+          >
+            <router-link to=" :'action-page'"></router-link>
+            АКЦИИ
+          </li>
+          <li
+            class="title"
+            @click="scrollToMenu('interior-page')"
+          >
+            ИНТЕРЬЕР
+          </li>
+          <li
+            class="title"
+            @click="scrollToMenu('contact-page')"
+          >
+            КОНТАКТЫ
+          </li>
+          <li
+            class="title"
+            @click="scrollToMenu('feedback-page')"
+          >
+            ОТЗЫВЫ
+          </li>
+          <li
+            class="title"
+            @click="scrollToMenu('')"
+          >
+            ВАКАНСИИ
+          </li>
         </ul>
-        <div class="vertical-line col"></div>
+        <div class="vertical-line col" />
       </div>
     </div>
+    <vue-slick-carousel></vue-slick-carousel>
   </div>
 </template>
 
 <script >
+import { scroll } from 'quasar';
+
+const { getScrollTarget, setScrollPosition } = scroll;
+
 export default {
   name: 'RightNavigate',
   data() {
@@ -89,13 +176,10 @@ export default {
     gotoDelivery(page) {
       // this.$router.push('home');
       window.location = '';
-      this.isSideMenuVisible = !this.isSideMenuVisible;
       const el = document.getElementById(page);
-      el.scrollIntoView({
-        inline: 'nearest',
-        top: true,
-      });
-      document.body.style.overflow = 'auto';
+      const scrollTarget = getScrollTarget(el);
+      setScrollPosition(scrollTarget, el.offsetTop - 200, 200);
+      console.log(scrollTarget, el.offsetTop, page);
     },
   },
 };
@@ -106,7 +190,7 @@ export default {
   top: 0;
   position: fixed;
   width: 2000px;
-  z-index: 2;
+  z-index: 99;
   display: block;
 }
 
@@ -115,7 +199,7 @@ export default {
   right: 0;
   height: 100vh;
   width: 100px;
-  z-index: 1;
+  z-index: 100;
   background-color: #f8c200;
 }
 
@@ -237,7 +321,7 @@ export default {
   }
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 919px) {
   .title {
     font-family: lb;
     font-size: 70px;
@@ -305,10 +389,7 @@ export default {
   }
 
   .icon-box {
-    display: inline;
-    position: fixed;
-    right: 15px;
-    top: 14px;
+    display: none;
   }
 
   .icon-img {

@@ -37,7 +37,9 @@
           />
         </div>
       </div>
-      <div class="col-2 row content-stretch">
+      <div class="mainPhoto">
+        <img :src="`${CLIENT_API_LINK}/uploads/${activeInteriors.photo}`">
+      <div class="row content-stretch">
         <Hooper class="column content-stretch col-4"
                 @slide="updateCarousel"
                 :infiniteScroll="false"
@@ -46,6 +48,7 @@
             <img :src="`${CLIENT_API_LINK}/uploads/${interior.photo}`" class="col-4"/>
           </Slide>
         </Hooper>
+      </div>
       </div>
     </div>
     <bottom-navigation></bottom-navigation>

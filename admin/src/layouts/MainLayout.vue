@@ -19,7 +19,7 @@
             style="height: 25px; max-width: 150px"
             src="~assets/logotext.png"
           >
-          BackOffice '{{ADMIN_API_LINK}}'
+          BackOffice '{{ADMIN_API_LINK}}' test
         </q-toolbar-title>
       </q-toolbar>
     </q-header>

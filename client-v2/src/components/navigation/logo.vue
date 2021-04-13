@@ -22,11 +22,12 @@ export default {
   left: 100px;
   z-index: 0;
   cursor: pointer;
+  width: 191px;
+  height: 70px;
 }
 
 @media (max-width: 1280px) {
   .logo img {
-    width: 126px;
   }
 }
 

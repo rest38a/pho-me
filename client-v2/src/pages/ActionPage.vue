@@ -11,28 +11,31 @@
           v-for="promo in promotions"
           :key="promo.id"
         >
-          <div v-if="promo.image !== null"
-            class="render-card"
-              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${promo.image})`}"
-          >
-          <!-- <div
-            class="render-card"
+<!--          <div v-show="promo.image !== null"-->
+<!--            class="render-card"-->
+<!--              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${promo.image})`}"-->
+<!--          >-->
+          <div
+            class="render-card justify-between"
+            :style="{
+                  background: promo.short_text}"
+          v-if="JSON.parse(promo.type).id === 1">
           >
           <img
                   class="image"
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
-                /> -->
+                />
             <div class="titles-btn column justify-between">
               <div class="titles">
-                <!-- <div class="under-title">{{ promo.name }}</div>
-                <div class="description">{{ promo.long_text }}</div> -->
+                <div class="under-title">{{ promo.name }}</div>
+                <div class="description">{{ promo.long_text }}</div>
               </div>
-              <!-- <div>
+              <div>
                 <img
                   class="image"
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
                 />
-              </div> -->
+              </div>
               <div class="btn-image" @click="chooseCard(promo)">
                 <img src="../assets/image/actionCard/actionButton.png" />
               </div>
@@ -43,28 +46,28 @@
         <q-dialog v-model="medium" class="q-dialog">
           <q-card style="width: 700px; max-width: 80vw" class="q-card">
             <q-card-section class="q-card-section">
-              <!-- <div
+              <div
                 class="render-card justify-between"
                 :style="{
-                  background: activePromo.short_text}"
-              > -->
-               <div
-            class="render-card"
-              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${activePromo.image})`}"
-          >
+                  background: activePromo.short_text}">
+<!--               <div-->
+<!--            class="render-card"-->
+<!--              :style="{ backgroundImage:
+`url(${CLIENT_API_LINK}/uploads/${activePromo.image})`}"-->
+<!--          >-->
                 <div class="titles-btn column justify-between">
                   <div class="titles">
-                    <!-- <div class="under-title">{{ activePromo.name }}</div>
+                    <div class="under-title">{{ activePromo.name }}</div>
                     <div class="description">
                       {{ activePromo.long_text }}
-                    </div> -->
+                    </div>
                   </div>
-                  <!-- <div>
+                  <div>
                     <img
                       class="image"
                       :src="`${CLIENT_API_LINK}/uploads/${activePromo.image}`"
                     />
-                  </div> -->
+                  </div>
                   <div class="btn-image" @click="medium = false">
                     <img
                       src="../assets/image/actionCard/actionButtonreturn.png"
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState } from 'vuex';
 import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
@@ -118,7 +121,6 @@ export default {
     ...mapState('promotions', ['promotions']),
   },
   methods: {
-    ...mapMutations('promotions', ['getPromotions']),
     chooseCard(promo) {
       this.activePromo = promo;
       this.medium = true;
@@ -195,9 +197,9 @@ export default {
   padding: 0;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 1023px) {
   .pink-side {
-    padding: 25.51px 14.83px 64px 14.83px;
+    padding: 25.51px 14.83px 48px 14.83px;
   }
 
   .logo {

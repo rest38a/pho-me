@@ -33,7 +33,7 @@ export default {
   color: #FFFFFF;
 }
 
-@media only screen and (max-width: 919px) {
+@media only screen and (max-width: 1023px) {
   .bottom-navigate {
     display: none;
     }

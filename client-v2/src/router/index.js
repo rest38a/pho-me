@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueScrollTo from 'vue-scrollto';
 
 import routes from './routes';
 
@@ -16,7 +17,14 @@ Vue.use(VueRouter);
 
 export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+    scrollBehavior(to) {
+      if (to.hash) {
+        setTimeout(() => VueScrollTo.scrollTo(to.hash, 700), 200);
+        console.log(to.hash);
+        return { selector: to.hash };
+      }
+      return { selector: to.hash };
+    },
     routes,
 
     // Leave these as they are and change in quasar.conf.js instead!

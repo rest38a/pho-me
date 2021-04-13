@@ -378,7 +378,7 @@ export default {
 }
 }
 
-@media (max-width: 919px) {
+@media (max-width: 1023px) {
   .feedback-table {
     margin: 24px 0 0 0;
   }

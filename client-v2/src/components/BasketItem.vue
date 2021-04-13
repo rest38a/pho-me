@@ -91,24 +91,28 @@ export default {
         width: 100%;
     }
     .name{
-        font-family: tr;
+        font-family: TT Lakes;
         font-style: normal;
-        font-weight: 900;
-        font-size: 13px;
-        line-height: 15px;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 19px;
         color: #000000;
     }
     .grey4{
         color:#BDBDBD;
     }
     .price{
-        font-family: ttbold;
+        font-family: TT Lakes;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      color: #333333;
     }
     .num-product{
         font-weight: 600;
         font-size: 16px;
         line-height: 22px;
-        padding: 0 10px;
+        padding: 0 11px;
     }
     .round-btn{
         background: #E0E0E0;

@@ -2,26 +2,21 @@
   <div class="green-side background" id="menu-page">
     <logo></logo>
     <div class="container">
-      <div class="full-width row justify-start items-baseline">
+      <div class="title-btn-box row justify-start ">
         <h1 class="title">МЕНЮ</h1>
         <div  class="button-box row" >
         <div v-for="item in menus" :key="item.id">
           <q-btn
-            v-if="activeMenu !== null && item === activeMenu"
-            @click="changeMenu(item)"
-            class="pho-btn"
-            flat
-          >
-            <div>
-              {{ item.name }}
-            </div>
-          </q-btn>
-          <q-btn
-            v-else
-            flat
-            class="pho-btn-outline"
-            @click="changeMenu(item)"
+            :id="item.id"
             :key="item.id"
+            class="pho-btn"
+            :class="{
+              '': activeMenu !== null && item.id === activeMenu,
+              'pho-btn-outline': item.id !== activeMenu.id,
+            }"
+            flat
+            no-caps
+            @click="changeMenu(item)"
           >
             <div>
               {{ item.name }}
@@ -83,7 +78,6 @@ export default {
   line-height: 32.4px;
   color: #fff;
   list-style-type: none;
-  margin-right: 36px;
   cursor: pointer;
 
   &.active {
@@ -91,52 +85,46 @@ export default {
   }
 }
 
+.title {
+  margin: 0 36px 0 0;
+}
+.title-btn-box {
+  margin: 127px 0px 69px 0;
+}
 .for-iframe {
   height: 447px;
 }
 
 .button-box {
-  margin-left: 40px;
 }
 
 .pho-btn {
-  font-family: lcb;
-  margin: 10px 10px 55px 0px;
+  margin: 10px 10px 10px 0px;
   border-radius: 10px;
   background: #fcd000;
   border: 2px solid #fcd000;
   color: #4f4f4f;
   font-size: 22px;
+  line-height: 29.8px;
+  font-family: TT Lakes;
+  font-weight: 700;
 }
 
 .pho-btn-outline {
-  margin: 10px 10px 55px 0px;
-  border-radius: 10px;
+  background: none;
   border: 2px solid #ffffff;
   color: #fff;
-  font-family: lcb;
-  font-size: 22px;
 }
 
 .pho-btn-outline:hover {
-  margin: 10px 10px 55px 0px;
-  border-radius: 10px;
   background: #fcd000;
   border: 2px solid #fcd000;
-  color: #4f4f4f;
-}
-
-.pho-btn-outline:hover > div {
   color: #4f4f4f;
 }
 
 @media only screen and (max-width: 599px) {
   .green-side {
     padding: 25.51px 14.83px 64px 14.83px;
-  }
-
-  .title {
-    margin: 0;
   }
 
   .under-title {
@@ -154,13 +142,29 @@ export default {
     height: 221px;
   }
 
-  .logo {
-    display: none;
+  .title-btn-box {
+    margin: 0 0 36px 0;
   }
 }
-@media only screen and (max-width: 991.98px) {
+@media only screen and (max-width: 1023px) {
   .background {
-    padding: 25.51px 14.83px 98px 14.83px;
+    padding: 25.51px 14.83px 48px 14.83px;
+  }
+  .title-btn-box {
+    margin: 0 0 36px 0;
+  }
+}
+@media only screen and (max-width: 1023px) {
+  .pho-btn {
+    font-size: 14px;
+    line-height: 18.9px;
+  }
+
+  .pho-btn-outline:hover {
+    margin: 10px 10px 10px 0px;
+    background: none;
+    border: 2px solid #ffffff;
+    color: #fff;
   }
 }
 </style>

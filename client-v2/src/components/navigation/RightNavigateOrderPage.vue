@@ -5,7 +5,7 @@
   >
     <div class="vertical-line column items-center">
       <img
-        src="..\..\assets\icon\logo.png"
+        src="../../assets/icon/logo.png"
         class="logo-mobile"
         @click="gotoDelivery()"
       >
@@ -18,7 +18,7 @@
           target="blank"
         >
           <img
-            src="..\..\assets\icon\fb-icon.png"
+            src="../../assets/icon/fb-icon.png"
             class="icon-img"
           ></a>
         <a
@@ -26,7 +26,7 @@
           target="blank"
         >
           <img
-            src="..\..\assets\icon\inst-icon.png"
+            src="../../assets/icon/inst-icon.png"
             class="icon-img"
           ></a>
       </div>
@@ -37,15 +37,15 @@
           @click="toggleVisible"
         >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line"
           >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line"
           >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line"
           >
         </div>
@@ -55,20 +55,20 @@
           @click="toggleVisibleClose"
         >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line-mobile"
           >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line-mobile"
           >
           <img
-            src="..\..\assets\image\sandLine.png"
+            src="../../assets/image/sandLine.png"
             class="sand-line-mobile"
           >
           <img
             class="close"
-            src="..\..\assets\image\close-menu.png"
+            src="../../assets/image/close-menu.png"
           >
         </div>
       </div>
@@ -79,56 +79,56 @@
     >
       <div class="photo-box col-4">
         <img
-          src="..\..\assets\image\SideMenu.png"
+          src="../../assets/image/SideMenu.png"
           class="photo"
         >
       </div>
       <div class="side-menu col-grow">
         <img
-          src="..\..\assets\icon\logo.png"
+          src="../../assets/icon/logo.png"
           class="logo"
-          @click="sgotoDelivery()"
+          @click="gotoDelivery('main-page')"
         >
         <ul class="column title-list">
           <li
             class="title"
-            @click="gotoDelivery()"
+            @click="gotoDelivery('main-page')"
           >
             РЕСТОРАН
           </li>
           <li
             class="title"
-            @click="gotoDelivery()"
+            @click="gotoDelivery('menu-page')"
           >
             МЕНЮ
           </li>
           <li
             class="title"
+            @click="gotoDelivery('action-page')"
           >
-            <router-link to=" :'action-page'"></router-link>
             АКЦИИ
           </li>
           <li
             class="title"
-            @click="scrollToMenu('interior-page')"
+            @click="gotoDelivery('interior-page')"
           >
             ИНТЕРЬЕР
           </li>
           <li
             class="title"
-            @click="scrollToMenu('contact-page')"
+            @click="gotoDelivery('contact-page')"
           >
             КОНТАКТЫ
           </li>
           <li
             class="title"
-            @click="scrollToMenu('feedback-page')"
+            @click="gotoDelivery('feedback-page')"
           >
             ОТЗЫВЫ
           </li>
           <li
             class="title"
-            @click="scrollToMenu('')"
+            @click="gotoDelivery('')"
           >
             ВАКАНСИИ
           </li>
@@ -136,14 +136,10 @@
         <div class="vertical-line col" />
       </div>
     </div>
-    <vue-slick-carousel></vue-slick-carousel>
   </div>
 </template>
 
 <script >
-import { scroll } from 'quasar';
-
-const { getScrollTarget, setScrollPosition } = scroll;
 
 export default {
   name: 'RightNavigate',
@@ -174,12 +170,8 @@ export default {
       document.body.style.overflow = 'auto';
     },
     gotoDelivery(page) {
-      // this.$router.push('home');
-      window.location = '';
-      const el = document.getElementById(page);
-      const scrollTarget = getScrollTarget(el);
-      setScrollPosition(scrollTarget, el.offsetTop - 200, 200);
-      console.log(scrollTarget, el.offsetTop, page);
+      this.toggleVisibleClose();
+      this.$router.push({ path: '/main/', hash: page });
     },
   },
 };

@@ -212,12 +212,14 @@ export default {
 
 .under-title {
   font-size: 36px;
-  font-family: lcb;
-  line-height: 48, 6px;
+  font-family: TT Lakes;
+  line-height: 48.6px;
+  font-weight: 900;
   color: #fff;
 }
 
 .description {
+  font-family: TT Lakes;
   font-size: 24px;
   line-height: 36px;
   color: #fff;
@@ -295,9 +297,9 @@ a {
   margin-left: 50px;
 }
 
-@media only screen and (max-width: 599px) {
+@media only screen and (max-width: 1023px) {
   .garden-side {
-    padding: 25.51px 14.83px 64px 14.83px;
+    padding: 25.51px 14.83px  48px 14.83px;
   }
 
   .title {

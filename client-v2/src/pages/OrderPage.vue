@@ -126,7 +126,7 @@
             Адрес доставки
           </div>
           <div v-if="!showAddress" class="pho-pb-2">
-            <div class="name-field">
+            <div class="name-field name-field-first">
               Имя
             </div>
             <q-input
@@ -211,7 +211,7 @@
           </div>
           <div v-if="showAddress" class="pho-pb-2">
             <div class="name-field col-6">
-              Улица и дом
+              Улица, № дома
             </div>
             <input-adress
               :input-value="currentOrder.clientInfo.addressString"
@@ -643,7 +643,7 @@
         </div>
       </div>
       <!-- главная страница -->
-      <div class="carosel-box">
+      <div class="carousel-box">
         <q-carousel
           v-model="slide"
           animated
@@ -658,24 +658,15 @@
         >
           <q-carousel-slide
             class="carousel-slide"
-            :name="1"
-            img-src="../assets/image/interiorCard/testimg.jpg"
-          />
-          <q-carousel-slide
-            class="carousel-slide"
-            :name="2"
-            img-src="../assets/image/interiorCard/testimg2.jpg"
-          />
-          <q-carousel-slide
-            class="carousel-slide"
-            :name="3"
-            img-src="../assets/image/interiorCard/testimg3.jpg"
-          />
-          <q-carousel-slide
-            class="carousel-slide"
-            :name="4"
-            img-src="../assets/image/interiorCard/testimg4.jpg"
-          />
+            :name="index"
+            :img-src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
+            v-for="(promo, index) in promotionsDelivery" :key="promo.index"
+          ></q-carousel-slide>
+<!--          <q-carousel-slide-->
+<!--            class="carousel-slide"-->
+<!--            :name="1"-->
+<!--            img-src="../assets/image/interiorCard/testimg.jpg"-->
+<!--          />-->
         </q-carousel>
       </div>
       <div class="row q-pb-md form-area-display">
@@ -728,7 +719,7 @@
         </template>
       </div>
       <div
-        class="display-none-class-category-mobile"
+        class="display-none-class-category-mobile display-none-class"
       >
         <div
           v-for="category in categoriesMenu"
@@ -866,6 +857,7 @@ export default {
   data() {
     return {
       API_LINK: process.env.CLIENT_API_LINK,
+      CLIENT_API_LINK: process.env.CLIENT_API_LINK,
       PAIMENT_TYPES: process.env.PAIMENT_TYPES,
       DELIVERY_TYPE_LIST: process.env.DELIVERY_TYPE_LIST,
       slide: 1,
@@ -884,7 +876,9 @@ export default {
       products: [],
       activeCategoryProducts: [],
       activeCategory: null,
+      promotionsDelivery: [],
       scrollPosition: null,
+      activePromo: null,
       showCart: false,
       showAddress: false,
       activeDeliveryTypeButton: null,
@@ -964,6 +958,9 @@ export default {
       'currentOrder',
       'promoCode',
       'promoCodes',
+    ]),
+    ...mapState('promotions', [
+      'promotions',
     ]),
     ...mapGetters('order', [
       'totalSum',
@@ -1278,6 +1275,16 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    this.$store.dispatch('promotions/getPromotions').then(() => {
+      for (let i = 0; i < this.promotions.length; i += 1) {
+        if (JSON.parse(this.promotions[i].type).id === 2) {
+          this.promotionsDelivery.push(this.promotions[i]);
+        }
+      }
+      if (this.promotions[0] !== undefined) {
+        [this.activePromo] = this.promotions;
+      }
+    });
     if (this.deliveryPayButton[0] !== undefined) {
       [this.activeDeliveryPayButton] = this.deliveryPayButton;
     }
@@ -1355,15 +1362,20 @@ export default {
 }
 
 .logo {
-  padding: 40px 0 0px 40px;
+  padding: 22px 0 0px 34px;
+}
+
+.container {
+  padding: 0 105px;
+  max-width: 1175px;
 }
 
 .q-carousel {
   border-radius: 20px;
 }
 
-.carosel-box {
-  margin: 19px 0 12px 0;
+.carousel-box {
+  margin: 9px 0 28px 0;
 }
 
 .button-box {
@@ -1606,6 +1618,10 @@ export default {
   font-family: TT Lakes;
 }
 
+.name-field-first {
+  margin-top: 21px;
+}
+
 .comment-input {
   height: 77px;
 
@@ -1783,6 +1799,7 @@ export default {
   .container {
     margin: 48px auto;
     width: 100%;
+    padding: 0 15px;
   }
   .q-carousel {
     height: 289px;
@@ -1851,6 +1868,7 @@ export default {
   .display-none-class-category-mobile {
     display: block;
   }
+
   .pho-btn-delivery-zones {
     height: 37px;
   }

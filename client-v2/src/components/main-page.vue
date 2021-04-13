@@ -8,13 +8,13 @@
         <h1>Мы ресторан <nobr>и доставка</nobr></h1>
         <h2>Азиатская кухня и напитки.</h2>
 				<div class="delivery-btn" @click="gotoDelivery()">Заказать доставку</div >
-				<div class="row q-mt-lg">
-<!--				<a class="delivery-btn"
-				@click="scrollToMenu('menu-page')"
-				href="https://www.calameo.com/read/0063012992a13044fb4ad">Меню ресторана</a >-->
-				<a class="delivery-btn"
-				@click="scrollToMenu('menu-page')">Меню ресторана</a >
-				</div>
+<!--				<div class="row q-mt-lg">-->
+<!--&lt;!&ndash;				<a class="delivery-btn"-->
+<!--				@click="scrollToMenu('menu-page')"-->
+<!--				href="https://www.calameo.com/read/0063012992a13044fb4ad">Меню ресторана</a >&ndash;&gt;-->
+<!--				<a class="delivery-btn"-->
+<!--				@click="scrollToMenu('menu-page')">Меню ресторана</a >-->
+<!--				</div>-->
 				<div class="image"><img src="../assets/image/dish.png" alt=""></div>
 			</div>
         </div >
@@ -176,7 +176,7 @@ h2 {
   }
 }
 
-@media (max-width: 919px) {
+@media (max-width: 1023px) {
   .logo {
     opacity: 0;
   }
@@ -210,8 +210,10 @@ h2 {
     width: 30%;
   }
   h2 {
+    font-family: TT Lakes;
     font-size: 16px;
-    line-height: 22px;
+    line-height: 21.6px;
+    font-weight: 500;
     margin: 20px 0;
   }
   .text-col {

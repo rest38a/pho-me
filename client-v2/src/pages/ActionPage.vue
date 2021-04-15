@@ -20,7 +20,6 @@
             :style="{
                   background: promo.short_text}"
           v-if="JSON.parse(promo.type).id === 1">
-          >
           <img
                   class="image"
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
@@ -181,6 +180,7 @@ export default {
   right: -17px;
   bottom: -32px;
   z-index: -1;
+  width: 302px;
 }
 
 .btn-image {
@@ -235,6 +235,7 @@ export default {
     right: -14px;
     bottom: -14px;
     z-index: -1;
+    width: 211px;
   }
 
   .btn-image {

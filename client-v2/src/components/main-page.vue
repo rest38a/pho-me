@@ -30,7 +30,7 @@ export default {
   name: 'main-page',
   methods: {
     gotoDelivery() {
-      this.$router.push('delivery');
+      window.location = '/delivery';
     },
     scrollToMenu(id) {
       this.isSideMenuVisible = !this.isSideMenuVisible;

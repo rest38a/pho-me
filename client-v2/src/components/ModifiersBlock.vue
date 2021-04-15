@@ -89,10 +89,6 @@
               {{ modifierAddItem.name }}
             </div>
             <div>
-              <!-- <img :src="`${API_LINK}/uploads/${modifierAddItem
-                            .product.mainPhoto || 'pizza.png'}`"
-                                 class="img_fluid"
-                                 alt=""> -->
             </div>
             <div class="row">
               <div class="col">{{ modifierAddItem.product.base_Price }} р</div>
@@ -148,7 +144,6 @@ export default {
   },
   data() {
     return {
-      API_LINK: process.env.API_LINK,
       translate: 0,
       step: 87,
       selectedSize: {},

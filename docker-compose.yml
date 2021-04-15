@@ -21,6 +21,17 @@ services:
             - api:api
         environment:
             ADMIN_API_LINK: ${ADMIN_API_LINK}
+    client:
+        container_name: ${PROJECT}_client
+        build:
+            context: ./client-v2
+            dockerfile: ./Dockerfile
+        ports:
+            - ${CLIENT_PORT}:${CLIENT_PORT}
+        depends_on:
+            - api
+        environment:
+            CLIENT_API_LINK: ${CLIENT_API_LINK}
     db:
         build: ./${DB_SERVER_TYPE}
         container_name: ${PROJECT}_db

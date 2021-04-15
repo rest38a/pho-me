@@ -4,7 +4,8 @@
     <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
     <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
     <!--        </div>-->
-    <img src="/icons/logo.svg" alt="" class="logo mobile-hide" />
+    <img src="/icons/logo.svg" alt="" class="logo mobile-hide"
+         @click="goToRest"/>
     <div class="row desktop-hide items-center">
       <!-- <div class="col-3 q-pa-sm items-center row">
         <img src="/icons/logo.svg" alt="" class="logo-m" />
@@ -41,7 +42,7 @@
         @click.stop="showCart = !showCart"
       />
     </div>
-    <right-navigate-order-page />
+    <right-navigate-order-page/>
     <!-- корзина десктоп -->
     <div v-if="showCart" class="cart row col-8 col-lg-5">
       <div
@@ -67,7 +68,7 @@
               flat
               @click="toShowRegistrationOrder"
             >
-              <img class="" src="../assets/image/returnButton.png" />
+              <img class="" src="../assets/image/returnButton.png"/>
             </q-btn>
           </div>
           <div class="col-auto justify-center">
@@ -75,7 +76,7 @@
               Оформление заказа
             </div>
           </div>
-          <div class="col-1" />
+          <div class="col-1"/>
         </div>
 
         <div
@@ -95,7 +96,7 @@
           <div class="col-auto cart-h1 justify-center">
             Адрес доставки
           </div>
-          <div col-auto />
+          <div col-auto/>
         </div>
 
         <q-scroll-area
@@ -340,7 +341,7 @@
                 @input="setTime"
               >
                 <template v-slot:prepend>
-                  <q-icon name="schedule" />
+                  <q-icon name="schedule"/>
                 </template>
               </q-input>
             </div>
@@ -349,7 +350,7 @@
                 Режим работы доставки: с 12:00 по 22:00 -->
               Среднее время доставки - 90 минут.
             </div>
-            <div />
+            <div/>
           </div>
           <div v-if="!showAddress" class="name-field">
             Способ оплаты
@@ -393,7 +394,7 @@
             При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
             ошибка повториться сообщите пожалуйста нам об этом.
             <template v-slot:action>
-              <q-btn flat color="white" label="ОК" @click="error = !error" />
+              <q-btn flat color="white" label="ОК" @click="error = !error"/>
             </template>
           </q-banner>
           <q-btn
@@ -472,7 +473,7 @@
               flat
               @click="showCart = !showCart"
             >
-              <img class="" src="../assets/image/returnButton.png" />
+              <img class="" src="../assets/image/returnButton.png"/>
             </q-btn>
           </div>
           <div class="col-auto justify-center">
@@ -480,7 +481,7 @@
               Корзина
             </div>
           </div>
-          <div class="col-1" />
+          <div class="col-1"/>
         </div>
 
         <div class="cart-h1 form-area-display">
@@ -531,7 +532,7 @@
           style="height: 80%; padding-right: 20px"
         >
           <div class="">
-            <q-separator />
+            <q-separator/>
             <div v-for="cartItem in orderProducts" :key="cartItem.id">
               <BasketItem
                 :add-to-basket="addProductToBasket"
@@ -540,7 +541,7 @@
                 :cart-item="cartItem"
                 :order-products="orderProducts"
               />
-              <q-separator />
+              <q-separator/>
             </div>
           </div>
           <additional-sale
@@ -637,7 +638,7 @@
             no-caps
             @click="showMap = !showMap"
           >
-            <img src="/icons/location-baloon.svg" alt="" class="q-mr-sm" />
+            <img src="/icons/location-baloon.svg" alt="" class="q-mr-sm"/>
             <div>Зона доставки</div>
           </q-btn>
         </div>
@@ -645,6 +646,7 @@
       <!-- главная страница -->
       <div class="carousel-box">
         <q-carousel
+          :height="heightSlider"
           v-model="slide"
           animated
           navigation
@@ -655,18 +657,37 @@
           transition-next="slide-left"
           @mouseenter="autoplay = false"
           @mouseleave="autoplay = true"
+          class="form-area-display"
         >
           <q-carousel-slide
-            class="carousel-slide"
+            class="q-pa-none carousel-slide-image"
             :name="index"
+            v-for="(promo, index) in promotionsDelivery" :key="promo.index"
             :img-src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
+          >
+          </q-carousel-slide>
+        </q-carousel>
+      </div>
+      <div class="carousel-box">
+        <q-carousel
+          :height="heightSlider"
+          v-model="slide"
+          animated
+          infinite
+          :autoplay="autoplay"
+          arrows
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          @mouseenter="autoplay = false"
+          @mouseleave="autoplay = true"
+          class="display-none-mobile"
+        >
+          <q-carousel-slide
+            class="carousel-slide-image"
+            :name="index"
+            :img-src="`${CLIENT_API_LINK}/uploads/${promo.preview}`"
             v-for="(promo, index) in promotionsDelivery" :key="promo.index"
           ></q-carousel-slide>
-<!--          <q-carousel-slide-->
-<!--            class="carousel-slide"-->
-<!--            :name="1"-->
-<!--            img-src="../assets/image/interiorCard/testimg.jpg"-->
-<!--          />-->
         </q-carousel>
       </div>
       <div class="row q-pb-md form-area-display">
@@ -698,14 +719,17 @@
           :product="product"
         />
       </div>
-      <div class="row mobile-menu-scroll display-none-class">
+      <div class="row mobile-menu-scroll flex-md-block no-wrap display-none-class"
+           id="mobile-menu-scroll"
+      :style="{left: `${scrollMobileOffset}px`}">
         <template v-for="category in categoriesMenu">
           <q-btn
             :id="category.id"
             :key="category.id"
+            class="pho-btn"
             :class="{
-              'pho-btn': category.id === activeCategory,
-              'pho-btn pho-btn-outline': category.id !== activeCategory,
+              'active-category': category.id === activeCategory,
+              'pho-btn-outline': category.id !== activeCategory,
             }"
             flat
             no-caps
@@ -713,13 +737,13 @@
             @click="chooseCategory(category)"
           >
             <div>
-              {{ category.name }}
+              <nobr>{{ category.name }}</nobr>
             </div>
           </q-btn>
         </template>
       </div>
       <div
-        class="display-none-class-category-mobile display-none-class"
+        class="display-none-mobile"
       >
         <div
           v-for="category in categoriesMenu"
@@ -751,19 +775,19 @@
         <q-card-section class="q-pt-none">
           <div class="row">
             <div class="row items-center">
-              <div class="yellow-zone" />
+              <div class="yellow-zone"/>
               <div>от 800 руб</div>
             </div>
             <div class="row items-center">
-              <div class="blue-zone pl-3" />
+              <div class="blue-zone pl-3"/>
               <div>от 1100 руб</div>
             </div>
             <div class="row items-center q-ml-md-md">
-              <div class="purple-zone pl-3" />
+              <div class="purple-zone pl-3"/>
               <div>от 1400 руб</div>
             </div>
             <div class="row items-center">
-              <div class="green-zone pl-3" />
+              <div class="green-zone pl-3"/>
               <div>от 1700 руб</div>
             </div>
           </div>
@@ -809,11 +833,11 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn v-close-popup flat label="OK" color="primary" />
+          <q-btn v-close-popup flat label="OK" color="primary"/>
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <my-footer />
+    <my-footer/>
   </q-page>
 </template>
 
@@ -889,6 +913,11 @@ export default {
       showTimeInput: true,
       showAddressInput: true,
       maximizedToggle: true,
+      heightSlider: '',
+      window: {
+        width: null,
+      },
+      scrollMobileOffset: 0,
       deliveryTimeButton: [
         {
           type: 'Как можно скорее',
@@ -1005,14 +1034,33 @@ export default {
       'setEntrance',
       'setFloor',
     ]),
+    slideHeight() {
+      this.window.width = window.innerWidth;
+      if (this.window.width < 1023) {
+        const containers = document.getElementsByClassName('container');
+        if (containers.length) {
+          const containerWidth = containers[0].clientWidth;
+          const newHeight = (this.window.width - (this.window.width - containerWidth + 30)) / 2.7;
+          this.heightSlider = `${newHeight}px`;
+        }
+      } else {
+        const containers = document.getElementsByClassName('container');
+        if (containers.length) {
+          const containerWidth = containers[0].clientWidth;
+          const newHeight = (this.window.width - (this.window.width - containerWidth + 210)) / 3.3;
+          this.heightSlider = `${newHeight}px`;
+        }
+      }
+    },
+    goToRest() {
+      this.$router.push({ path: '/main/' });
+    },
     scroll() {
-      this.activeCategory = '';
       const scrollTop = window.pageYOffset;
       const categories = document.getElementsByClassName(
         'mobile-category-text',
       );
       for (let i = 0; i < categories.length; i += 1) {
-        this.activeCategory = i;
         const { id } = this.categoriesMenu[i];
         const categoryArea = document.getElementById(
           this.categoriesMenu[i].name,
@@ -1020,10 +1068,18 @@ export default {
         if (
           categories[i].offsetTop <= scrollTop + 300
           && categories[i].offsetTop + categoryArea.offsetHeight
-            > scrollTop + 180
+          > scrollTop + 180
           && scrollTop !== 0
         ) {
           this.activeCategory = id;
+          const activeCategoryClass = document.getElementsByClassName(
+            'active-category',
+          );
+          this.scrollMobileOffset = activeCategoryClass[0].offsetLeft;
+          const el = document.getElementById(
+            'mobile-menu-scroll',
+          );
+          el.scrollLeft = this.scrollMobileOffset - 25;
         }
       }
     },
@@ -1164,10 +1220,10 @@ export default {
       const checkHour = prepareTime.getHours();
       const checkMinuts = prepareTime.getMinutes();
       const isLessFinishBreak = (checkHour === this.finishBreak.getHours()
-          && checkMinuts < this.finishBreak.getMinutes())
+        && checkMinuts < this.finishBreak.getMinutes())
         || checkHour < this.finishBreak.getHours();
       const isBiggerFinishBreak = (checkHour === this.startBreak.getHours()
-          && checkMinuts > this.startBreak.getMinutes())
+        && checkMinuts > this.startBreak.getMinutes())
         || checkHour > this.startBreak.getHours();
       return isBiggerFinishBreak && isLessFinishBreak;
     },
@@ -1182,7 +1238,7 @@ export default {
       } else if (
         this.orderProducts.length === 0
         || (this.orderProducts.length === 1
-          && this.orderProducts[0].isGift === true)
+        && this.orderProducts[0].isGift === true)
       ) {
         this.createNotify('Нет блюд в корзине');
       } else if (
@@ -1275,6 +1331,8 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    window.addEventListener('resize', this.slideHeight);
+    this.slideHeight();
     this.$store.dispatch('promotions/getPromotions').then(() => {
       for (let i = 0; i < this.promotions.length; i += 1) {
         if (JSON.parse(this.promotions[i].type).id === 2) {
@@ -1327,11 +1385,9 @@ export default {
             const temp0 = item[0];
             const temp1 = item[1];
             this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex
-            ][0] = temp1;
+              idex][0] = temp1;
             this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex
-            ][1] = temp0;
+              idex][1] = temp0;
           },
         );
       }
@@ -1339,9 +1395,12 @@ export default {
   },
   created() {
     window.addEventListener('scroll', this.scroll);
+    window.addEventListener('resize', this.slideHeight);
+    this.slideHeight();
   },
   destroyed() {
     window.removeEventListener('scroll', this.scroll);
+    window.removeEventListener('resize', this.slideHeight);
   },
 };
 </script>
@@ -1363,11 +1422,12 @@ export default {
 
 .logo {
   padding: 22px 0 0px 34px;
+  cursor: pointer;
 }
 
 .container {
   padding: 0 105px;
-  max-width: 1175px;
+  max-width: 1400px;
 }
 
 .q-carousel {
@@ -1376,6 +1436,11 @@ export default {
 
 .carousel-box {
   margin: 9px 0 28px 0;
+  border-radius: 20px;
+}
+
+.carousel-slide-image {
+  width: 100%;
 }
 
 .button-box {
@@ -1387,6 +1452,7 @@ export default {
 .button-box-time {
   margin: 8px 0 0 0;
 }
+
 .button-parent {
   &:first-child {
     border-radius: 0px 10px 0 10px;
@@ -1401,6 +1467,7 @@ export default {
   &.active {
     animation: active-animation 0.1s;
   }
+
   &.noActive {
     animation: noactive-animation 0.1s;
   }
@@ -1408,9 +1475,11 @@ export default {
 
 .time-animation {
   margin: 5px 0 10px 0;
+
   &.active {
     animation: active-animation 0.1s;
   }
+
   &.noActive {
     animation: noactive-animation 0.1s;
   }
@@ -1492,6 +1561,7 @@ export default {
 .basket-cart-name {
   margin: 0 auto;
 }
+
 .cart {
   z-index: 99;
   position: fixed;
@@ -1510,6 +1580,7 @@ export default {
 .cart-area {
   padding: 32px 40px 32px 32px;
 }
+
 .create-order-button {
   display: none;
 }
@@ -1521,6 +1592,7 @@ export default {
 .q-notifications__list--center {
   bottom: 55px;
 }
+
 .q-notifications__list--bottom {
   top: 0;
 }
@@ -1548,9 +1620,11 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 100;
+
   &.active {
     background: #ca17a8;
   }
+
   &.noActive {
     background: #eab700;
   }
@@ -1656,6 +1730,7 @@ export default {
 .logo-m {
   width: 100%;
 }
+
 .yellow-zone {
   width: 50px;
   height: 30px;
@@ -1663,6 +1738,7 @@ export default {
   background: #ffd21e;
   margin: 20px 10px 20px 0;
 }
+
 .blue-zone {
   width: 50px;
   height: 30px;
@@ -1670,6 +1746,7 @@ export default {
   background: #82cdff;
   margin: 20px 10px 20px 20px;
 }
+
 .purple-zone {
   width: 50px;
   height: 30px;
@@ -1677,6 +1754,7 @@ export default {
   background: #f371d1;
   margin: 20px 10px 20px 0px;
 }
+
 .green-zone {
   width: 50px;
   height: 30px;
@@ -1702,7 +1780,7 @@ export default {
   border: 2px solid #fcd000;
   color: #4f4f4f;
   font-size: 22px;
-  line-height: 29, 7px;
+  line-height: 29.7px;
   font-family: TT Lakes;
   font-weight: 700;
 }
@@ -1728,6 +1806,7 @@ export default {
   height: 38px;
   font-weight: 500;
   margin: 0;
+
   &.active {
     background: #fcd000;
     color: #ffffff;
@@ -1754,6 +1833,11 @@ export default {
   margin-left: 40px;
   height: 49px;
 }
+
+.display-none-mobile {
+  display: none;
+}
+
 @media (min-width: 1000px) {
   .warning-line {
     height: 95px;
@@ -1805,10 +1889,12 @@ export default {
     height: 289px;
   }
 
+  .q-carousel {
+    border-radius: 20px;
+  }
+
   .mobile-menu-scroll {
     overflow-x: scroll;
-    display: flex;
-    flex-wrap: nowrap;
     position: sticky;
     top: 48px;
     background: #02bbbd;
@@ -1865,7 +1951,7 @@ export default {
     display: flex;
   }
 
-  .display-none-class-category-mobile {
+  .display-none-mobile {
     display: block;
   }
 

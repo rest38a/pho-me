@@ -33,7 +33,7 @@
 
 <script>
 import { mapState, mapMutations } from 'vuex';
-import BottomNavigation from '../components/navigation/bottomNavigation.vue';
+import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
 export default {

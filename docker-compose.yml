@@ -32,6 +32,7 @@ services:
             - api
         environment:
             CLIENT_API_LINK: ${CLIENT_API_LINK}
+            CLIENT_PORT: ${CLIENT_PORT}
     db:
         build: ./${DB_SERVER_TYPE}
         container_name: ${PROJECT}_db

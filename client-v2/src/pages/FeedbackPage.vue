@@ -429,7 +429,7 @@ export default {
   }
 
   .background {
-    padding: 25.51px 14.83px 0 14.83px;
+    padding: 25.51px 0px 0 0px;
   }
 
   .btn-feedback-whatsapp {

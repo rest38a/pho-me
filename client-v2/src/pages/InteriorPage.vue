@@ -279,51 +279,16 @@ export default {
   top: 43%;
 }
 
-.hooper-prev {
-  background-color: yellow;
-}
-
-.rightButton {
-  position: absolute;
-  top: 45%;
-  left: 30px;
-}
-
-.leftButton {
-  position: absolute;
-  top: 45%;
-  right: 30px;
-}
-
-.interiorButton {
-  background: inherit;
-  border: 0;
-}
-
 .image {
   width: 100%;
-}
-
-.image-hooper {
-  width: 90%;
 }
 
 .display-none-class {
   display: none;
 }
 
-.q-card {
-  overflow: hidden;
-}
-
-.hooper-list {
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-}
-
 .text-white {
-  font-family: tr;
+  font-family: trakes;
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
@@ -346,6 +311,10 @@ export default {
     padding: 0;
   }
 
+  .background {
+    padding: 25.51px 0px 48px 0px;
+  }
+
   .image {
     cursor: pointer;
     width: 100%;
@@ -357,22 +326,12 @@ export default {
     overflow: hidden;
   }
 
-  .q-card {
-    overflow: hidden;
-  }
-
   .form-area-display {
     display: none;
   }
 
   .display-none-class {
     display: flex;
-  }
-}
-
-@media only screen and (max-width: 991.98px) {
-  .background {
-    padding: 25.51px 14.83px 48px 14.83px;
   }
 }
 

@@ -328,9 +328,6 @@ a {
 }
 
 @media only screen and (max-width: 919.98px) {
-  .background {
-    padding: 25.51px 14.83px 96px 14.83px;
-  }
   .relative-box {
     width: 140%;
     margin: 0 0px 0 -110px;

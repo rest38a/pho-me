@@ -263,8 +263,8 @@ export default {
   border: 2px solid #fcd000;
   color: #4f4f4f;
   font-size: 22px;
-  line-height: 29, 7px;
-  font-family: TT Lakes;
+  line-height: 29.7px;
+  font-family: lcm;
   font-weight: 700;
 }
 
@@ -285,7 +285,7 @@ export default {
   color: #333333;
 }
 .pho-card-product-name {
-    font-family: TT Lakes;
+    font-family: lcm;
     font-weight: bold;
     font-size: 18px;
     line-height: 24px;
@@ -293,7 +293,7 @@ export default {
 }
 
 .pho-card-product-weight {
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
@@ -327,7 +327,6 @@ export default {
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;
-
   /* Gray 3 */
   color: #828282;
 }
@@ -369,6 +368,7 @@ switch_area {
   letter-spacing: 0.05em;
   color: #828282;
   padding: 3px;
+  font-family: tr;
 }
 
 .active_switch {

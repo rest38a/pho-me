@@ -210,7 +210,7 @@ h2 {
     width: 30%;
   }
   h2 {
-    font-family: TT Lakes;
+    font-family: tr;
     font-size: 16px;
     line-height: 21.6px;
     font-weight: 500;

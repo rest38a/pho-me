@@ -136,7 +136,7 @@ export default {
   overflow: hidden;
 }
 .cart-h1 {
-  font-family: TT Lakes;
+  font-family: lb;
   font-style: italic;
   font-size: 16px;
   line-height: 22px;
@@ -174,7 +174,7 @@ export default {
 }
 
 .name-field {
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: bold;
   font-size: 10px;
   line-height: 12px;
@@ -183,7 +183,7 @@ export default {
 }
 
 .price {
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: normal;
   font-size: 12px;
   line-height: 12px;
@@ -203,7 +203,7 @@ export default {
 
 .pho-btn-med-promo {
   width: 79px;
-  font-family: TT Lakes;
+  font-family: tr;
   border-radius: 10px;
   background: #fcd000;
   border: 2px solid #fcd000;

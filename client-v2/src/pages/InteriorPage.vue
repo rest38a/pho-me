@@ -323,7 +323,7 @@ export default {
 }
 
 .text-white {
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: 500;
   font-size: 15px;
   line-height: 20px;

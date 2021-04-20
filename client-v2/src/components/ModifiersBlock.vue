@@ -326,7 +326,7 @@ $animationSpeed: 40s;
 }
 .switch_item {
   cursor: pointer;
-  font-family: TT Lakes;
+  font-family: lcm;
   font-size: 12px;
   line-height: 14px;
   text-align: center;
@@ -353,7 +353,7 @@ $animationSpeed: 40s;
   text-align: center;
   color: #828282;
   padding: 3px;
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: 500;
 }
 

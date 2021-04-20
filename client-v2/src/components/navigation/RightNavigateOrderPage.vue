@@ -252,7 +252,6 @@ export default {
   font-style: italic;
   list-style-type: none;
   cursor: pointer;
-  padding: 0 0 25px 0;
 }
 
 .icon-img {

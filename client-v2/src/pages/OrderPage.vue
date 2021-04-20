@@ -628,7 +628,7 @@
         <div class="pho-h1 form-area-display">
           ДОСТАВКА
         </div>
-        <div class="pho-h1 display-none-class">
+        <div class="pho-h1 display-none-class q-pr-md">
           Доставка
         </div>
         <div>
@@ -1833,7 +1833,6 @@ export default {
   font-size: 22px;
   line-height: 29.7px;
   font-weight: 500;
-  margin-left: 40px;
   height: 49px;
   font-family: lcm;
 }

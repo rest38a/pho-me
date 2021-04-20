@@ -128,7 +128,7 @@ export default {
   font-size: 14px;
   color: #fff;
   list-style-type: none;
-  margin-top: 30px;
+  margin-left: 25px;
 }
 
 .center-box {

@@ -27,25 +27,25 @@
         </div>
       </div>
       <div class="cardBox">
-        <div class="relative-box">
-          <div class="row descriptionZones" v-if="!showMap">
-            <div class="row items-center">
-              <div class="yellow-zone"></div>
-              <div class="delivery-text">от 800 руб</div>
-            </div>
-            <div class="row items-center">
-              <div class="blue-zone pl-3"></div>
-              <div class="delivery-text">от 1100 руб</div>
-            </div>
-            <div class="row items-center q-ml-md-md">
-              <div class="purple-zone pl-3"></div>
-              <div class="delivery-text">от 1400 руб</div>
-            </div>
-            <div class="row items-center">
-              <div class="green-zone pl-3"></div>
-              <div class="delivery-text">от 1700 руб</div>
-            </div>
+        <div class="row descriptionZones justify-start" v-if="!showMap">
+          <div class="row items-center q-pr-xs q-pl-xs">
+            <div class="yellow-zone"></div>
+            <div class="delivery-text">от 800 руб</div>
           </div>
+          <div class="row items-center q-pr-xs q-pl-xs">
+            <div class="blue-zone pl-3"></div>
+            <div class="delivery-text">от 1100 руб</div>
+          </div>
+          <div class="row items-center q-pr-xs q-pl-xs">
+            <div class="purple-zone pl-3"></div>
+            <div class="delivery-text">от 1400 руб</div>
+          </div>
+          <div class="row items-center q-pr-xs q-pl-xs">
+            <div class="green-zone pl-3"></div>
+            <div class="delivery-text">от 1700 руб</div>
+          </div>
+        </div>
+        <div class="relative-box">
           <yandex-map
             class="yandex-map-user"
             :class="{active: showMap === false, noActive: showMap === true}"
@@ -325,9 +325,6 @@ a {
     margin-left: 26.04px;
     height: 22.18px;
   }
-}
-
-@media only screen and (max-width: 919.98px) {
   .relative-box {
     width: 140%;
     margin: 0 0px 0 -110px;
@@ -369,7 +366,7 @@ a {
   height: 30px;
   border-radius: 20px;
   background: #82cdff;
-  margin: 20px 10px 20px 20px;
+  margin: 20px 10px 20px 0px;
 }
 .purple-zone {
   width: 50px;
@@ -383,6 +380,6 @@ a {
   height: 30px;
   border-radius: 20px;
   background: #56db40;
-  margin: 20px 10px 20px 20px;
+  margin: 20px 10px 20px 0px;
 }
 </style>

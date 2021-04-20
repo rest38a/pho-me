@@ -17,9 +17,10 @@
 <!--          >-->
           <div
             class="render-card justify-between"
+            v-if="promo !== null"
             :style="{
                   background: promo.short_text}"
-          v-if="JSON.parse(promo.type).id === 1">
+          v-show="JSON.parse(promo.type).id === 1">
           <img
                   class="image"
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
@@ -46,6 +47,7 @@
           <q-card style="width: 700px; max-width: 80vw" class="q-card">
             <q-card-section class="q-card-section">
               <div
+                v-if="activePromo !== null"
                 class="render-card justify-between"
                 :style="{
                   background: activePromo.short_text}">

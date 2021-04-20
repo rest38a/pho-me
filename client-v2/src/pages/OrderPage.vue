@@ -1764,7 +1764,7 @@ export default {
 }
 
 .mobile-category-text {
-  font-family: tr;
+  font-family: lb;
   font-weight: 900;
   font-size: 22px;
   font-style: italic;

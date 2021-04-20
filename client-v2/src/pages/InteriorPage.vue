@@ -13,12 +13,14 @@
         >
           <img
             class="image" @click="chooseInterior(interior)"
+            v-if="interior !== null"
             :src="`${CLIENT_API_LINK}/uploads/${interior.photo}`"
           />
         </div>
         <q-dialog v-model="medium" class="pho-dialog">
           <q-card>
             <img
+              v-if="activeInteriors !== null"
               class="image"
               :src="`${CLIENT_API_LINK}/uploads/${activeInteriors.photo}`"
             />

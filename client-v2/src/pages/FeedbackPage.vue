@@ -15,12 +15,10 @@
             <div v-for="item in platforms" :key="item.id" class="social-box">
               <div class="description">{{ item.description }}</div>
               <div class="row rating-box">
-                <star-rating
-                  :rating="item.rating"
-                  :starStyle="style"
-                  class="star-rating"
-                ></star-rating>
-                <!-- <div class="rating">{{ item.rating }}</div> -->
+                <div class="empty-star" v-for="starNumber in 5" :key="starNumber">
+                  <div class="full-star"
+                       :style="{width: calcWidth(item.rating, starNumber)}"></div>
+                </div>
               </div>
               <div
                 class="btn-feedback"
@@ -28,27 +26,27 @@
                 @click="clickHandle(item.link)"
               >
                 <div class="img-feedback-wrap" :class="item.classImg">
-                  <img :src="item.image" alt="" />
+                  <img :src="item.image" alt=""/>
                 </div>
                 <div class="text-feedback-wrap" :class="item.childClass">
-                  Оставить отзыв<br />
+                  Оставить отзыв<br/>
                   <span class="text-uppercase">{{ item.title }}</span>
                 </div>
               </div>
             </div>
             <div class="whatsapp-box">
               <div class="description">
-                Остались какие-то вопросы<br />или предложения?
+                Остались какие-то вопросы<br/>или предложения?
               </div>
               <div
                 class="btn-feedback btn-feedback-whatsapp"
                 @click="clickHandle()"
               >
                 <div class="img-feedback-wrap img-wrap-whatsapp">
-                  <img src="../assets/image/feedback/WhatsApp.png" />
+                  <img src="../assets/image/feedback/WhatsApp.png"/>
                 </div>
                 <div class="text-feedback-wrap text-color-white">
-                  написать нам<br />
+                  написать нам<br/>
                   <span class="text-uppercase">НА WHATSAPP</span>
                 </div>
               </div>
@@ -56,7 +54,7 @@
           </div>
         </div>
         <div class="photo-box">
-          <img src="../assets/image/feedbackImage.png" class="photo" />
+          <img src="../assets/image/feedbackImage.png" class="photo"/>
         </div>
       </div>
     </div>
@@ -65,16 +63,16 @@
 </template>
 
 <script>
-import StarRating from 'vue-dynamic-star-rating';
 import logo from '../components/navigation/logo.vue';
 
 export default {
-  components: { logo, StarRating },
+  components: { logo },
   name: 'FeedbackPage',
   data() {
     return {
       config: {
         rating: 4.1,
+        fullStarWidth: '0px',
         style: {
           fullStarColor: '#f8c200',
           emptyStarColor: 'white',
@@ -156,16 +154,24 @@ export default {
     clickHandle(link) {
       window.location.href = link;
     },
+    calcWidth(rating, starNumber) {
+      let fillOfStar = '100%';
+      if (starNumber <= rating) {
+        return fillOfStar;
+      }
+      fillOfStar = `${((rating % (starNumber - 1)) * 100)}%`;
+      return fillOfStar;
+    },
   },
 };
-</script >
+</script>
 
 <style scoped lang='scss'>
 .feedback-side {
   background: radial-gradient(
-    59.09% 53.85% at 50% 50%,
-    rgba(255, 168, 0, 0.88) 23.44%,
-    #fcd000 100%
+      59.09% 53.85% at 50% 50%,
+      rgba(255, 168, 0, 0.88) 23.44%,
+      #fcd000 100%
   );
   min-height: 100%;
   overflow: hidden;
@@ -223,6 +229,7 @@ export default {
 .social-box {
   position: relative;
 }
+
 .description {
   font-family: TT Lakes;
   font-weight: 500;
@@ -241,6 +248,21 @@ export default {
   margin-left: 18px;
 }
 
+.empty-star {
+  background-image: url("../assets/image/feedback/emptyStar.svg");
+  width: 22px;
+  height: 22px;
+  margin: 0 9px 15px 0;
+  position: relative;
+}
+
+.full-star {
+  background-image: url("../assets/image/feedback/fullStar.png");
+  height: 22px;
+  position: absolute;
+  left: 0;
+}
+
 .star-rating {
   margin-bottom: 15.44px;
 }
@@ -257,48 +279,61 @@ export default {
   border-radius: 10px;
   cursor: pointer;
 }
+
 .btn-feedback:hover {
   background: rgba(0, 0, 0, 0.2) !important;
 }
+
 .btn-feedback-google {
   background: #ffffff;
 }
+
 .btn-feedback-yandex {
   background: #ffd600;
 }
+
 .btn-feedback-2gis {
   background: #a1c611;
 }
+
 .btn-feedback-advisor {
   background: #00af87;
 }
+
 .btn-feedback-flamp {
   background: #2e6ae4;
 }
+
 .btn-feedback-whatsapp {
   background: #25d366;
   padding: 0;
   position: absolute;
   bottom: 0;
 }
+
 .img-feedback-wrap {
   width: 56px;
   position: relative;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
+
 .img-wrap-google {
   background: rgba(242, 242, 242, 0.8);
 }
+
 .img-wrap-yandex {
   background: rgba(0, 0, 0, 0.11);
 }
+
 .img-wrap-2gis {
   background: rgba(57, 57, 56, 0.1);
 }
+
 .img-wrap-advisor {
   background: rgba(57, 57, 56, 0.2);
 }
+
 .img-wrap-flamp {
   background: rgba(47, 54, 64, 0.42);
 }
@@ -306,6 +341,7 @@ export default {
 .img-wrap-whatsapp {
   background: rgba(57, 57, 56, 0.2);
 }
+
 .img-feedback-wrap img {
   position: absolute;
   top: 10px;
@@ -323,22 +359,27 @@ export default {
   top: 5px;
   left: 5px;
 }
+
 .img-wrap-advisor img {
   position: absolute;
   top: 18px;
   left: 12px;
 }
+
 .img-wrap-flamp img {
   position: absolute;
   top: 10px;
   left: 10px;
 }
+
 .text-color-black {
   color: #323232;
 }
+
 .text-color-white {
   color: #fff;
 }
+
 .text-feedback-wrap {
   font-family: TT Lakes, sans-serif;
   text-transform: uppercase;
@@ -347,6 +388,7 @@ export default {
   font-weight: 900;
   padding: 15px 10px 0;
 }
+
 .text-uppercase {
   text-transform: uppercase;
   font-size: 14px;
@@ -355,6 +397,7 @@ export default {
 .footer {
   display: none;
 }
+
 @media (max-width: 414px) {
   .child-bg {
     width: 100%;
@@ -372,10 +415,10 @@ export default {
     width: 740px;
   }
   .photo {
-  object-fit: cover;
-  max-width: 100%;
-  height: 100%;
-}
+    object-fit: cover;
+    max-width: 100%;
+    height: 100%;
+  }
 }
 
 @media (max-width: 1023px) {

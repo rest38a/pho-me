@@ -98,7 +98,7 @@ export default {
       [this.activePoint] = this.pages;
     }
   },
-  created() {
+  async created() {
     window.addEventListener('scroll', this.scroll);
   },
   destroyed() {

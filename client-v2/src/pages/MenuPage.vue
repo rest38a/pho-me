@@ -7,6 +7,7 @@
         <div  class="button-box row" >
         <div v-for="item in menus" :key="item.id">
           <q-btn
+            v-if="item.id !== null"
             :id="item.id"
             :key="item.id"
             class="pho-btn"
@@ -25,7 +26,8 @@
         </div>
         </div>
       </div>
-      <div class="for-iframe" v-html="activeMenu.code"></div>
+      <div v-if="activeMenu !== null"
+        class="for-iframe" v-html="activeMenu.code"></div>
     </div>
     <bottom-navigation></bottom-navigation>
   </div>

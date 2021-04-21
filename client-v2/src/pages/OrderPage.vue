@@ -625,7 +625,7 @@
     <!--        </div>-->
     <div class="container">
       <div class="row items-center justify-md-start justify-between">
-        <div class="pho-h1 form-area-display">
+        <div class="pho-h1 form-area-display q-pr-lg">
           ДОСТАВКА
         </div>
         <div class="pho-h1 display-none-class q-pr-md">

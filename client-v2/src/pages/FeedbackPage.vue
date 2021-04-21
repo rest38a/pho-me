@@ -14,11 +14,12 @@
           <div class="feedback-table row q-col-gutter-lg">
             <div v-for="item in platforms" :key="item.id" class="social-box">
               <div class="description">{{ item.description }}</div>
-              <div class="row rating-box">
+              <div class="row rating-box content-center items-baseline">
                 <div class="empty-star" v-for="starNumber in 5" :key="starNumber">
                   <div class="full-star"
                        :style="{width: calcWidth(item.rating, starNumber)}"></div>
                 </div>
+                <div class="rating">{{ item.rating }}</div>
               </div>
               <div
                 class="btn-feedback"
@@ -204,7 +205,7 @@ export default {
 }
 
 .under-title {
-  font-family: TT Lakes;
+  font-family: lb;
   font-style: normal;
   font-weight: 900;
   font-size: 36px;
@@ -213,7 +214,7 @@ export default {
 }
 
 .under-title-post {
-  font-family: TT Lakes;
+  font-family: lcm;
   font-style: normal;
   font-weight: 500;
   font-size: 18px;
@@ -231,7 +232,7 @@ export default {
 }
 
 .description {
-  font-family: TT Lakes;
+  font-family: lcm;
   font-weight: 500;
   font-size: 16px;
   line-height: 36px;
@@ -240,7 +241,7 @@ export default {
 }
 
 .rating {
-  font-family: TT Lakes;
+  font-family: tr;
   font-weight: 500;
   font-size: 26px;
   line-height: 14px;
@@ -381,7 +382,7 @@ export default {
 }
 
 .text-feedback-wrap {
-  font-family: TT Lakes, sans-serif;
+  font-family: lb;
   text-transform: uppercase;
   line-height: 14px;
   font-size: 8px;
@@ -392,6 +393,7 @@ export default {
 .text-uppercase {
   text-transform: uppercase;
   font-size: 14px;
+  font-family: lb;
 }
 
 .footer {
@@ -427,7 +429,7 @@ export default {
   }
 
   .background {
-    padding: 25.51px 14.83px 0 14.83px;
+    padding: 25.51px 0px 0 0px;
   }
 
   .btn-feedback-whatsapp {
@@ -450,7 +452,7 @@ export default {
     width: 110%;
     background-color: #f8c200;
     margin: 48px -1px 0 -14.83px;
-    font-family: TT Lakes;
+    font-family: tr;
     line-height: 55px;
     font-size: 36px;
     font-weight: 900;

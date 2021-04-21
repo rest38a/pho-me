@@ -201,7 +201,7 @@ export default {
 
 @media only screen and (max-width: 1023px) {
   .pink-side {
-    padding: 25.51px 14.83px 48px 14.83px;
+    padding: 25.51px 0px 48px 0px;
   }
 
   .logo {
@@ -245,13 +245,6 @@ export default {
     height: 76px;
   }
 }
-
-@media only screen and (max-width: 991.98px) {
-  .background {
-    padding: 25.51px 14.83px 98px 14.83px;
-  }
-}
-
 @media only screen and (min-width: 991.98px) {
   .action-cards {
     margin-bottom: 178px;

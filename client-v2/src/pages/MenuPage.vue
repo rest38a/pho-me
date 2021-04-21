@@ -125,10 +125,6 @@ export default {
 }
 
 @media only screen and (max-width: 599px) {
-  .green-side {
-    padding: 25.51px 14.83px 64px 14.83px;
-  }
-
   .under-title {
     padding-left: 7px;
   }
@@ -149,14 +145,12 @@ export default {
   }
 }
 @media only screen and (max-width: 1023px) {
-  .background {
-    padding: 25.51px 14.83px 48px 14.83px;
+  .green-side {
+    padding: 25.51px 0px 48px 0px;
   }
   .title-btn-box {
     margin: 0 0 36px 0;
   }
-}
-@media only screen and (max-width: 1023px) {
   .pho-btn {
     font-size: 14px;
     line-height: 18.9px;

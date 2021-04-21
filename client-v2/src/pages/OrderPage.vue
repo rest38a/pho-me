@@ -625,10 +625,10 @@
     <!--        </div>-->
     <div class="container">
       <div class="row items-center justify-md-start justify-between">
-        <div class="pho-h1 form-area-display">
+        <div class="pho-h1 form-area-display q-pr-lg">
           ДОСТАВКА
         </div>
-        <div class="pho-h1 display-none-class">
+        <div class="pho-h1 display-none-class q-pr-md">
           Доставка
         </div>
         <div>
@@ -914,9 +914,7 @@ export default {
       showAddressInput: true,
       maximizedToggle: true,
       heightSlider: '',
-      window: {
-        width: null,
-      },
+      windowWidth: null,
       scrollMobileOffset: 0,
       deliveryTimeButton: [
         {
@@ -1035,19 +1033,19 @@ export default {
       'setFloor',
     ]),
     slideHeight() {
-      this.window.width = window.innerWidth;
-      if (this.window.width < 1023) {
+      this.windowWidth = window.innerWidth;
+      if (this.windowWidth < 1023) {
         const containers = document.getElementsByClassName('container');
         if (containers.length) {
           const containerWidth = containers[0].clientWidth;
-          const newHeight = (this.window.width - (this.window.width - containerWidth + 30)) / 2.7;
+          const newHeight = (this.windowWidth - (this.windowWidth - containerWidth + 30)) / 2.7;
           this.heightSlider = `${newHeight}px`;
         }
       } else {
         const containers = document.getElementsByClassName('container');
         if (containers.length) {
           const containerWidth = containers[0].clientWidth;
-          const newHeight = (this.window.width - (this.window.width - containerWidth + 210)) / 3.3;
+          const newHeight = (this.windowWidth - (this.windowWidth - containerWidth + 210)) / 3.3;
           this.heightSlider = `${newHeight}px`;
         }
       }
@@ -1394,9 +1392,11 @@ export default {
     });
   },
   created() {
-    window.addEventListener('scroll', this.scroll);
-    window.addEventListener('resize', this.slideHeight);
-    this.slideHeight();
+    if (process.browser) {
+      window.addEventListener('scroll', this.scroll);
+      window.addEventListener('resize', this.slideHeight);
+      this.slideHeight();
+    }
   },
   destroyed() {
     window.removeEventListener('scroll', this.scroll);
@@ -1412,7 +1412,7 @@ export default {
 }
 
 .pho-h1 {
-  font-family: TT Lakes;
+  font-family: lb;
   color: #fff;
   font-style: italic;
   font-weight: 900;
@@ -1689,7 +1689,7 @@ export default {
   font-weight: 500;
   font-size: 14px;
   line-height: 19px;
-  font-family: TT Lakes;
+  font-family: tr;
 }
 
 .name-field-first {
@@ -1764,7 +1764,7 @@ export default {
 }
 
 .mobile-category-text {
-  font-family: TT Lakes;
+  font-family: lb;
   font-weight: 900;
   font-size: 22px;
   font-style: italic;
@@ -1780,8 +1780,8 @@ export default {
   border: 2px solid #fcd000;
   color: #4f4f4f;
   font-size: 22px;
-  line-height: 29.7px;
-  font-family: TT Lakes;
+  line-height: 30px;
+  font-family: ttbold;
   font-weight: 700;
 }
 
@@ -1806,6 +1806,7 @@ export default {
   height: 38px;
   font-weight: 500;
   margin: 0;
+  font-family: tr;
 
   &.active {
     background: #fcd000;
@@ -1824,14 +1825,16 @@ export default {
   font-size: 12px;
   line-height: 16px;
   text-transform: none;
+  font-weight: 500;
+  font-family: tr;
 }
 
 .pho-btn-delivery-zones {
   font-size: 22px;
   line-height: 29.7px;
   font-weight: 500;
-  margin-left: 40px;
   height: 49px;
+  font-family: lcm;
 }
 
 .display-none-mobile {

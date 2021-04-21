@@ -138,10 +138,13 @@ h2 {
   top: 50%;
   transform: translateY(-50%);
 }
-@media (max-width: 1280px) {
-  .logo img {
-    width: 126px;
+
+@media (min-width: 1600px) {
+  .main-container {
+    max-width: 1400px;
   }
+}
+@media (max-width: 1440px) {
   h1 {
     font-size: 90px;
     line-height: 90px;
@@ -158,11 +161,7 @@ h2 {
     padding: 14px 32px;
   }
 }
-@media (min-width: 1400px) {
-  .main-container {
-    max-width: 1400px;
-  }
-}
+
 @media (max-width: 991px) {
   h1 {
     font-size: 70px;
@@ -210,7 +209,7 @@ h2 {
     width: 30%;
   }
   h2 {
-    font-family: TT Lakes;
+    font-family: tr;
     font-size: 16px;
     line-height: 21.6px;
     font-weight: 500;

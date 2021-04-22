@@ -43,13 +43,13 @@
           @click="scrollToMenu('main-page')"
         />
         <ul class="column title-list">
-          <li class="title" @click="gotoDelivery()">ДОСТАВКА</li>
-          <li class="title" @click="scrollToMenu('menu-page')">МЕНЮ</li>
-          <li class="title" @click="scrollToMenu('action-page')">АКЦИИ</li>
-          <li class="title" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
-          <li class="title" @click="scrollToMenu('contact-page')">КОНТАКТЫ</li>
-          <li class="title" @click="scrollToMenu('feedback-page')">ОТЗЫВЫ</li>
-          <li class="title" @click="scrollToMenu('')">ВАКАНСИИ</li>
+          <li class="title-menu" @click="gotoDelivery()">ДОСТАВКА</li>
+          <li class="title-menu" @click="scrollToMenu('menu-page')">МЕНЮ</li>
+          <li class="title-menu" @click="scrollToMenu('action-page')">АКЦИИ</li>
+          <li class="title-menu" @click="scrollToMenu('interior-page')">ИНТЕРЬЕР</li>
+          <li class="title-menu" @click="scrollToMenu('contact-page')">КОНТАКТЫ</li>
+          <li class="title-menu" @click="scrollToMenu('feedback-page')">ОТЗЫВЫ</li>
+          <li class="title-menu" @click="scrollToMenu('')">ВАКАНСИИ</li>
         </ul>
         <div class="vertical-line col"></div>
       </div>
@@ -155,10 +155,10 @@ export default {
   padding: 0;
 }
 
-.title {
+.title-menu {
   font-family: lb;
-  font-size: 88px;
-  line-height: 118px;
+  font-size: 75px;
+  line-height: 105px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -174,6 +174,7 @@ export default {
 .logo {
   cursor: pointer;
   margin-left: 20px;
+  width: 300px;
 }
 
 ::-webkit-scrollbar {
@@ -192,7 +193,7 @@ export default {
   display: none;
 }
 
-@media (max-width: 1340px) {
+@media (max-width: 1240px) {
   .title {
     font-size: 80px;
     line-height: 110px;
@@ -205,38 +206,23 @@ export default {
   }
 }
 
-@media (max-width: 1279px) {
-  .title {
-    font-size: 68px;
-    line-height: 98px;
-    padding: 0;
-    margin: 0;
-  }
-  .logo {
-    width: 270px;
-  }
-  .mobile {
-    display: inline;
-  }
-  .side-menu {
-    padding-left: 20px;
-  }
-}
-
-@media (max-width: 1023px) {
-  .title {
-    font-family: lb;
-    font-size: 70px;
-    line-height: 100px;
-    padding: 0;
-  }
-  .logo {
-    width: 300px;
-  }
-  .photo-box {
-    display: none;
-  }
-}
+/*@media (max-width: 1279px) {*/
+/*  .title {*/
+/*    font-size: 68px;*/
+/*    line-height: 98px;*/
+/*    padding: 0;*/
+/*    margin: 0;*/
+/*  }*/
+/*  .logo {*/
+/*    width: 270px;*/
+/*  }*/
+/*  .mobile {*/
+/*    display: inline;*/
+/*  }*/
+/*  .side-menu {*/
+/*    padding-left: 20px;*/
+/*  }*/
+/*}*/
 
 @media only screen and (max-width: 1023px) {
   .logo {
@@ -280,7 +266,7 @@ export default {
     display: none;
   }
 
-  .title {
+  .title-menu {
     font-size: 70px;
     line-height: 100px;
     padding: 0;
@@ -320,16 +306,10 @@ export default {
 }
 
 @media only screen and (max-width: 599px) {
-  .title {
+  .title-menu {
     font-family: lb;
     font-size: 36px;
     line-height: 55px;
-  }
-}
-
-@media only screen and (min-width: 1240px) {
-  .title {
-    margin: 0;
   }
 }
 </style>

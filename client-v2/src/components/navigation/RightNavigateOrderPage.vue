@@ -91,43 +91,43 @@
         >
         <ul class="column title-list">
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('main-page')"
           >
             РЕСТОРАН
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('menu-page')"
           >
             МЕНЮ
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('action-page')"
           >
             АКЦИИ
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('interior-page')"
           >
             ИНТЕРЬЕР
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('contact-page')"
           >
             КОНТАКТЫ
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('feedback-page')"
           >
             ОТЗЫВЫ
           </li>
           <li
-            class="title"
+            class="title-menu"
             @click="gotoDelivery('')"
           >
             ВАКАНСИИ
@@ -244,10 +244,10 @@ export default {
   padding: 0;
 }
 
-.title {
+.title-menu {
   font-family: lb;
-  font-size: 88px;
-  line-height: 118px;
+  font-size: 75px;
+  line-height: 105px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -263,6 +263,7 @@ export default {
 .logo {
   cursor: pointer;
   margin-left: 20px;
+  width: 300px;
 }
 
 ::-webkit-scrollbar {
@@ -281,9 +282,9 @@ export default {
   display: none;
 }
 
-@media (max-width: 1340px) {
-  .title {
-    font-size: 80px;
+@media (max-width: 1240px) {
+  .title-menu {
+    font-size: 78px;
     line-height: 110px;
   }
   .logo {
@@ -291,39 +292,6 @@ export default {
   }
   .side-menu {
     padding-left: 20px;
-  }
-}
-
-@media (max-width: 1279px) {
-  .title {
-    font-size: 68px;
-    line-height: 98px;
-    padding: 0;
-    margin: 0;
-  }
-  .logo {
-    width: 270px;
-  }
-  .mobile {
-    display: inline;
-  }
-  .side-menu {
-    padding-left: 20px;
-  }
-}
-
-@media (max-width: 919px) {
-  .title {
-    font-family: lb;
-    font-size: 70px;
-    line-height: 100px;
-    padding: 0;
-  }
-  .logo {
-    width: 300px;
-  }
-  .photo-box {
-    display: none;
   }
 }
 
@@ -370,7 +338,7 @@ export default {
     display: none;
   }
 
-  .title {
+  .title-menu {
     font-size: 70px;
     line-height: 100px;
     padding: 0;
@@ -411,12 +379,6 @@ export default {
     font-family: lb;
     font-size: 36px;
     line-height: 55px;
-  }
-}
-
-@media only screen and (min-width: 1240px) {
-  .title {
-    margin: 0;
   }
 }
 </style>

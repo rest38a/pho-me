@@ -46,6 +46,26 @@
           </div>
         </div>
         <div class="relative-box">
+          <q-btn
+            flat
+            size="md"
+            class="pho-btn-med"
+            no-caps
+            unelevated
+            v-if="showMap"
+          >
+            <div @click="showMaps">Показать зоны доставки</div>
+          </q-btn>
+          <q-btn
+            flat
+            size="md"
+            class="pho-btn-med"
+            no-caps
+            unelevated
+            v-if="!showMap"
+          >
+            <div @click="showMaps">Показать карту</div>
+          </q-btn>
           <yandex-map
             class="yandex-map-user"
             :class="{active: showMap === false, noActive: showMap === true}"
@@ -91,26 +111,6 @@
           </yandex-map>
         </div>
       </div>
-      <q-btn
-        flat
-        size="md"
-        class="pho-btn-med"
-        no-caps
-        unelevated
-        v-if="showMap"
-      >
-        <div @click="showMaps">Показать зоны доставки</div>
-      </q-btn>
-      <q-btn
-        flat
-        size="md"
-        class="pho-btn-med"
-        no-caps
-        unelevated
-        v-if="!showMap"
-      >
-        <div @click="showMaps">Показать карту</div>
-      </q-btn>
       <div class="follow-container row justify-start items-center">
         <div class="under-title">FOLLOW YOUR LOVE:</div>
         <a href="https://www.instagram.com/pho_me_/" target="_blank"
@@ -212,14 +212,14 @@ export default {
 
 .under-title {
   font-size: 36px;
-  font-family: TT Lakes;
+  font-family: lb;
   line-height: 48.6px;
   font-weight: 900;
   color: #fff;
 }
 
 .description {
-  font-family: TT Lakes;
+  font-family: tr;
   font-size: 24px;
   line-height: 36px;
   color: #fff;
@@ -242,10 +242,10 @@ a {
   overflow: hidden;
 
   &.active {
-    animation: active-animation 0.1s;
+    animation: active-animation 0.2s;
   }
   &.noActive {
-    animation: noactive-animation 0.1s;
+    animation: noactive-animation 0.2s;
   }
 }
 
@@ -347,6 +347,9 @@ a {
   color: #4f4f4f;
   font-size: 24px;
   text-transform: none;
+  position: absolute;
+  z-index: 2;
+  left: 10px;
 }
 
 .delivery-text {

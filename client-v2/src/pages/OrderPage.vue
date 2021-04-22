@@ -875,6 +875,9 @@ export default {
     AdditionalSale,
     myFooter,
   },
+  // preFetch({ store }) {
+  //   return store.dispatch('order/getOrderMenu');
+  // },
   meta: {
     title: 'Pho me. Доставка из азиатского ресторана в Иркутске',
   },
@@ -975,6 +978,9 @@ export default {
         'marker-color': '#f371d1',
       },
     };
+  },
+  serverPrefetch() {
+    return this.$store.dispatch('order/getOrderMenu');
   },
   computed: {
     ...mapState('order', [
@@ -1356,11 +1362,12 @@ export default {
         console.log();
       }
     });
-    this.$store.dispatch('order/getOrderMenu').then(() => {
-      if (this.categoriesMenu[0] !== undefined) {
-        this.chooseCategory(this.categoriesMenu[0]);
-      }
-    });
+    // this.$store.dispatch('order/getOrderMenu');
+    // this.$store.dispatch('order/getOrderMenu').then(() => {
+    if (this.categoriesMenu[0] !== undefined) {
+      this.chooseCategory(this.categoriesMenu[0]);
+    }
+    // });
     this.isMounted = true;
     const settings = {
       apiKey: '7df138bc-f837-4e1b-b1c3-9790e63279b0',

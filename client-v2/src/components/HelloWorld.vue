@@ -38,11 +38,6 @@ export default {
       scr: window.pageYOffset,
     };
   },
-  methods: {
-    show() {
-      alert(`Текущая прокрутка сверху: ${window.pageYOffset}`);
-    },
-  },
   computed: {
     scroll() {
       return window.pageYOffset;

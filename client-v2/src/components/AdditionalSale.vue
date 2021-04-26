@@ -1,5 +1,5 @@
 <template>
-  <div class="main-box">
+  <div class="main-box" >
     <div class="cart-h1 column">Добавить к заказу?</div>
     <div class="">
       <vue-slick-carousel

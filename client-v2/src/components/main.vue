@@ -47,11 +47,6 @@ export default {
       scr: 0,
     };
   },
-  methods: {
-    show() {
-      alert(`Текущая прокрутка сверху: ${window.pageYOffset}`);
-    },
-  },
   computed: {
     scroll() {
       return 0;

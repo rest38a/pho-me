@@ -43,8 +43,14 @@
       />
     </div>
     <right-navigate-order-page/>
-    <!-- корзина десктоп -->
+    <!-- корзина-->
     <div v-if="showCart" class="cart row col-8 col-lg-5">
+      <div class="close-basket col-xs-0 col-1 q-pl-md-lg"
+           v-if="showCart"
+           v-show="windowWidth > 1023"
+      @click="showCart = !showCart">
+        <img src="../assets/icon/closeBasket.png">
+      </div>
       <div
         class="col-md-5 col-sm-12 form-area"
         :class="{
@@ -456,7 +462,7 @@
         </div>
       </div>
       <div
-        class="col-12 col-md-7 col-sm-12 cart-area"
+        class="col-12 col-md-6 col-sm-12 cart-area"
         :class="{
           'col-sm-12': ordering === true,
           'form-area-display': ordering === false,
@@ -523,6 +529,7 @@
           >
             <div>Отменить</div>
           </q-btn>
+          <div>{{ promoNotification }}</div>
         </div>
 
         <q-scroll-area
@@ -544,11 +551,11 @@
               <q-separator/>
             </div>
           </div>
-          <additional-sale
-            :add-to-basket="addProductToBasket"
-            :categories-menu="categoriesMenu"
-          />
         </q-scroll-area>
+        <additional-sale
+          :add-to-basket="addProductToBasket"
+          :categories-menu="categoriesMenu"
+        />
         <div class="row justify-between items-center">
           <div class="row form-area-display">
             <q-input
@@ -720,8 +727,9 @@
         />
       </div>
       <div class="row mobile-menu-scroll flex-md-block no-wrap display-none-class"
+           v-show="windowWidth < 1023"
            id="mobile-menu-scroll"
-      :style="{left: `${scrollMobileOffset}px`}">
+           :style="{left: `${scrollMobileOffset}px`}">
         <template v-for="category in categoriesMenu">
           <q-btn
             :id="category.id"
@@ -845,14 +853,11 @@
 import { dom, scroll } from 'quasar';
 
 const { height } = dom;
-
 const { getScrollTarget, setScrollPosition } = scroll;
-
 import Vue from 'vue'; // vue
 import VueScrollTo from 'vue-scrollto';
 
 Vue.use(VueScrollTo);
-
 import { loadYmap } from 'vue-yandex-maps';
 import {
   mapState, mapGetters, mapMutations, mapActions,
@@ -875,9 +880,9 @@ export default {
     AdditionalSale,
     myFooter,
   },
-  // preFetch({ store }) {
-  //   return store.dispatch('order/getOrderMenu');
-  // },
+  preFetch({ store }) {
+    return store.dispatch('order/getOrderMenu');
+  },
   meta: {
     title: 'Pho me. Доставка из азиатского ресторана в Иркутске',
   },
@@ -919,6 +924,7 @@ export default {
       heightSlider: '',
       windowWidth: null,
       scrollMobileOffset: 0,
+      promoNotification: null,
       deliveryTimeButton: [
         {
           type: 'Как можно скорее',
@@ -955,7 +961,6 @@ export default {
       contentActiveStyle: {
         color: 'black',
       },
-
       thumbStyle: {
         right: '2px',
         borderRadius: '5px',
@@ -978,9 +983,6 @@ export default {
         'marker-color': '#f371d1',
       },
     };
-  },
-  serverPrefetch() {
-    return this.$store.dispatch('order/getOrderMenu');
   },
   computed: {
     ...mapState('order', [
@@ -1266,7 +1268,7 @@ export default {
       this.$q.notify({
         message: text,
         color: colorType,
-        position: 'top',
+        position: 'bottom',
         multiLine: true,
         actions: [
           {
@@ -1378,7 +1380,6 @@ export default {
     await loadYmap(settings);
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
-
     this.dsZonesPriced.features.forEach((feature, featureInd) => {
       if (
         Array.isArray(
@@ -1417,7 +1418,6 @@ export default {
   font-family: lb;
   src: url(../font/TTLakes-Black.ttf);
 }
-
 .pho-h1 {
   font-family: lb;
   color: #fff;
@@ -1426,72 +1426,57 @@ export default {
   font-size: 90px;
   line-height: 145px;
 }
-
 .logo {
   padding: 22px 0 0px 34px;
   cursor: pointer;
 }
-
 .container {
   padding: 0 105px;
   max-width: 1400px;
 }
-
 .q-carousel {
   border-radius: 20px;
 }
-
 .carousel-box {
   margin: 9px 0 28px 0;
   border-radius: 20px;
 }
-
 .carousel-slide-image {
   width: 100%;
 }
-
 .button-box {
   border: 1px solid #dadada;
   border-radius: 10px;
   margin: 8px 0 20px 0;
 }
-
 .button-box-time {
   margin: 8px 0 0 0;
 }
-
 .button-parent {
   &:first-child {
     border-radius: 0px 10px 0 10px;
   }
-
   &:last-child {
     border-radius: 0 10px 10px 0;
   }
 }
-
 .address-animation {
   &.active {
     animation: active-animation 0.1s;
   }
-
   &.noActive {
     animation: noactive-animation 0.1s;
   }
 }
-
 .time-animation {
   margin: 5px 0 10px 0;
-
   &.active {
     animation: active-animation 0.1s;
   }
-
   &.noActive {
     animation: noactive-animation 0.1s;
   }
 }
-
 @keyframes active-animation {
   from {
     margin-top: -18px;
@@ -1509,7 +1494,6 @@ export default {
     margin-top: 0;
   }
 }
-
 @keyframes noactive-animation {
   from {
     margin-top: 36px;
@@ -1527,24 +1511,19 @@ export default {
     margin-top: 5px;
   }
 }
-
 .baloon-order {
   width: 10px;
   height: 12px;
 }
-
 .cursor {
   cursor: pointer;
 }
-
 .border-radius {
   border-radius: 10px;
 }
-
 .orderMargin {
   margin-bottom: 13px;
 }
-
 .vertical-line {
   position: absolute;
   right: 0;
@@ -1558,17 +1537,19 @@ export default {
   padding: 0 16px;
   display: none;
 }
-
 .basket-bottom-additional-button {
   bottom: 0;
   right: 10px;
   left: 10px;
 }
-
 .basket-cart-name {
   margin: 0 auto;
 }
 
+.close-basket {
+  margin-top: 33px;
+  cursor: pointer;
+}
 .cart {
   z-index: 99;
   position: fixed;
@@ -1576,47 +1557,38 @@ export default {
   top: 0;
   width: 80%;
   height: 100%;
-  background: #fff;
 }
-
 .form-area {
   padding: 32px 35px 32px 53px;
   background: #fafafa;
+  background: #fff;
 }
-
 .cart-area {
   padding: 32px 40px 32px 32px;
+  background: #fff;
 }
-
 .create-order-button {
   display: none;
 }
-
 .display-none-class {
   display: none;
 }
-
 .q-notifications__list--center {
   bottom: 55px;
 }
-
 .q-notifications__list--bottom {
   top: 0;
 }
-
 .q-notifications__list--top {
   top: 0;
 }
-
 .main-container {
   background: #02bbbd;
 }
-
 .product-area {
   display: flex;
   flex-direction: row;
 }
-
 .cart-widget {
   position: fixed;
   width: 100px;
@@ -1627,16 +1599,13 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 100;
-
   &.active {
     background: #ca17a8;
   }
-
   &.noActive {
     background: #eab700;
   }
 }
-
 .cart-product-num {
   position: absolute;
   top: 39%;
@@ -1645,7 +1614,6 @@ export default {
   color: #fff;
   font-size: 12px;
 }
-
 .yelow-line {
   position: fixed;
   width: 95px;
@@ -1655,7 +1623,6 @@ export default {
   background: #f8c200;
   z-index: 100;
 }
-
 .shadow-cart {
   position: fixed;
   top: 0;
@@ -1668,20 +1635,17 @@ export default {
   opacity: 0.4;
   z-index: 99;
 }
-
 .cart-h1 {
   font-family: 'lb';
   font-style: italic;
   font-size: 24px;
   line-height: 32px;
 }
-
 .total {
   font-size: 16px;
   line-height: 22px;
   color: #828282;
 }
-
 .total-sum {
   font-size: 24px;
   line-height: 32px;
@@ -1689,7 +1653,6 @@ export default {
   padding-left: 20px;
   color: #333333;
 }
-
 .name-field {
   color: #4f4f4f;
   padding-bottom: 2px;
@@ -1698,46 +1661,36 @@ export default {
   line-height: 19px;
   font-family: tr;
 }
-
 .name-field-first {
   margin-top: 21px;
 }
-
 .comment-input {
   height: 77px;
-
   background: #ffffff;
   box-sizing: border-box;
   resize: none;
 }
-
 .pho-caption {
   font-size: 12px;
   line-height: 16px;
-
   /* Gray 4 */
   color: #bdbdbd;
 }
-
 .pho-pb-2 {
   padding-bottom: 13px;
 }
-
 .ballun-m {
   width: 15px;
 }
-
 .zone-btm-m {
   text-transform: none;
   font-size: 12px;
   line-height: 12px;
   border-radius: 10px;
 }
-
 .logo-m {
   width: 100%;
 }
-
 .yellow-zone {
   width: 50px;
   height: 30px;
@@ -1745,7 +1698,6 @@ export default {
   background: #ffd21e;
   margin: 20px 10px 20px 0;
 }
-
 .blue-zone {
   width: 50px;
   height: 30px;
@@ -1753,7 +1705,6 @@ export default {
   background: #82cdff;
   margin: 20px 10px 20px 20px;
 }
-
 .purple-zone {
   width: 50px;
   height: 30px;
@@ -1761,7 +1712,6 @@ export default {
   background: #f371d1;
   margin: 20px 10px 20px 0px;
 }
-
 .green-zone {
   width: 50px;
   height: 30px;
@@ -1769,7 +1719,6 @@ export default {
   background: #56db40;
   margin: 20px 10px 20px 20px;
 }
-
 .mobile-category-text {
   font-family: lb;
   font-weight: 900;
@@ -1779,7 +1728,6 @@ export default {
   color: white;
   margin: 10px 0 6px 0;
 }
-
 .pho-btn {
   margin: 10px 10px 10px 0px;
   border-radius: 10px;
@@ -1791,19 +1739,16 @@ export default {
   font-family: ttbold;
   font-weight: 700;
 }
-
 .pho-btn-outline {
   background: none;
   border: 2px solid #ffffff;
   color: #fff;
 }
-
 .pho-btn-outline:hover {
   background: #fcd000;
   border: 2px solid #fcd000;
   color: #4f4f4f;
 }
-
 .pho-btn-delivery {
   background: #fff;
   border: none;
@@ -1814,17 +1759,14 @@ export default {
   font-weight: 500;
   margin: 0;
   font-family: tr;
-
   &.active {
     background: #fcd000;
     color: #ffffff;
   }
 }
-
 .pho-btn-delivery-group {
   border-radius: 10px;
 }
-
 .pho-btn-med-promo {
   width: 85px;
   border-radius: 0 10px 10px 0;
@@ -1835,7 +1777,6 @@ export default {
   font-weight: 500;
   font-family: tr;
 }
-
 .pho-btn-delivery-zones {
   font-size: 22px;
   line-height: 29.7px;
@@ -1843,11 +1784,9 @@ export default {
   height: 49px;
   font-family: lcm;
 }
-
 .display-none-mobile {
   display: none;
 }
-
 @media (min-width: 1000px) {
   .warning-line {
     height: 95px;
@@ -1866,7 +1805,6 @@ export default {
     display: none;
   }
 }
-
 @media (max-width: 999px) {
   .warning-line {
     display: none;
@@ -1884,12 +1822,10 @@ export default {
     margin-bottom: -35px;
   }
 }
-
 @media (max-width: 1023px) {
   .main-container {
     background: #02bbbd;
   }
-
   .container {
     margin: 48px auto;
     width: 100%;
@@ -1898,11 +1834,9 @@ export default {
   .q-carousel {
     height: 289px;
   }
-
   .q-carousel {
     border-radius: 20px;
   }
-
   .mobile-menu-scroll {
     overflow-x: scroll;
     position: sticky;
@@ -1910,15 +1844,12 @@ export default {
     background: #02bbbd;
     z-index: 5;
   }
-
   ::-webkit-scrollbar {
     background: transparent;
   }
-
   .logo {
     display: none;
   }
-
   .form-area {
     padding-top: 60px;
   }
@@ -1928,21 +1859,19 @@ export default {
   .create-order-button {
     display: block;
   }
-
   .cart {
     right: 0px;
     width: 100%;
     overflow: auto;
+    background: #fff;
   }
-
   .cart-area {
-    padding-top: 69px;
+    padding: 69px 23px 32px 32px;
   }
   .yelow-line {
     width: 48px;
     display: none;
   }
-
   .vertical-line {
     display: flex;
   }
@@ -1951,20 +1880,16 @@ export default {
     height: 48px;
     z-index: 99999;
   }
-
   .cart-product-num {
     font-size: 9px;
     right: 42%;
   }
-
   .display-none-class {
     display: flex;
   }
-
   .display-none-mobile {
     display: block;
   }
-
   .pho-btn-delivery-zones {
     height: 37px;
   }
@@ -1979,7 +1904,6 @@ export default {
     font-size: 14px;
     line-height: 18.9px;
   }
-
   .pho-btn-outline:hover {
     margin: 10px 10px 10px 0px;
     background: none;
@@ -1987,10 +1911,9 @@ export default {
     color: #fff;
   }
 }
-
-@media (min-width: 1919px) {
+@media (min-width: 1523px) {
   .cart {
-    width: 60%;
+    width: 55%;
   }
 }
 </style>

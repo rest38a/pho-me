@@ -1,5 +1,5 @@
 <template>
-  <div class="main-box" >
+  <div class="main-box" v-if="filterProducts[0] != undefined">
     <div class="cart-h1 column">Добавить к заказу?</div>
     <div class="">
       <vue-slick-carousel
@@ -86,14 +86,16 @@ export default {
     },
     handleResize() {
       this.window.width = window.innerWidth;
-      if (this.window.width >= 1400) {
-        this.slidesToShow = 3;
-      } else if (this.window.width >= 1190) {
+      if (this.window.width >= 1900) {
+        this.slidesToShow = 2.3;
+      } else if (this.window.width >= 1522) {
+        this.slidesToShow = 1.7;
+      } else if (this.window.width >= 1400) {
         this.slidesToShow = 2.5;
-      } else if (this.window.width >= 1028) {
-        this.slidesToShow = 2.1;
+      } else if (this.window.width >= 1190) {
+        this.slidesToShow = 1.7;
       } else if (this.window.width >= 1023) {
-        this.slidesToShow = 4;
+        this.slidesToShow = 1.5;
       } else if (this.window.width >= 875) {
         this.slidesToShow = 3.5;
       } else if (this.window.width >= 700) {

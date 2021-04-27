@@ -99,7 +99,9 @@ export default {
     }
   },
   async created() {
-    window.addEventListener('scroll', this.scroll);
+    if (process.browser) {
+      window.addEventListener('scroll', this.scroll);
+    }
   },
   destroyed() {
     window.removeEventListener('scroll', this.scroll);

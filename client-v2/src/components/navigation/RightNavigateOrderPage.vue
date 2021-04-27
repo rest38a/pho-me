@@ -246,8 +246,8 @@ export default {
 
 .title-menu {
   font-family: lb;
-  font-size: 75px;
-  line-height: 105px;
+  font-size: 65px;
+  line-height: 95px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -263,7 +263,7 @@ export default {
 .logo {
   cursor: pointer;
   margin-left: 20px;
-  width: 300px;
+  width: 290px;
 }
 
 ::-webkit-scrollbar {
@@ -283,13 +283,6 @@ export default {
 }
 
 @media (max-width: 1240px) {
-  .title-menu {
-    font-size: 78px;
-    line-height: 110px;
-  }
-  .logo {
-    width: 290px;
-  }
   .side-menu {
     padding-left: 20px;
   }

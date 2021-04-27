@@ -495,7 +495,7 @@
         </div>
 
         <div
-          class=" display-none-class col-12 "
+          class=" display-none-class col-12 q-mb-sm"
         >
           <q-input
             :value="promoCode.value"
@@ -554,7 +554,6 @@
         </q-scroll-area>
         <additional-sale
           :add-to-basket="addProductToBasket"
-          :categories-menu="categoriesMenu"
         />
         <div class="row justify-between items-center">
           <div class="row form-area-display">
@@ -716,6 +715,12 @@
             </div>
           </q-btn>
         </template>
+      </div>
+      <div class="justify-center row q-mt-lg"  v-if="loadProductItem === false">
+      <q-spinner
+        color="white"
+        size="10em"
+      />
       </div>
       <div
         class="row q-col-gutter-md items-stretch content-stretch form-area-display"
@@ -975,6 +980,7 @@ export default {
       centerMap: [52.286191, 104.297709],
       ourDepartment: [52.27333480057664, 104.29042273754133],
       loading: false,
+      loadProductItem: false,
       thanks: false,
       error: false,
       departmentProperty: {
@@ -1337,8 +1343,6 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
-    window.addEventListener('resize', this.slideHeight);
-    this.slideHeight();
     this.$store.dispatch('promotions/getPromotions').then(() => {
       for (let i = 0; i < this.promotions.length; i += 1) {
         if (JSON.parse(this.promotions[i].type).id === 2) {
@@ -1364,12 +1368,10 @@ export default {
         console.log();
       }
     });
-    // this.$store.dispatch('order/getOrderMenu');
-    // this.$store.dispatch('order/getOrderMenu').then(() => {
     if (this.categoriesMenu[0] !== undefined) {
       this.chooseCategory(this.categoriesMenu[0]);
     }
-    // });
+    this.loadProductItem = true;
     this.isMounted = true;
     const settings = {
       apiKey: '7df138bc-f837-4e1b-b1c3-9790e63279b0',
@@ -1665,7 +1667,6 @@ export default {
   margin-top: 21px;
 }
 .comment-input {
-  height: 77px;
   background: #ffffff;
   box-sizing: border-box;
   resize: none;
@@ -1776,6 +1777,7 @@ export default {
   text-transform: none;
   font-weight: 500;
   font-family: tr;
+  margin: 0px 0px 0px 0px;
 }
 .pho-btn-delivery-zones {
   font-size: 22px;

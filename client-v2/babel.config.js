@@ -9,7 +9,7 @@ const plugins = [];
 
 if (process.env.NODE_ENV === 'production') {
   plugins.push([
-    'babel-plugin-transform-remove-console', {
+    'transform-remove-console', {
       exclude: ['error', 'warn'],
     }]);
 }

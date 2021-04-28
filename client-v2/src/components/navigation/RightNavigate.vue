@@ -7,10 +7,10 @@
         @click="scrollToMenu('main-page')"
       />
       <div class="icon-box column items-center">
-        <a href="https://www.facebook.com/phome.irk/" target="blank">
-          <img src="../../assets/icon/fb-icon.png" class="icon-img"
-        /></a>
-        <a href="https://www.instagram.com/pho_me_/" target="blank">
+<!--        <a href="https://www.facebook.com/phome.irk/" target="blank">-->
+<!--          <img src="../../assets/icon/fb-icon.png" class="icon-img"-->
+<!--        /></a>-->
+        <a :href="contacts.instagram" target="blank">
           <img src="../../assets/icon/inst-icon.png" class="icon-img"
         /></a>
       </div>
@@ -58,6 +58,8 @@
 </template>
 
 <script >
+import { mapState } from 'vuex';
+
 export default {
   name: 'RightNavigate',
   data() {
@@ -87,6 +89,9 @@ export default {
       window.location = '/delivery';
       // this.$router.push('delivery');
     },
+  },
+  computed: {
+    ...mapState('contacts', ['contacts']),
   },
 };
 </script >

@@ -5,6 +5,7 @@ import order from './order';
 import promotions from './promotions';
 import menus from './menus';
 import interiors from './interiors';
+import contacts from './contacts';
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default function (/* { ssrContext } */) {
       promotions,
       menus,
       interiors,
+      contacts,
     },
 
     // enable strict mode (adds overhead!)

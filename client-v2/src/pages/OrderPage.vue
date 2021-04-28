@@ -442,8 +442,11 @@
               class="q-mr-md"
               :thickness="2"
             />
-            <div class="bold">
+            <div class="bold" v-if="currentOrder.clientInfo.address.dadata !== null">
               Сохранить
+            </div>
+            <div class="bold" v-else>
+              Назад
             </div>
             <q-spinner
               v-if="loading"
@@ -602,26 +605,12 @@
           v-if="!showAddress"
           flat
           style="background: #ca17a8; color: #fff"
-          class="full-width q-my-md create-order-button"
+          class="full-width create-order-button absolute-bottom"
           @click="toShowRegistrationOrder"
         >
-          <q-spinner
-            v-if="loading"
-            color="white"
-            size="1em"
-            class="q-mr-md"
-            :thickness="2"
-          />
           <div class="bold">
             К оформлению заказа
           </div>
-          <q-spinner
-            v-if="loading"
-            color="white"
-            size="1em"
-            class="q-ml-md"
-            :thickness="2"
-          />
         </q-btn>
       </div>
     </div>
@@ -650,7 +639,7 @@
         </div>
       </div>
       <!-- главная страница -->
-      <div class="carousel-box">
+      <div class="carousel-box form-area-display">
         <q-carousel
           :height="heightSlider"
           v-model="slide"
@@ -663,7 +652,6 @@
           transition-next="slide-left"
           @mouseenter="autoplay = false"
           @mouseleave="autoplay = true"
-          class="form-area-display"
         >
           <q-carousel-slide
             class="q-pa-none carousel-slide-image"
@@ -674,11 +662,12 @@
           </q-carousel-slide>
         </q-carousel>
       </div>
-      <div class="carousel-box">
+      <div class="carousel-box display-none-mobile">
         <q-carousel
           :height="heightSlider"
           v-model="slide"
           animated
+          swipeable
           infinite
           :autoplay="autoplay"
           arrows
@@ -686,7 +675,6 @@
           transition-next="slide-left"
           @mouseenter="autoplay = false"
           @mouseleave="autoplay = true"
-          class="display-none-mobile"
         >
           <q-carousel-slide
             class="carousel-slide-image"
@@ -777,37 +765,38 @@
       </div>
     </div>
     <!-- зона доставки -->
-    <q-dialog v-model="showMap">
-      <q-card style="min-width: 80%">
+    <q-dialog v-model="showMap"
+              :maximized="true">
+      <q-card>
         <q-card-section>
           <div class="text-h6">
             Зона доставки
           </div>
-        </q-card-section>
 
-        <q-card-section class="q-pt-none">
-          <div class="row">
-            <div class="row items-center">
-              <div class="yellow-zone"/>
+          <div class="row justify-between">
+            <div class="row items-center q-my-sm">
+              <div class="yellow-zone q-mr-sm"/>
               <div>от 800 руб</div>
             </div>
-            <div class="row items-center">
-              <div class="blue-zone pl-3"/>
+            <div class="row items-center q-my-sm">
+              <div class="blue-zone pl-3 q-mr-sm"/>
               <div>от 1100 руб</div>
             </div>
-            <div class="row items-center q-ml-md-md">
-              <div class="purple-zone pl-3"/>
+            <div class="row items-center q-my-sm">
+              <div class="purple-zone pl-3 q-mr-sm"/>
               <div>от 1400 руб</div>
             </div>
-            <div class="row items-center">
-              <div class="green-zone pl-3"/>
+            <div class="row items-center q-my-sm">
+              <div class="green-zone pl-3 q-mr-sm"/>
               <div>от 1700 руб</div>
             </div>
           </div>
+          <div class="row">
           <yandex-map
             v-if="isMounted"
             :coords="centerMap"
-            style="width: 100%; height: 600px"
+            :style="{height: `${yandexMapHeight}px`}"
+            style="width: 100%"
             zoom="12"
           >
             <ymap-marker
@@ -843,6 +832,7 @@
               :properties="departmentProperty"
             />
           </yandex-map>
+          </div>
         </q-card-section>
 
         <q-card-actions align="right">
@@ -974,6 +964,7 @@ export default {
         opacity: 0.75,
       },
       height: height - 1,
+      yandexMapHeight: '',
       isMounted: false,
       dsZonesPriced: YmapConstructor,
       coords: [],
@@ -1150,10 +1141,10 @@ export default {
       const sortFunction = (a, b) => a.sort_index - b.sort_index;
       this.activeCategoryProducts = prepareProducts.sort(sortFunction);
       const scrollTop = window.pageYOffset;
-      if (window.innerWidth < 1023 && scrollTop !== 0) {
+      if (window.innerWidth < 1023 || scrollTop === 0) {
         const el = document.getElementById(category.name);
         const scrollTarget = getScrollTarget(el);
-        setScrollPosition(scrollTarget, el.offsetTop - 200, 200);
+        setScrollPosition(scrollTarget, el.offsetTop - 150, 200);
       }
     },
     reachYandexGoal(name) {
@@ -1343,6 +1334,7 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    this.yandexMapHeight = window.innerHeight - 190;
     this.$store.dispatch('promotions/getPromotions').then(() => {
       for (let i = 0; i < this.promotions.length; i += 1) {
         if (JSON.parse(this.promotions[i].type).id === 2) {
@@ -1435,6 +1427,7 @@ export default {
 .container {
   padding: 0 105px;
   max-width: 1400px;
+  margin: 0 auto;
 }
 .q-carousel {
   border-radius: 20px;
@@ -1444,6 +1437,7 @@ export default {
   border-radius: 20px;
 }
 .carousel-slide-image {
+  border-radius: 20px;
   width: 100%;
 }
 .button-box {
@@ -1566,7 +1560,7 @@ export default {
   background: #fff;
 }
 .cart-area {
-  padding: 32px 40px 32px 32px;
+  padding: 32px 40px 45px 32px;
   background: #fff;
 }
 .create-order-button {
@@ -1586,6 +1580,7 @@ export default {
 }
 .main-container {
   background: #02bbbd;
+  height: 100%;
 }
 .product-area {
   display: flex;
@@ -1697,28 +1692,24 @@ export default {
   height: 30px;
   border-radius: 20px;
   background: #ffd21e;
-  margin: 20px 10px 20px 0;
 }
 .blue-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #82cdff;
-  margin: 20px 10px 20px 20px;
 }
 .purple-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #f371d1;
-  margin: 20px 10px 20px 0px;
 }
 .green-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #56db40;
-  margin: 20px 10px 20px 20px;
 }
 .mobile-category-text {
   font-family: lb;
@@ -1859,7 +1850,7 @@ export default {
     display: none;
   }
   .create-order-button {
-    display: block;
+    display: flex;
   }
   .cart {
     right: 0px;
@@ -1880,7 +1871,7 @@ export default {
   .cart-widget {
     width: 48px;
     height: 48px;
-    z-index: 99999;
+    z-index: 5999;
   }
   .cart-product-num {
     font-size: 9px;
@@ -1916,6 +1907,13 @@ export default {
 @media (min-width: 1523px) {
   .cart {
     width: 55%;
+  }
+}
+
+@media (max-width: 380px) {
+  .cart-h1 {
+    font-size: 18px;
+    line-height: 26px;
   }
 }
 </style>

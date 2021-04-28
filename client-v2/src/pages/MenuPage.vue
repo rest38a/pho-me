@@ -4,30 +4,28 @@
     <div class="container">
       <div class="title-btn-box row justify-start ">
         <h1 class="title">МЕНЮ</h1>
-        <div  class="button-box row" >
-        <div v-for="item in menus" :key="item.id">
-          <q-btn
-            v-if="item.id !== null"
-            :id="item.id"
-            :key="item.id"
-            class="pho-btn"
-            :class="{
-              '': activeMenu !== null && item.id === activeMenu,
+        <div class="button-box row">
+          <div v-for="item in menus" :key="item.id">
+            <q-btn
+              v-if="item.id !== null"
+              class="pho-btn"
+              :class="{
+              '': activeMenu !== undefined && item.id === activeMenu.id,
               'pho-btn-outline': item.id !== activeMenu.id,
             }"
-            flat
-            no-caps
-            @click="changeMenu(item)"
-          >
-            <div>
-              {{ item.name }}
-            </div>
-          </q-btn>
-        </div>
+              flat
+              no-caps
+              @click="changeMenu(item)"
+            >
+              <div>
+                {{ item.name }}
+              </div>
+            </q-btn>
+          </div>
         </div>
       </div>
       <div v-if="activeMenu !== null"
-        class="for-iframe" v-html="activeMenu.code"></div>
+           class="for-iframe" v-html="activeMenu.code"></div>
     </div>
     <bottom-navigation></bottom-navigation>
   </div>
@@ -63,7 +61,7 @@ export default {
     });
   },
 };
-</script >
+</script>
 
 <style scoped lang='scss'>
 .green-side {
@@ -90,9 +88,11 @@ export default {
 .title {
   margin: 0 36px 0 0;
 }
+
 .title-btn-box {
   margin: 127px 0px 69px 0;
 }
+
 .for-iframe {
   height: 447px;
 }
@@ -108,7 +108,7 @@ export default {
   color: #4f4f4f;
   font-size: 22px;
   line-height: 29.8px;
-  font-family: TT Lakes;
+  font-family: ttbold;
   font-weight: 700;
 }
 
@@ -144,6 +144,7 @@ export default {
     margin: 0 0 36px 0;
   }
 }
+
 @media only screen and (max-width: 1023px) {
   .green-side {
     padding: 25.51px 0px 48px 0px;

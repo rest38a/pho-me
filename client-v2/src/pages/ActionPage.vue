@@ -8,27 +8,22 @@
       <div class="action-cards row q-col-gutter-md">
         <div
           class="col-lg-6 col-md-6 col-xs-12 render-card-box"
-          v-for="promo in promotions"
+          v-for="(promo, index) in promotionRestoraunt"
           :key="promo.id"
         >
-<!--          <div v-show="promo.image !== null"-->
-<!--            class="render-card"-->
-<!--              :style="{ backgroundImage: `url(${CLIENT_API_LINK}/uploads/${promo.image})`}"-->
-<!--          >-->
           <div
             class="render-card justify-between"
             v-if="promo !== null"
             :style="{
-                  background: promo.short_text}"
-          v-show="JSON.parse(promo.type).id === 1">
-          <img
-                  class="image"
-                  :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
-                />
+                  background: gradients[index].gradient}">
+            <img
+              class="image"
+              :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
+            />
             <div class="titles-btn column justify-between">
               <div class="titles">
                 <div class="under-title">{{ promo.name }}</div>
-                <div class="description">{{ promo.long_text }}</div>
+                <div class="description">{{ promo.short_text }}</div>
               </div>
               <div>
                 <img
@@ -36,49 +31,43 @@
                   :src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
                 />
               </div>
-              <div class="btn-image" @click="chooseCard(promo)">
-                <img src="../assets/image/actionCard/actionButton.png" />
+              <div class="btn-image" @click="chooseCard(promo, index)">
+                <img src="../assets/image/actionCard/actionButton.png"/>
               </div>
             </div>
           </div>
-        </div>
-
-        <q-dialog v-model="medium" class="q-dialog">
-          <q-card style="width: 700px; max-width: 80vw" class="q-card">
-            <q-card-section class="q-card-section">
-              <div
-                v-if="activePromo !== null"
-                class="render-card justify-between"
-                :style="{
-                  background: activePromo.short_text}">
-<!--               <div-->
-<!--            class="render-card"-->
-<!--              :style="{ backgroundImage:
-`url(${CLIENT_API_LINK}/uploads/${activePromo.image})`}"-->
-<!--          >-->
-                <div class="titles-btn column justify-between">
-                  <div class="titles">
-                    <div class="under-title">{{ activePromo.name }}</div>
-                    <div class="description">
-                      {{ activePromo.long_text }}
+          <q-dialog v-model="medium" class="q-dialog">
+            <q-card style="width: 700px; max-width: 80vw" class="q-card">
+              <q-card-section class="q-card-section">
+                <div
+                  v-if="activePromo !== null"
+                  class="render-card justify-between"
+                  :style="{
+                  background: gradients[activePromoIndex].gradient}">
+                  <div class="titles-btn column justify-between">
+                    <div class="titles">
+                      <div class="under-title">{{ activePromo.name }}</div>
+                      <div class="description">
+                        {{ activePromo.long_text }}
+                      </div>
+                    </div>
+                    <div>
+                      <img
+                        class="image"
+                        :src="`${CLIENT_API_LINK}/uploads/${activePromo.image}`"
+                      />
+                    </div>
+                    <div class="btn-image" @click="medium = false">
+                      <img
+                        src="../assets/image/actionCard/actionButtonreturn.png"
+                      />
                     </div>
                   </div>
-                  <div>
-                    <img
-                      class="image"
-                      :src="`${CLIENT_API_LINK}/uploads/${activePromo.image}`"
-                    />
-                  </div>
-                  <div class="btn-image" @click="medium = false">
-                    <img
-                      src="../assets/image/actionCard/actionButtonreturn.png"
-                    />
-                  </div>
                 </div>
-              </div>
-            </q-card-section>
-          </q-card>
-        </q-dialog>
+              </q-card-section>
+            </q-card>
+          </q-dialog>
+        </div>
       </div>
     </div>
     <bottom-navigation></bottom-navigation>
@@ -91,52 +80,65 @@ import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
 export default {
-  components: { logo, BottomNavigation },
+  components: {
+    logo,
+    BottomNavigation,
+  },
   name: 'ActionPage',
   data() {
     return {
       CLIENT_API_LINK: process.env.CLIENT_API_LINK,
       activePromo: null,
+      activePromoIndex: null,
       medium: false,
-      // gradients: [
-      //   {
-      //     id: '1',
-      //     gradient: 'radial-gradient(at right bottom, #4de963, #02bbbd)',
-      //   },
-      //   {
-      //     id: '2',
-      //     gradient: 'radial-gradient(at right bottom, #F51F4B, #CA17A8)',
-      //   },
-      //   {
-      //     id: '3',
-      //     gradient: 'radial-gradient(at right bottom, #F48C17, #EAC102)',
-      //   },
-      //   {
-      //     id: '4',
-      //     gradient: 'radial-gradient(at right bottom, #F1B505, #5D9F57)',
-      //   },
-      // ],
+      gradients: [
+        {
+          id: '1',
+          gradient: 'linear-gradient(225deg, rgba(2,187,189,1) 0%, rgba(255,237,0,1) 50%, rgba(122,255,217,1) 100%)',
+        },
+        {
+          id: '2',
+          gradient: 'linear-gradient(135deg, rgba(255,112,230,1) 0%, rgba(2,187,189,1) 50%, rgba(255,237,0,1) 100%)',
+        },
+        {
+          id: '3',
+          gradient: 'linear-gradient(225deg, rgba(255,112,230,1) 0%, rgba(232,78,15,1) 50%, rgba(255,237,0,1) 100%)',
+        },
+        {
+          id: '4',
+          gradient: 'linear-gradient(135deg, rgba(2,187,189,1) 0%, rgba(255,112,230,1) 50%, rgba(255,237,0,1) 100%)',
+        },
+      ],
     };
   },
   computed: {
     ...mapState('promotions', ['promotions']),
+    promotionRestoraunt() {
+      const filterPromo = this.promotions.filter((item) => {
+        const type = JSON.parse(item.type);
+        return type.id === 1;
+      });
+      return filterPromo;
+    },
   },
   methods: {
-    chooseCard(promo) {
+    chooseCard(promo, index) {
       this.activePromo = promo;
+      this.activePromoIndex = index;
       this.medium = true;
     },
   },
   async mounted() {
-    this.$store.dispatch('promotions/getPromotions').then(() => {
-      if (this.promotions[0] !== undefined) {
-        [this.activePromo] = this.promotions;
-      }
-    });
+    this.$store.dispatch('promotions/getPromotions')
+      .then(() => {
+        if (this.promotions[0] !== undefined) {
+          [this.activePromo] = this.promotions;
+        }
+      });
   },
 };
-</script >
-<style scoped >
+</script>
+<style scoped>
 .pink-side {
   background: radial-gradient(#ffa1c7, #f07550);
   min-height: 100%;
@@ -245,6 +247,7 @@ export default {
     height: 76px;
   }
 }
+
 @media only screen and (min-width: 991.98px) {
   .action-cards {
     margin-bottom: 178px;

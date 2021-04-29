@@ -7,10 +7,10 @@
         @click="scrollToMenu('main-page')"
       />
       <div class="icon-box column items-center">
-        <a href="https://www.facebook.com/phome.irk/" target="blank">
-          <img src="../../assets/icon/fb-icon.png" class="icon-img"
-        /></a>
-        <a href="https://www.instagram.com/pho_me_/" target="blank">
+<!--        <a href="https://www.facebook.com/phome.irk/" target="blank">-->
+<!--          <img src="../../assets/icon/fb-icon.png" class="icon-img"-->
+<!--        /></a>-->
+        <a :href="contacts.instagram" target="blank">
           <img src="../../assets/icon/inst-icon.png" class="icon-img"
         /></a>
       </div>
@@ -58,6 +58,8 @@
 </template>
 
 <script >
+import { mapState } from 'vuex';
+
 export default {
   name: 'RightNavigate',
   data() {
@@ -87,6 +89,9 @@ export default {
       window.location = '/delivery';
       // this.$router.push('delivery');
     },
+  },
+  computed: {
+    ...mapState('contacts', ['contacts']),
   },
 };
 </script >
@@ -157,8 +162,8 @@ export default {
 
 .title-menu {
   font-family: lb;
-  font-size: 75px;
-  line-height: 105px;
+  font-size: 68px;
+  line-height: 95px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -174,7 +179,7 @@ export default {
 .logo {
   cursor: pointer;
   margin-left: 20px;
-  width: 300px;
+  width: 290px;
 }
 
 ::-webkit-scrollbar {
@@ -194,13 +199,6 @@ export default {
 }
 
 @media (max-width: 1240px) {
-  .title {
-    font-size: 80px;
-    line-height: 110px;
-  }
-  .logo {
-    width: 290px;
-  }
   .side-menu {
     padding-left: 20px;
   }

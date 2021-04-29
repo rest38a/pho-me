@@ -13,22 +13,17 @@
         v-show="isSideMenuVisible"
         class="icon-box column items-center"
       >
-        <a
-          href="https://www.facebook.com/phome.irk/"
-          target="blank"
-        >
-          <img
-            src="../../assets/icon/fb-icon.png"
-            class="icon-img"
-          ></a>
-        <a
-          href="https://www.instagram.com/pho_me_/"
-          target="blank"
-        >
-          <img
-            src="../../assets/icon/inst-icon.png"
-            class="icon-img"
-          ></a>
+<!--        <a-->
+<!--          href="https://www.facebook.com/phome.irk/"-->
+<!--          target="blank"-->
+<!--        >-->
+<!--          <img-->
+<!--            src="../../assets/icon/fb-icon.png"-->
+<!--            class="icon-img"-->
+<!--          ></a>-->
+        <a :href="contacts.instagram" target="blank">
+          <img src="../../assets/icon/inst-icon.png" class="icon-img"
+          /></a>
       </div>
       <div class="center column justify-center">
         <div
@@ -141,6 +136,8 @@
 
 <script >
 
+import { mapState } from 'vuex';
+
 export default {
   name: 'RightNavigate',
   data() {
@@ -173,6 +170,9 @@ export default {
       this.toggleVisibleClose();
       this.$router.push({ path: '/main/', hash: page });
     },
+  },
+  computed: {
+    ...mapState('contacts', ['contacts']),
   },
 };
 </script >
@@ -246,8 +246,8 @@ export default {
 
 .title-menu {
   font-family: lb;
-  font-size: 75px;
-  line-height: 105px;
+  font-size: 65px;
+  line-height: 95px;
   color: #fff;
   font-style: italic;
   list-style-type: none;
@@ -263,7 +263,7 @@ export default {
 .logo {
   cursor: pointer;
   margin-left: 20px;
-  width: 300px;
+  width: 290px;
 }
 
 ::-webkit-scrollbar {
@@ -283,13 +283,6 @@ export default {
 }
 
 @media (max-width: 1240px) {
-  .title-menu {
-    font-size: 78px;
-    line-height: 110px;
-  }
-  .logo {
-    width: 290px;
-  }
   .side-menu {
     padding-left: 20px;
   }
@@ -375,7 +368,7 @@ export default {
 }
 
 @media only screen and (max-width: 599px) {
-  .title {
+  .title-menu {
     font-family: lb;
     font-size: 36px;
     line-height: 55px;

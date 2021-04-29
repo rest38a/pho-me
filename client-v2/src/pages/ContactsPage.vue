@@ -14,14 +14,15 @@
         </div>
         <div class="col-auto">
           <div class="under-title">РЕЖИМ РАБОТЫ</div>
-          <div class="description">Ежедневно<br />с 12:00 до 22:00</div>
+          <div class="description">ВС - ЧТ с 12:00 до 23:00
+            <br />ПТ - СБ с 12:00 до 24:00</div>
         </div>
         <div class="col-auto">
           <div class="under-title">КОНТАКТЫ</div>
           <div class="description">
             <u
-              ><a href="tel:83952000000">+7(3952)00-00-00</a><br />
-              <a href="mailto:contact@pho-me.ru">contact@pho-me.ru</a></u
+              ><a href="tel:83952000000">{{ this.contacts.phone }}</a><br />
+              <a href="mailto:contact@pho-me.ru">hello@pho-me.ru</a></u
             >
           </div>
         </div>
@@ -45,6 +46,8 @@
             <div class="delivery-text">от 1700 руб</div>
           </div>
         </div>
+      </div>
+    </div>
         <div class="relative-box">
           <q-btn
             flat
@@ -95,6 +98,8 @@
               marker-type="Polygon"
               v-for="(item, index) in dsZonesPriced.features"
             ></ymap-marker>
+          </template>
+<template v-else>
             <ymap-marker
               :coords="[coords[0], coords[1]]"
               markerId="42m"
@@ -110,15 +115,17 @@
             </template>
           </yandex-map>
         </div>
+    <div class="container">
+      <div class="cardBox">
       </div>
       <div class="follow-container row justify-start items-center">
         <div class="under-title">FOLLOW YOUR LOVE:</div>
-        <a href="https://www.instagram.com/pho_me_/" target="_blank"
+        <a :href="contacts.instagram" target="_blank"
           ><img class="icon-img" src="../assets/icon/inst-icon.png"
         /></a>
-        <a href="https://www.facebook.com/phome.irk/" target="_blank"
+<!--        <a href="https://www.facebook.com/phome.irk/" target="_blank"
           ><img class="icon-img" src="../assets/icon/fb-icon.png"
-        /></a>
+        /></a> -->
       </div>
     </div>
     <bottom-navigation></bottom-navigation>
@@ -126,6 +133,7 @@
 </template >
 
 <script >
+import { mapState } from 'vuex';
 import { loadYmap } from 'vue-yandex-maps';
 import YmapConstructor from '../boot/yandex-map-constructor.json';
 import BottomNavigation from '../components/navigation/BottomNavigation.vue';
@@ -152,6 +160,9 @@ export default {
       isMounted: false,
     };
   },
+  computed: {
+    ...mapState('contacts', ['contacts']),
+  },
   methods: {
     getPriceZoneCoords(item) {
       const result = item.geometry.coordinates[0];
@@ -162,6 +173,7 @@ export default {
     },
   },
   async mounted() {
+    await this.$store.dispatch('contacts/getContacts');
     this.isMounted = true;
     const settings = {
       apiKey: '7df138bc-f837-4e1b-b1c3-9790e63279b0',
@@ -326,12 +338,10 @@ a {
     height: 22.18px;
   }
   .relative-box {
-    width: 140%;
-    margin: 0 0px 0 -110px;
+    margin: 0 -14.83px 0 -14.83px;
   }
   .yandex-map-user {
     border-radius: 0;
-    width: 140%;
   }
 }
 

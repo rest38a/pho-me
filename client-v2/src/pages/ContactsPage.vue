@@ -46,8 +46,6 @@
             <div class="delivery-text">от 1700 руб</div>
           </div>
         </div>
-      </div>
-    </div>
         <div class="relative-box">
           <q-btn
             flat
@@ -115,8 +113,6 @@
             </template>
           </yandex-map>
         </div>
-    <div class="container">
-      <div class="cardBox">
       </div>
       <div class="follow-container row justify-start items-center">
         <div class="under-title">FOLLOW YOUR LOVE:</div>
@@ -135,7 +131,7 @@
 <script >
 import { mapState } from 'vuex';
 import { loadYmap } from 'vue-yandex-maps';
-import YmapConstructor from '../boot/yandex-map-constructor.json';
+// import YmapConstructor from '../boot/yandex-map-constructor.json';
 import BottomNavigation from '../components/navigation/BottomNavigation.vue';
 import logo from '../components/navigation/logo.vue';
 
@@ -144,7 +140,7 @@ export default {
   name: 'ContactsPage',
   data() {
     return {
-      dsZonesPriced: YmapConstructor,
+      // dsZonesPriced: YmapConstructor,
       coords: [],
       centerMap: [52.286191, 104.297709],
       ourDepartment: [52.27333480057664, 104.29042273754133],
@@ -161,7 +157,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('contacts', ['contacts']),
+    ...mapState('contacts', ['contacts', 'dsZonesPriced']),
   },
   methods: {
     getPriceZoneCoords(item) {
@@ -184,27 +180,6 @@ export default {
     await loadYmap(settings);
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
-
-    this.dsZonesPriced.features.forEach((feature, featureInd) => {
-      if (
-        Array.isArray(
-          this.dsZonesPriced.features[featureInd].geometry.coordinates[0],
-        )
-      ) {
-        this.dsZonesPriced.features[featureInd].geometry.coordinates[0].forEach(
-          (item, idex) => {
-            const temp0 = item[0];
-            const temp1 = item[1];
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex
-            ][0] = temp1;
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex
-            ][1] = temp0;
-          },
-        );
-      }
-    });
   },
 };
 </script >
@@ -244,6 +219,8 @@ a {
 
 .relative-box {
   position: relative;
+  margin: 0 auto;
+  max-width: 1400px;
 }
 
 .yandex-map-user {

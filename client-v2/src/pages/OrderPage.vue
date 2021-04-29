@@ -541,7 +541,7 @@
           :content-active-style="contentActiveStyle"
           style="height: 80%; padding-right: 20px"
         >
-          <div class="">
+          <div class="q-pr-xs-md">
             <q-separator/>
             <div v-for="cartItem in orderProducts" :key="cartItem.id">
               <BasketItem
@@ -605,7 +605,7 @@
           v-if="!showAddress"
           flat
           style="background: #ca17a8; color: #fff"
-          class="full-width create-order-button absolute-bottom"
+          class="full-width create-order-button absolute-bottom q-mb-lg"
           @click="toShowRegistrationOrder"
         >
           <div class="bold">
@@ -859,7 +859,6 @@ import {
 } from 'vuex';
 import ProductItem from '../components/ProductItem';
 import BasketItem from '../components/BasketItem';
-import YmapConstructor from '../boot/yandex-map-constructor.json';
 import InputAdress from '../components/inputAdress.vue';
 import RightNavigateOrderPage from '../components/navigation/RightNavigateOrderPage.vue';
 import AdditionalSale from '../components/AdditionalSale.vue';
@@ -966,7 +965,6 @@ export default {
       height: height - 1,
       yandexMapHeight: '',
       isMounted: false,
-      dsZonesPriced: YmapConstructor,
       coords: [],
       centerMap: [52.286191, 104.297709],
       ourDepartment: [52.27333480057664, 104.29042273754133],
@@ -1002,6 +1000,7 @@ export default {
       'isAddressInZone',
       'isValidPhone',
     ]),
+    ...mapState('contacts', ['contacts', 'dsZonesPriced']),
   },
   methods: {
     ...mapActions('order', [
@@ -1086,13 +1085,6 @@ export default {
         }
       }
     },
-    changeBasketColor() {
-      if (this.orderProducts === 0) {
-        this.backgroundBasket = '#eab700';
-      } else if (this.orderProducts !== 0) {
-        this.backgroundBasket = '#ca17a8';
-      }
-    },
     changeDeliveryTime(item) {
       this.activeDeliveryTimeButton = item;
       if (item.type === 'Как можно скорее') {
@@ -1140,11 +1132,18 @@ export default {
       this.products = [...category.products];
       const sortFunction = (a, b) => a.sort_index - b.sort_index;
       this.activeCategoryProducts = prepareProducts.sort(sortFunction);
-      const scrollTop = window.pageYOffset;
-      if (window.innerWidth < 1023 || scrollTop === 0) {
-        const el = document.getElementById(category.name);
-        const scrollTarget = getScrollTarget(el);
-        setScrollPosition(scrollTarget, el.offsetTop - 150, 200);
+      if (window.innerWidth < 1023) {
+        const scrollTop = window.pageYOffset;
+        if (scrollTop !== 0) {
+          const el = document.getElementById(category.name);
+          const scrollTarget = getScrollTarget(el);
+          setScrollPosition(scrollTarget, el.offsetTop - 150, 200);
+        } else {
+          window.scrollTo({
+            top: 1,
+          });
+          console.log(scrollTop);
+        }
       }
     },
     reachYandexGoal(name) {
@@ -1374,24 +1373,6 @@ export default {
     await loadYmap(settings);
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
-    this.dsZonesPriced.features.forEach((feature, featureInd) => {
-      if (
-        Array.isArray(
-          this.dsZonesPriced.features[featureInd].geometry.coordinates[0],
-        )
-      ) {
-        this.dsZonesPriced.features[featureInd].geometry.coordinates[0].forEach(
-          (item, idex) => {
-            const temp0 = item[0];
-            const temp1 = item[1];
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex][0] = temp1;
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex][1] = temp0;
-          },
-        );
-      }
-    });
   },
   created() {
     if (process.browser) {

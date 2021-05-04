@@ -9,7 +9,7 @@
 				<h2>Азиатская кухня и напитки.</h2>
 				<div class="delivery-btn" @click="gotoDelivery()">Заказать доставку</div >
 				<div class="row q-mt-lg">
-				<a class="delivery-btn" href="https://www.calameo.com/read/0063012992a13044fb4ad">Меню расторана</a >
+				<a class="delivery-btn" href="https://www.calameo.com/read/0063012992a13044fb4ad">Меню ресторана</a >
 				</div>
 				<div class="image"><img src="../assets/image/dish.png" alt=""></div>
 			</div>

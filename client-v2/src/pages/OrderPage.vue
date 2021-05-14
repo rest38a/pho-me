@@ -1735,10 +1735,12 @@ export default {
   &.active {
     background: #fcd000;
     color: #ffffff;
+    font-weight: 700;
   }
 }
 .pho-btn-delivery-group {
   border-radius: 10px;
+  box-shadow: none;
 }
 .pho-btn-med-promo {
   width: 85px;
@@ -1750,6 +1752,7 @@ export default {
   font-weight: 500;
   font-family: tr;
   margin: 0px 0px 0px 0px;
+  font-weight: 700;
 }
 .pho-btn-delivery-zones {
   font-size: 22px;

@@ -230,6 +230,14 @@
                                         </q-item-section>
                                     </q-item>
                                 </template>
+                                <template v-slot:append>
+                                    <q-icon
+                                            v-if="product.iikoProduct !== null"
+                                            class="cursor-pointer"
+                                            name="clear"
+                                            @click.stop="product.iikoProduct = null"
+                                    />
+                                </template>
                             </q-select>
                         </div>
                     </div>

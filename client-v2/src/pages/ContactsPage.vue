@@ -14,8 +14,8 @@
         </div>
         <div class="col-auto">
           <div class="under-title">РЕЖИМ РАБОТЫ</div>
-          <div class="description">ВС - ЧТ с 12:00 до 23:00
-            <br />ПТ - СБ с 12:00 до 24:00</div>
+          <div class="description">ВС - ЧТ с 12:00 до 22:00
+            <br />ПТ - СБ с 12:00 до 23:00</div>
         </div>
         <div class="col-auto">
           <div class="under-title">КОНТАКТЫ</div>

@@ -97,7 +97,7 @@ export default {
         {
           id: '2',
           description: 'Наш рейтинг в Яндекс',
-          rating: 4.5,
+          rating: 4.6,
           socialImage: '../assets/image/feedback/Yandex.png',
           title: 'в яндекс.карты',
           image: '/image/icon-yandex.svg',
@@ -121,7 +121,7 @@ export default {
         {
           id: '4',
           description: 'Наш рейтинг в Flamp',
-          rating: 4.7,
+          rating: 4.8,
           socialImage: '../assets/image/feedback/Flamp.png',
           title: 'на flamp',
           image: '/image/icon-flamp.svg',

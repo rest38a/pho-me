@@ -18,8 +18,8 @@
                             РЕЖИМ РАБОТЫ
                         </div>
                         <div class='zag1720'>
-                            ПН-ЧТ с 12:00 до 23:00<br>
-                            ПТ-ВС с 12:00 до 24:00
+                            ВС-ЧТ с 12:00 до 22:00<br>
+                            ПТ-СБ с 12:00 до 23:00
                         </div>
                     </div>
                     <div class='col-md-4 col-sm-6 col-12 justify-content-center contact-col'>

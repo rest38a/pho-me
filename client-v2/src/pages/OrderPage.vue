@@ -206,14 +206,8 @@
                   </div>
                 </div>
               </div>
-              <div class="orderMargin" @click="showCardAddress">
-                <q-input
-                  :value="currentOrder.clientInfo.addressString"
-                  bg-color="white"
-                  outlined
-                  dense
-                  :disable="deliveryInputDisabled"
-                />
+              <div class="q-mb-sm pseudo-input" @click="showCardAddress">
+                <span>{{ currentOrder.clientInfo.addressString }}</span>
               </div>
             </div>
           </div>
@@ -429,6 +423,7 @@
               :thickness="2"
             />
           </q-btn>
+          <template v-if="currentOrder.clientInfo.address.dadata === null">
           <q-btn
             v-if="showAddress"
             flat
@@ -443,10 +438,7 @@
               class="q-mr-md"
               :thickness="2"
             />
-            <div class="bold" v-if="currentOrder.clientInfo.address.dadata !== null">
-              Сохранить
-            </div>
-            <div class="bold" v-else>
+            <div class="bold">
               Назад
             </div>
             <q-spinner
@@ -457,6 +449,37 @@
               :thickness="2"
             />
           </q-btn>
+          </template>
+
+          <template v-else>
+          <q-btn
+            v-if="showAddress"
+            flat
+            style="background: #fcd000; color: #fff"
+            class="full-width q-my-md"
+            @click="toExitAddressForm"
+            :disable="addressDisadble"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">
+              Сохранить
+            </div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
+          </template>
+
         </q-scroll-area>
         <div v-else>
           <h6 class="bold">
@@ -886,10 +909,10 @@ export default {
       API_LINK: process.env.CLIENT_API_LINK,
       CLIENT_API_LINK: process.env.CLIENT_API_LINK,
       PAIMENT_TYPES: process.env.PAIMENT_TYPES,
-      DELIVERY_TYPE_LIST: process.env.DELIVERY_TYPE_LIST,
       slide: 1,
       autoplay: true,
       paymentRadio: '',
+      addressDisadble: false,
       deliveryInputDisabled: false,
       promoInputDisabled: false,
       apartmentDisabled: false,
@@ -1098,12 +1121,14 @@ export default {
     },
     changeDeliveryType(item) {
       this.activeDeliveryTypeButton = item;
+      const deliveryType = 1;
+      const pickupType = 2;
       if (item.type === 'Доставка') {
-        this.switchDeliveryType({ id: 1 });
+        this.switchDeliveryType(deliveryType);
         this.deliveryInputDisabled = false;
         this.showAddressInput = true;
       } else if (item.type === 'Самовывоз') {
-        this.switchDeliveryType({ id: 2 });
+        this.switchDeliveryType(pickupType);
         this.deliveryInputDisabled = true;
         this.showAddressInput = false;
       }
@@ -1121,6 +1146,18 @@ export default {
     showCardAddress() {
       if (this.deliveryInputDisabled === false) {
         this.showAddress = !this.showAddress;
+      }
+    },
+    toExitAddressForm() {
+      if (this.currentOrder.clientInfo.address.apartment != null
+        && this.currentOrder.clientInfo.addressString != null) {
+        this.addressDisadble = !this.addressDisadble;
+        this.showCardAddress();
+        this.addressDisadble = !this.addressDisadble;
+      } else {
+        this.createNotify(
+          'Выберите квартиру или частный дом',
+        );
       }
     },
     toShowRegistrationOrder() {
@@ -1499,9 +1536,16 @@ export default {
 .border-radius {
   border-radius: 10px;
 }
-.orderMargin {
-  margin-bottom: 13px;
+.pseudo-input {
+max-width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  height: 40px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  cursor: pointer;
 }
+
 .vertical-line {
   position: absolute;
   right: 0;
@@ -1533,7 +1577,7 @@ export default {
   position: fixed;
   right: 100px;
   top: 0;
-  width: 80%;
+  width: 90%;
   height: 100%;
 }
 .form-area {
@@ -1891,7 +1935,10 @@ export default {
 }
 @media (min-width: 1523px) {
   .cart {
-    width: 55%;
+    width: 1000px;
+  }
+  .cart-area {
+  padding: 32px 30px 45px 20px;
   }
 }
 

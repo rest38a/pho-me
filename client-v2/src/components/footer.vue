@@ -43,7 +43,6 @@
 </template >
 
 <script >
-const axios = require('axios').default;
 
 export default {
   name: 'my-footer',
@@ -54,13 +53,6 @@ export default {
         hours: 'с 12:00 до 23:00',
       }],
     };
-  },
-  mounted() {
-    axios.get('http://176.112.218.115:1337/worktimes')
-      .then((response) => {
-        console.log(response);
-        this.wtime.splice(0, this.wtime.length, ...response.data);
-      });
   },
 };
 </script >

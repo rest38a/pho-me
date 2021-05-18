@@ -155,6 +155,7 @@
               v-if="!showAddress"
               :value="currentOrder.clientInfo.phone"
               mask="+7 (###) ###-##-##"
+              unmasked-value
               bg-color="white"
               outlined
               dense

@@ -141,11 +141,11 @@ export default {
     buildCommentToBasket(product, userModifiers) {
       let cartComment = '';
       if (userModifiers.main.product.id !== undefined) {
-        cartComment += ` ${userModifiers.main.pName}`;
+        cartComment += ` ${userModifiers.main.product.name}`;
       }
       if (userModifiers.size.product.id !== undefined) {
         // todo поменять на структуру pName у всех модификаторов = name
-        cartComment += ` ${userModifiers.size.pName}`;
+        cartComment += ` ${userModifiers.size.product.name}`;
       }
       for (let i = 0; i < userModifiers.add.length; i += 1) {
         cartComment += `${userModifiers.add[i].pName}`;

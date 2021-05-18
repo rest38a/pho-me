@@ -61,6 +61,7 @@ services:
         volumes:
             - ./server-v2/app:/app/app
             - ./server-v2/start:/app/start
+            - ./server-v2/public:/app/public
         depends_on:
             - db
         ports:

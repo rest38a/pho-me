@@ -30,7 +30,7 @@ const routes = [
       },
       {
         path: 'sobaka',
-        name: 'feedback-mobile',
+        name: 'feedback-mobile2',
         component: () => import('../views/SobakaView.vue'),
       },
       {

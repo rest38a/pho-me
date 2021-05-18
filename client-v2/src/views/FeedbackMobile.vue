@@ -100,7 +100,7 @@ export default {
 
 <style scoped>
     @font-face{
-        font-family: TT Lakes;
+        font-family: tr;
         src: url(../assets/font/TTLakes-Black.ttf);
     }
     .main-bg {
@@ -121,7 +121,7 @@ export default {
         margin: 0 auto;
     }
     .title-feedback {
-        font-family: TT Lakes, sans-serif;
+        font-family: tr, sans-serif;
         font-style: normal;
         font-size: 15px;
         line-height: 20px;
@@ -212,7 +212,7 @@ export default {
         color: #fff;
     }
     .text-feedback-wrap {
-        font-family: TT Lakes, sans-serif;
+        font-family: tr, sans-serif;
         text-transform: uppercase;
         line-height: 14px;
         font-size: 10px;

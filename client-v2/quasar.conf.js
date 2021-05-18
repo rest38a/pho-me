@@ -15,7 +15,7 @@ module.exports = function (/* ctx */) {
     supportTS: false,
 
     // https://quasar.dev/quasar-cli/prefetch-feature
-    // preFetch: true,
+    preFetch: true,
 
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
@@ -48,8 +48,13 @@ module.exports = function (/* ctx */) {
     build: {
       vueRouterMode: 'history', // available values: 'hash', 'history'
 
-      env:{
-        API_LINK: 'https://api.pho-me.ru',
+      env: {
+        // CLIENT_API_LINK: 'http://localhost:3002',
+        // CLIENT_API_LINK: JSON.stringify(process.env.CLIENT_API_LINK),
+        CLIENT_API_LINK: 'http://devapi.pho-me.ru',
+        DELIVERY_TYPE_LIST: {"DELIVERY":1, "PICKUP":2},
+        PAIMENT_TYPES: {"CASH":1, "CARD":2, "SITE":3},
+        sourceList: {"SITE":1, "APP":2, "PHONE":3},
       },
       // transpile: false,
 

@@ -1275,6 +1275,8 @@ export default {
       this.addProducts();
       if (!this.isValidPhone) {
         this.createNotify('Номер телефона указан некорректно');
+      } else if (this.currentOrder.clientInfo.client.name === null) {
+        this.createNotify('Пожалуйста, введите имя');
       } else if (
         this.orderProducts.length === 0
         || (this.orderProducts.length === 1

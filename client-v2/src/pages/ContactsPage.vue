@@ -96,6 +96,13 @@
               marker-type="Polygon"
               v-for="(item, index) in dsZonesPriced.features"
             ></ymap-marker>
+            <ymap-marker
+              :coords="[ourDepartment[0], ourDepartment[1]]"
+              markerId="ourMap"
+              hint-content="Pho Me"
+              marker-type="Placemark"
+              :properties="departmentProperty"
+            ></ymap-marker>
           </template>
 <template v-else>
             <ymap-marker

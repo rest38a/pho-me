@@ -155,6 +155,7 @@
               v-if="!showAddress"
               :value="currentOrder.clientInfo.phone"
               mask="+7 (###) ###-##-##"
+              unmasked-value
               bg-color="white"
               outlined
               dense
@@ -205,14 +206,8 @@
                   </div>
                 </div>
               </div>
-              <div class="orderMargin" @click="showCardAddress">
-                <q-input
-                  :value="currentOrder.clientInfo.addressString"
-                  bg-color="white"
-                  outlined
-                  dense
-                  :disable="deliveryInputDisabled"
-                />
+              <div class="q-mb-sm pseudo-input" @click="showCardAddress">
+                <span>{{ currentOrder.clientInfo.addressString }}</span>
               </div>
             </div>
           </div>
@@ -428,6 +423,7 @@
               :thickness="2"
             />
           </q-btn>
+          <template v-if="currentOrder.clientInfo.address.dadata === null">
           <q-btn
             v-if="showAddress"
             flat
@@ -442,10 +438,7 @@
               class="q-mr-md"
               :thickness="2"
             />
-            <div class="bold" v-if="currentOrder.clientInfo.address.dadata !== null">
-              Сохранить
-            </div>
-            <div class="bold" v-else>
+            <div class="bold">
               Назад
             </div>
             <q-spinner
@@ -456,6 +449,37 @@
               :thickness="2"
             />
           </q-btn>
+          </template>
+
+          <template v-else>
+          <q-btn
+            v-if="showAddress"
+            flat
+            style="background: #fcd000; color: #fff"
+            class="full-width q-my-md"
+            @click="toExitAddressForm"
+            :disable="addressDisadble"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">
+              Сохранить
+            </div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
+          </template>
+
         </q-scroll-area>
         <div v-else>
           <h6 class="bold">
@@ -541,7 +565,7 @@
           :content-active-style="contentActiveStyle"
           style="height: 80%; padding-right: 20px"
         >
-          <div class="">
+          <div class="q-pr-xs-md">
             <q-separator/>
             <div v-for="cartItem in orderProducts" :key="cartItem.id">
               <BasketItem
@@ -605,7 +629,7 @@
           v-if="!showAddress"
           flat
           style="background: #ca17a8; color: #fff"
-          class="full-width create-order-button absolute-bottom"
+          class="full-width create-order-button absolute-bottom q-mb-lg"
           @click="toShowRegistrationOrder"
         >
           <div class="bold">
@@ -859,7 +883,6 @@ import {
 } from 'vuex';
 import ProductItem from '../components/ProductItem';
 import BasketItem from '../components/BasketItem';
-import YmapConstructor from '../boot/yandex-map-constructor.json';
 import InputAdress from '../components/inputAdress.vue';
 import RightNavigateOrderPage from '../components/navigation/RightNavigateOrderPage.vue';
 import AdditionalSale from '../components/AdditionalSale.vue';
@@ -886,10 +909,10 @@ export default {
       API_LINK: process.env.CLIENT_API_LINK,
       CLIENT_API_LINK: process.env.CLIENT_API_LINK,
       PAIMENT_TYPES: process.env.PAIMENT_TYPES,
-      DELIVERY_TYPE_LIST: process.env.DELIVERY_TYPE_LIST,
       slide: 1,
       autoplay: true,
       paymentRadio: '',
+      addressDisadble: false,
       deliveryInputDisabled: false,
       promoInputDisabled: false,
       apartmentDisabled: false,
@@ -966,7 +989,6 @@ export default {
       height: height - 1,
       yandexMapHeight: '',
       isMounted: false,
-      dsZonesPriced: YmapConstructor,
       coords: [],
       centerMap: [52.286191, 104.297709],
       ourDepartment: [52.27333480057664, 104.29042273754133],
@@ -1002,6 +1024,7 @@ export default {
       'isAddressInZone',
       'isValidPhone',
     ]),
+    ...mapState('contacts', ['contacts', 'dsZonesPriced']),
   },
   methods: {
     ...mapActions('order', [
@@ -1086,13 +1109,6 @@ export default {
         }
       }
     },
-    changeBasketColor() {
-      if (this.orderProducts === 0) {
-        this.backgroundBasket = '#eab700';
-      } else if (this.orderProducts !== 0) {
-        this.backgroundBasket = '#ca17a8';
-      }
-    },
     changeDeliveryTime(item) {
       this.activeDeliveryTimeButton = item;
       if (item.type === 'Как можно скорее') {
@@ -1105,12 +1121,14 @@ export default {
     },
     changeDeliveryType(item) {
       this.activeDeliveryTypeButton = item;
+      const deliveryType = 1;
+      const pickupType = 2;
       if (item.type === 'Доставка') {
-        this.switchDeliveryType({ id: 1 });
+        this.switchDeliveryType(deliveryType);
         this.deliveryInputDisabled = false;
         this.showAddressInput = true;
       } else if (item.type === 'Самовывоз') {
-        this.switchDeliveryType({ id: 2 });
+        this.switchDeliveryType(pickupType);
         this.deliveryInputDisabled = true;
         this.showAddressInput = false;
       }
@@ -1130,6 +1148,18 @@ export default {
         this.showAddress = !this.showAddress;
       }
     },
+    toExitAddressForm() {
+      if (this.currentOrder.clientInfo.address.apartment != null
+        && this.currentOrder.clientInfo.addressString != null) {
+        this.addressDisadble = !this.addressDisadble;
+        this.showCardAddress();
+        this.addressDisadble = !this.addressDisadble;
+      } else {
+        this.createNotify(
+          'Выберите квартиру или частный дом',
+        );
+      }
+    },
     toShowRegistrationOrder() {
       this.toShowRegistrationButton = !this.toShowRegistrationButton;
       this.ordering = !this.ordering;
@@ -1140,11 +1170,18 @@ export default {
       this.products = [...category.products];
       const sortFunction = (a, b) => a.sort_index - b.sort_index;
       this.activeCategoryProducts = prepareProducts.sort(sortFunction);
-      const scrollTop = window.pageYOffset;
-      if (window.innerWidth < 1023 || scrollTop === 0) {
-        const el = document.getElementById(category.name);
-        const scrollTarget = getScrollTarget(el);
-        setScrollPosition(scrollTarget, el.offsetTop - 150, 200);
+      if (window.innerWidth < 1023) {
+        const scrollTop = window.pageYOffset;
+        if (scrollTop !== 0) {
+          const el = document.getElementById(category.name);
+          const scrollTarget = getScrollTarget(el);
+          setScrollPosition(scrollTarget, el.offsetTop - 150, 200);
+        } else {
+          window.scrollTo({
+            top: 1,
+          });
+          console.log(scrollTop);
+        }
       }
     },
     reachYandexGoal(name) {
@@ -1238,6 +1275,8 @@ export default {
       this.addProducts();
       if (!this.isValidPhone) {
         this.createNotify('Номер телефона указан некорректно');
+      } else if (this.currentOrder.clientInfo.client.name === null) {
+        this.createNotify('Пожалуйста, введите имя');
       } else if (
         this.orderProducts.length === 0
         || (this.orderProducts.length === 1
@@ -1374,24 +1413,6 @@ export default {
     await loadYmap(settings);
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
-    this.dsZonesPriced.features.forEach((feature, featureInd) => {
-      if (
-        Array.isArray(
-          this.dsZonesPriced.features[featureInd].geometry.coordinates[0],
-        )
-      ) {
-        this.dsZonesPriced.features[featureInd].geometry.coordinates[0].forEach(
-          (item, idex) => {
-            const temp0 = item[0];
-            const temp1 = item[1];
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex][0] = temp1;
-            this.dsZonesPriced.features[featureInd].geometry.coordinates[0][
-              idex][1] = temp0;
-          },
-        );
-      }
-    });
   },
   created() {
     if (process.browser) {
@@ -1517,9 +1538,16 @@ export default {
 .border-radius {
   border-radius: 10px;
 }
-.orderMargin {
-  margin-bottom: 13px;
+.pseudo-input {
+max-width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  border-radius: 4px;
+  height: 40px;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  cursor: pointer;
 }
+
 .vertical-line {
   position: absolute;
   right: 0;
@@ -1551,7 +1579,7 @@ export default {
   position: fixed;
   right: 100px;
   top: 0;
-  width: 80%;
+  width: 90%;
   height: 100%;
 }
 .form-area {
@@ -1754,10 +1782,12 @@ export default {
   &.active {
     background: #fcd000;
     color: #ffffff;
+    font-weight: 700;
   }
 }
 .pho-btn-delivery-group {
   border-radius: 10px;
+  box-shadow: none;
 }
 .pho-btn-med-promo {
   width: 85px;
@@ -1769,6 +1799,7 @@ export default {
   font-weight: 500;
   font-family: tr;
   margin: 0px 0px 0px 0px;
+  font-weight: 700;
 }
 .pho-btn-delivery-zones {
   font-size: 22px;
@@ -1906,7 +1937,10 @@ export default {
 }
 @media (min-width: 1523px) {
   .cart {
-    width: 55%;
+    width: 1000px;
+  }
+  .cart-area {
+  padding: 32px 30px 45px 20px;
   }
 }
 

@@ -10,8 +10,9 @@
       <div class="pho-card-info-area col-grow column justify-between">
         <div class="row justify-between">
           <div class="pho-card-product-name">{{ product.name }}</div>
-          <div class="pho-card-product-weight">{{ product.weight }} гр.</div>
         </div>
+          <div v-if="product.weight !== null" class="pho-card-product-weight q-mb-xs q-mt-xs">
+            {{ product.weight }} гр.</div>
         <div class="pho-card-description">
           {{ product.description }}
         </div>
@@ -47,7 +48,7 @@
       <div class="pho-card-info-area col-7 column justify-between">
         <div class="row justify-between items-center">
           <div class="pho-card-product-name col-12">{{ product.name }}</div>
-          <div class="pho-card-product-weight col-12">
+          <div v-if="product.weight !== null" class="pho-card-product-weight col-12">
             {{ product.weight }} гр.
           </div>
         </div>
@@ -141,11 +142,11 @@ export default {
     buildCommentToBasket(product, userModifiers) {
       let cartComment = '';
       if (userModifiers.main.product.id !== undefined) {
-        cartComment += ` ${userModifiers.main.pName}`;
+        cartComment += ` ${userModifiers.main.product.name}`;
       }
       if (userModifiers.size.product.id !== undefined) {
         // todo поменять на структуру pName у всех модификаторов = name
-        cartComment += ` ${userModifiers.size.pName}`;
+        cartComment += ` ${userModifiers.size.product.name}`;
       }
       for (let i = 0; i < userModifiers.add.length; i += 1) {
         cartComment += `${userModifiers.add[i].pName}`;
@@ -298,7 +299,7 @@ export default {
   font-size: 16px;
   line-height: 22px;
   color: #333333;
-  text-align: right;
+  text-align: left;
 }
   .pho-card-info-area {
     padding: 16px 20px 20px 20px;

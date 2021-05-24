@@ -6,15 +6,15 @@
              v-for="modifierItem in modifiersType">
             <div class="col-4" v-if="type !== 'size'">
                 {{ modifierItem.name || modifierItem.product.name }}
-                <span v-if="modifierItem.product.mName">({{ modifierItem.product.name }})</span>
+                <span v-if="modifierItem.product.name">({{ modifierItem.product.name }})</span>
                 <span v-if="modifierItem.addPrice">
                     ({{ modifierItem.addPrice }})
                 </span>
             </div>
             <div class="col-4" v-else>
                 {{ modifierItem.product.name }}
-                <span v-if="modifierItem.pName">
-                    (позиция: {{ modifierItem.pName }})
+                <span v-if="modifierItem.name">
+                    (позиция: {{ modifierItem.name }})
                 </span>
                 <span v-if="modifierItem.addPrice">
                     (цена: {{ modifierItem.addPrice }})
@@ -92,7 +92,7 @@ export default {
   methods: {
     proxyAddFunction() {
       const copyNewModifiers = JSON.parse(JSON.stringify(this.newModifier));
-      copyNewModifiers.pName = copyNewModifiers.product.name;
+      copyNewModifiers.name = copyNewModifiers.product.name;
       copyNewModifiers.product.name = this.newModifier.name;
       this.addFunction(copyNewModifiers);
       this.resetNewModifier();

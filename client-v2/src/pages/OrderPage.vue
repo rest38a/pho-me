@@ -129,7 +129,12 @@
               'cart-h1': ordering === true,
               'form-area-display': ordering === false,
             }"
-          >
+          ><img
+            src="../assets/image/returnButtonBlack.svg"
+            @click="showAddress = !showAddress"
+            class="q-mr-sm"
+            style="cursor: pointer"
+          />
             Адрес доставки
           </div>
           <div v-if="!showAddress" class="pho-pb-2">
@@ -423,35 +428,20 @@
               :thickness="2"
             />
           </q-btn>
-          <template v-if="currentOrder.clientInfo.address.dadata === null">
-          <q-btn
-            v-if="showAddress"
-            flat
-            style="background: #fcd000; color: #fff"
-            class="full-width q-my-md"
-            @click="showCardAddress"
-          >
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-mr-md"
-              :thickness="2"
-            />
-            <div class="bold">
-              Назад
-            </div>
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-ml-md"
-              :thickness="2"
-            />
-          </q-btn>
-          </template>
+<!--          <template v-if="currentOrder.clientInfo.address.dadata === null">-->
+<!--          <q-btn-->
+<!--            v-if="showAddress"-->
+<!--            flat-->
+<!--            style="background: #fcd000; color: #fff"-->
+<!--            class="full-width q-my-md"-->
+<!--            @click="showCardAddress"-->
+<!--          >-->
+<!--            <div class="bold">-->
+<!--              Назад-->
+<!--            </div>-->
+<!--          </q-btn>-->
+<!--          </template>-->
 
-          <template v-else>
           <q-btn
             v-if="showAddress"
             flat
@@ -460,25 +450,10 @@
             @click="toExitAddressForm"
             :disable="addressDisadble"
           >
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-mr-md"
-              :thickness="2"
-            />
             <div class="bold">
               Сохранить
             </div>
-            <q-spinner
-              v-if="loading"
-              color="white"
-              size="1em"
-              class="q-ml-md"
-              :thickness="2"
-            />
           </q-btn>
-          </template>
 
         </q-scroll-area>
         <div v-else>
@@ -582,8 +557,8 @@
         <additional-sale
           :add-to-basket="addProductToBasket"
         />
-        <div class="row justify-between items-center">
-          <div class="row form-area-display">
+        <div class="row justify-between items-center col-12">
+          <div class="row form-area-display col-12 q-pr-lg">
             <q-input
               :value="promoCode.value"
               label="Ввести промокод"
@@ -592,12 +567,13 @@
               outlined
               dense
               @input="setPromoCode"
+              class="col-grow"
             />
             <q-btn
               v-if="hidePromoButton === true"
               flat
               size="md"
-              class="pho-btn pho-btn-med-promo"
+              class="pho-btn pho-btn-med-promo col-3"
               no-caps
               unelevated
               @click="usePromoCode('top')"
@@ -608,7 +584,7 @@
               v-if="hidePromoButton === false"
               flat
               size="md"
-              class="pho-btn pho-btn-med-promo"
+              class="pho-btn pho-btn-med-promo col-3"
               no-caps
               unelevated
               @click="removePromoFromBasket()"
@@ -616,13 +592,21 @@
               <div>Отменить</div>
             </q-btn>
           </div>
-          <div class="col-12">
-            <div class="total text-right">
+          <div class="col-12 q-pr-lg q-xs-none">
+            <div class="cart-h1 text-right"
+                 v-if="currentOrder.deliveryInfo.type === 2">Скидка за самовывоз 15%</div>
+            <div class="total text-right"
+            v-if="currentOrder.deliveryInfo.type === 2">
+              Сумма заказа:<span class="total-sum">{{ totalSum - (totalSum / 100 * 15)}} ₽</span>
+            </div>
+            <div v-else class="total text-right">
               Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
+            <div v-if="currentOrder.deliveryInfo.type === 1">
             <div v-if="totalSum < 800" class="pho-caption text-right">
               Минимальная сумма заказа от 800 ₽
             </div>
+          </div>
           </div>
         </div>
         <q-btn
@@ -1059,7 +1043,12 @@ export default {
       'addProducts',
       'setEntrance',
       'setFloor',
+      'catchDefaultState',
+      'setDefaultState',
     ]),
+    sayThanks() {
+      this.thanks = false;
+    },
     slideHeight() {
       this.windowWidth = window.innerWidth;
       if (this.windowWidth < 1023) {
@@ -1296,8 +1285,10 @@ export default {
       } else if (this.isValidPhone && this.orderProducts.length !== 0) {
         this.sendOrder();
         this.thanks = true;
+        setTimeout(this.sayThanks, 8000);
         this.loading = false;
         this.reachYandexGoal('thank');
+        this.setDefaultState();
       }
     },
     createNotify(text, colorType = 'negative') {
@@ -1413,6 +1404,7 @@ export default {
     await loadYmap(settings);
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
+    this.catchDefaultState();
   },
   created() {
     if (process.browser) {
@@ -1891,6 +1883,7 @@ max-width: 100%;
   }
   .cart-area {
     padding: 69px 23px 32px 32px;
+    margin-bottom: 60px;
   }
   .yelow-line {
     width: 48px;

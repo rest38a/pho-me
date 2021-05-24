@@ -51,6 +51,15 @@ export function removePromoFromBasket() {
   this.removeProductToBasket(filterOrder[0]);
 }
 
+export function catchDefaultState(state) {
+  state.defaultState = state.currentOrder;
+}
+
+export function setDefaultState(state) {
+  state.currentOrder = state.defaultState;
+  state.orderProducts = [];
+}
+
 export function setPhone(state, phone) {
   state.currentOrder.clientInfo.phone = phone;
   state.currentOrder.clientInfo.phoneString = phone.replace(/[^+\d]/g, '');

@@ -87,7 +87,7 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       if (this.window.width >= 1900) {
-        this.slidesToShow = 2.3;
+        this.slidesToShow = 2.1;
       } else if (this.window.width >= 1522) {
         this.slidesToShow = 1.7;
       } else if (this.window.width >= 1400) {
@@ -158,7 +158,7 @@ export default {
 .item {
   width: 183px;
   border-radius: 3px;
-  background: #f5f5f5;
+  background: white;
 }
 .sale-box {
   height: 84px;

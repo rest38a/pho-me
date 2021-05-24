@@ -104,8 +104,12 @@ export default {
   methods: {
     ...mapMutations('order', ['addProductToBasket', 'removeProductToBasket']),
     getName(productId) {
-      const searchProduct = this.orderProducts.find((item) => item.product.id === productId);
-      if (searchProduct !== undefined) return `В корзине ${searchProduct.number}`;
+      const searchProduct = this.orderProducts.filter((item) => item.product.id === productId);
+      let numberProducts = 0;
+      for (let i = 0; i < searchProduct.length; i += 1) {
+        numberProducts += searchProduct[i].number;
+      }
+      if (searchProduct !== undefined && searchProduct.length !== 0) return `В корзине ${numberProducts}`;
       return 'В корзину';
     },
     proxyAddBasket(productItem) {
@@ -149,7 +153,7 @@ export default {
         cartComment += ` ${userModifiers.size.product.name}`;
       }
       for (let i = 0; i < userModifiers.add.length; i += 1) {
-        cartComment += `${userModifiers.add[i].pName}`;
+        cartComment += `${userModifiers.add[i].name}`;
       }
       return cartComment;
     },

@@ -1,6 +1,6 @@
 export function totalSum(state) {
   // eslint-disable-next-line
-  const summ = state.orderProducts.reduce((accumulator, item) => {
+  const summ = state.currentOrder.products.reduce((accumulator, item) => {
     return accumulator + parseInt(item.finalPrice, 10) * item.number;
   }, 0);
 
@@ -10,8 +10,8 @@ export function totalSum(state) {
 export function orderProductsNum(state) {
   let numberProduct = 0;
 
-  for (let i = 0; i < state.orderProducts.length; i += 1) {
-    numberProduct += state.orderProducts[i].number;
+  for (let i = 0; i < state.currentOrder.products.length; i += 1) {
+    numberProduct += state.currentOrder.products[i].number;
   }
   return numberProduct;
 }

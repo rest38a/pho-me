@@ -8,33 +8,6 @@ export async function getOrderMenu(context) {
   return true;
 }
 
-export async function createOrder(context, currentOrder) {
-  // eslint-disable-next-line
-  const summ = context.state.orderProducts.reduce((accumulator, item) => accumulator + parseInt(item.base_price, 10) * item.number, 0);
-
-  const address = `${currentOrder.address} ${currentOrder.apartment}`;
-
-  const comment = JSON.stringify({
-    comment: currentOrder.comment,
-    deliveryTime: currentOrder.deliveryInfo.time,
-    product: context.state.currentOrder.products,
-    numPerson: context.state.currentOrder.forks,
-  });
-
-  const orderForStrappi = {
-    phone: currentOrder.clientInfo.phone,
-    comment,
-    delivery_time: null,
-    client_name: currentOrder.clientInfo.client.name,
-    address,
-    can_early: currentOrder.early,
-    sum_order: summ,
-    product: [],
-  };
-
-  return axios.post(`${process.env.CLIENT_API_LINK}/orders`, orderForStrappi).then(() => true);
-}
-
 export async function sendOrder(context) {
   const order = context.state.currentOrder;
   await axios.post(`${process.env.CLIENT_API_LINK}/api/order-site`,

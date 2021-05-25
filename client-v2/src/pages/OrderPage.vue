@@ -542,13 +542,13 @@
         >
           <div class="q-pr-xs-md">
             <q-separator/>
-            <div v-for="cartItem in orderProducts" :key="cartItem.id">
+            <div v-for="cartItem in currentOrder.products" :key="cartItem.id">
               <BasketItem
                 :add-to-basket="addProductToBasket"
                 :remove-from-basket="removeProductToBasket"
                 :remove-one-product="removeOneProduct"
                 :cart-item="cartItem"
-                :order-products="orderProducts"
+                :order-products="currentOrder.products"
               />
               <q-separator/>
             </div>
@@ -1048,6 +1048,7 @@ export default {
     ]),
     sayThanks() {
       this.thanks = false;
+      this.setDefaultState();
     },
     slideHeight() {
       this.windowWidth = window.innerWidth;
@@ -1188,7 +1189,7 @@ export default {
     checkPromoCode(result) {
       const date = new Date();
       const limitDate = Date.parse(result.date_finish) - Date.parse(date);
-      const filterOrder = this.orderProducts.filter(
+      const filterOrder = this.currentOrder.products.filter(
         (item) => item.isGift === true,
       );
       if (
@@ -1216,10 +1217,11 @@ export default {
       const cartItemPromo = {
         id: `${result.id} ${product.id}`,
         finalPrice: '',
-        comment: 'ПОДАРОК',
+        productComment: 'ПОДАРОК',
         product: this.promoCode.product,
         number: 1,
         isGift: true,
+        comment: '',
       };
       cartItemPromo.finalPrice = product.base_price - (product.base_price / 100) * result.discount;
       this.addProductToBasket(cartItemPromo);
@@ -1227,7 +1229,7 @@ export default {
     removePromoFromBasket() {
       this.promoInputDisabled = false;
       this.hidePromoButton = true;
-      const filterOrder = this.orderProducts.filter(
+      const filterOrder = this.currentOrder.products.filter(
         (item) => item.isGift === true,
       );
       this.removeProductToBasket(filterOrder[0]);
@@ -1257,7 +1259,7 @@ export default {
       return isBiggerFinishBreak && isLessFinishBreak;
     },
     proxySendOrder() {
-      const filterOrder = this.orderProducts.filter(
+      const filterOrder = this.currentOrder.products.filter(
         (item) => item.isGift === true,
       );
       this.setPaymentSumm(this.totalSum);
@@ -1267,9 +1269,9 @@ export default {
       } else if (this.currentOrder.clientInfo.client.name === null) {
         this.createNotify('Пожалуйста, введите имя');
       } else if (
-        this.orderProducts.length === 0
-        || (this.orderProducts.length === 1
-        && this.orderProducts[0].isGift === true)
+        this.currentOrder.products.length === 0
+        || (this.currentOrder.products.length === 1
+        && this.currentOrder.products[0].isGift === true)
       ) {
         this.createNotify('Нет блюд в корзине');
       } else if (
@@ -1282,13 +1284,12 @@ export default {
         && this.currentOrder.deliveryInfo.type.id === 2
       ) {
         this.createNotify('Промокоды недействительны для самовывоза');
-      } else if (this.isValidPhone && this.orderProducts.length !== 0) {
+      } else if (this.isValidPhone && this.currentOrder.products.length !== 0) {
         this.sendOrder();
         this.thanks = true;
         setTimeout(this.sayThanks, 8000);
         this.loading = false;
         this.reachYandexGoal('thank');
-        this.setDefaultState();
       }
     },
     createNotify(text, colorType = 'negative') {

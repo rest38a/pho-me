@@ -16,8 +16,18 @@ export function lastClientAddress(state) {
 
 /* eslint-disable */
 export function totalSum(state) {
+
   const summ = state.currentOrder.products.reduce((accumulator, item) => {
-    return accumulator + (parseInt(item.product.basePrice) * item.number)
+    let mainMod = 0;
+    let sizeMod = 0;
+    if (item.modifiers.main.addPrice) {
+      mainMod = JSON.parse(item.modifiers.main.addPrice);
+    }
+    if (item.modifiers.size.addPrice) {
+      sizeMod = JSON.parse(item.modifiers.size.addPrice);
+    }
+    console.log(mainMod, sizeMod, item.product.basePrice);
+    return accumulator + (parseInt(item.product.basePrice + mainMod + sizeMod) * item.number)
   },0);
 
   return summ;

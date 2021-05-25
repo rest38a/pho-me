@@ -1,33 +1,35 @@
 import moment from 'moment';
 
 export function addProductToBasket(state, cartItem) {
-  const index = state.orderProducts.findIndex((item) => item.id === cartItem.id);
+  const index = state.currentOrder.products.findIndex((item) => item.id === cartItem.id);
 
   if (index !== -1) {
-    const searchElem = { ...state.orderProducts[index] };
+    const searchElem = { ...state.currentOrder.products[index] };
     searchElem.number += 1;
-    const oldStateOrderProduct = [...state.orderProducts];
+    const oldStateOrderProduct = [...state.currentOrder.products];
     oldStateOrderProduct.splice(index, 1, searchElem);
 
-    state.orderProducts = [...oldStateOrderProduct];
+    state.currentOrder.products = [...oldStateOrderProduct];
   } else {
-    state.orderProducts.push(cartItem);
+    state.currentOrder.products.push(cartItem);
   }
 }
 
 export function removeOneProduct(state, cartItem) {
-  const index = state.orderProducts.findIndex((item) => item.id === cartItem.id);
+  const index = state.currentOrder.products.findIndex((item) => item.id === cartItem.id);
 
-  if (state.orderProducts[index].number > 1) {
-    const newProductState = [...state.orderProducts];
+  if (state.currentOrder.products[index].number > 1) {
+    const newProductState = [...state.currentOrder.products];
     newProductState[index].number -= 1;
-    state.orderProducts = [...newProductState];
+    state.currentOrder.products = [...newProductState];
   } else {
-    state.orderProducts = state.orderProducts.filter((item) => item.id !== cartItem.id);
+    // eslint-disable-next-line max-len
+    state.currentOrder.products = state.currentOrder.products.filter((item) => item.id !== cartItem.id);
   }
 }
 export function removeProductToBasket(state, cartItem) {
-  state.orderProducts = state.orderProducts.filter((item) => item.id !== cartItem.id);
+  // eslint-disable-next-line max-len
+  state.currentOrder.products = state.currentOrder.products.filter((item) => item.id !== cartItem.id);
 }
 
 export function addPromocode(result, product) {
@@ -47,7 +49,7 @@ export function addPromocode(result, product) {
 export function removePromoFromBasket() {
   this.promoInputDisabled = false;
   this.hidePromoButton = true;
-  const filterOrder = this.state.orderProducts.filter((item) => item.isGift === true);
+  const filterOrder = this.state.currentOrder.products.filter((item) => item.isGift === true);
   this.removeProductToBasket(filterOrder[0]);
 }
 
@@ -57,6 +59,7 @@ export function catchDefaultState(state) {
 
 export function setDefaultState(state) {
   state.currentOrder = state.defaultState;
+  state.currentOrder.products = [];
   state.orderProducts = [];
 }
 
@@ -151,7 +154,7 @@ export function getPromoCodes(state, promoCodes) {
 }
 
 export function setFinalPrice(state, finalPrice) {
-  state.orderProducts.finalPrice = finalPrice;
+  state.currentOrder.products.finalPrice = finalPrice;
 }
 
 export function setOrderId(state, OrderId) {
@@ -159,39 +162,40 @@ export function setOrderId(state, OrderId) {
 }
 
 export function addProducts(state) {
-  state.currentOrder.products = [];
-  for (let i = 0; i < state.orderProducts.length; i += 1) {
-    let modifiers;
-    if (state.orderProducts[i].userModifiers === null) modifiers = {};
-    else modifiers = state.orderProducts[i].userModifiers;
-
-    let discount;
-
-    if (state.orderProducts[i].isGift === true) {
-      const basePrice = state.orderProducts[i].product.base_price;
-      const discountValue = (basePrice - state.orderProducts[i].finalPrice).toFixed(1);
-      discount = {
-        string: `${discountValue}`,
-        rub: discountValue,
-        quantity: discountValue,
-        type: 'rub',
-      };
-    } else {
-      discount = {
-        string: null,
-        rub: 0,
-        quantity: null,
-        type: 'rub',
-      };
-    }
-
-    state.currentOrder.products.push({
-      product: state.orderProducts[i].product,
-      number: state.orderProducts[i].number,
-      comment: state.orderProducts[i].comment,
-      hash: state.orderProducts[i].id,
-      modifiers,
-      discount,
-    });
-  }
+  state.orderProducts = [];
+  state.orderProducts = [...state.currentOrder.products];
+  // for (let i = 0; i < state.currentOrder.products.length; i += 1) {
+  //   let modifiers;
+  //   if (state.currentOrder.products[i].userModifiers === null) modifiers = {};
+  //   else modifiers = state.currentOrder.products[i].userModifiers;
+  //
+  //   let discount;
+  //
+  //   if (state.currentOrder.products[i].isGift === true) {
+  //     const basePrice = state.currentOrder.products[i].product.base_price;
+  //     const discountValue = (basePrice - state.currentOrder.products[i].finalPrice).toFixed(1);
+  //     discount = {
+  //       string: `${discountValue}`,
+  //       rub: discountValue,
+  //       quantity: discountValue,
+  //       type: 'rub',
+  //     };
+  //   } else {
+  //     discount = {
+  //       string: null,
+  //       rub: 0,
+  //       quantity: null,
+  //       type: 'rub',
+  //     };
+  //   }
+  //
+  //   state.currentOrder.products.push({
+  //     product: state.currentOrder.products[i].product,
+  //     number: state.currentOrder.products[i].number,
+  //     comment: state.currentOrder.products[i].comment,
+  //     hash: state.currentOrder.products[i].id,
+  //     modifiers,
+  //     discount,
+  //   });
+  // }
 }

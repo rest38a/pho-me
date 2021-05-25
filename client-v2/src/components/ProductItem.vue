@@ -104,7 +104,8 @@ export default {
   methods: {
     ...mapMutations('order', ['addProductToBasket', 'removeProductToBasket']),
     getName(productId) {
-      const searchProduct = this.orderProducts.filter((item) => item.product.id === productId);
+      // eslint-disable-next-line max-len
+      const searchProduct = this.currentOrder.products.filter((item) => item.product.id === productId);
       let numberProducts = 0;
       for (let i = 0; i < searchProduct.length; i += 1) {
         numberProducts += searchProduct[i].number;
@@ -117,14 +118,15 @@ export default {
         id: '',
         userModifiers: {},
         finalPrice: '',
-        comment: '',
+        productComment: '',
         product: productItem,
         number: 1,
+        comment: '',
       };
       cartItem.id = this.buildIdToBasket(this.product, this.userModifiers);
       cartItem.userModifiers = JSON.parse(JSON.stringify(this.userModifiers));
       cartItem.finalPrice = this.finalPrice;
-      cartItem.comment = this.buildCommentToBasket(
+      cartItem.productComment = this.buildCommentToBasket(
         this.product,
         this.userModifiers,
       );
@@ -177,7 +179,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('order', ['orderProducts', 'promoCode']),
+    ...mapState('order', ['currentOrder', 'promoCode']),
     mainModifiers() {
       return this.product.modifiers.filter((item) => {
         if (item.type === undefined) return true;

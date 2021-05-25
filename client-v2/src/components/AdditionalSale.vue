@@ -81,6 +81,7 @@ export default {
         comment: '',
         product: productItem,
         number: 1,
+        productComment: '',
       };
       this.addProductToBasket(cartItem);
     },
@@ -112,7 +113,7 @@ export default {
     },
   },
   computed: {
-    ...mapState('order', ['categoriesMenu', 'orderProducts']),
+    ...mapState('order', ['categoriesMenu', 'currentOrder']),
     filterProducts() {
       let productsUpSales = [];
       for (let i = 0; this.categoriesMenu[i]; i += 1) {

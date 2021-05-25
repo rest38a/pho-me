@@ -23,6 +23,9 @@
                 <span v-if="productItem.modifiers.main.product !== undefined">
                     {{ productItem.modifiers.main.product.name }}
                 </span>
+              <span v-if="productItem.modifiers.size.product !== undefined">
+                    {{ productItem.modifiers.size.product.name }}
+                </span>
             </div>
             <div class="col-1">
                 {{productItem.number}}
@@ -31,13 +34,13 @@
                 <span v-if="productItem.product !== null">
                     <span v-if="productItem.discount.rub > 0">
                         <span class="old-price">
-                            {{ productItem.product.basePrice }}
+                            {{ getFinalPrice(productItem) }}
                         </span><br>
                         <span class="">
-                            {{ productItem.product.basePrice - productItem.discount.rub  }}
+                            {{ getFinalPrice(productItem) - productItem.discount.rub  }}
                         </span>
                     </span>
-                    <span v-else>{{ productItem.product.basePrice }}</span>
+                    <span v-else>{{ getFinalPrice(productItem) }}</span>
                 </span>
             </div>
             <div class="col">
@@ -240,6 +243,34 @@ export default {
     getName(modifierItem) {
       if (modifierItem.product?.name !== undefined) return modifierItem.product.name;
       return '';
+    },
+    getFinalPrice(productItem) {
+      console.log('productItem', productItem);
+
+      let finalPrice = productItem.product.basePrice;
+
+      if (productItem.modifiers
+        && productItem.modifiers.main
+        && productItem.modifiers.main.addPrice) {
+        finalPrice += +productItem.modifiers.main.addPrice;
+      }
+
+      if (productItem.modifiers
+        && productItem.modifiers.size
+        && productItem.modifiers.size.addPrice) {
+        finalPrice += +productItem.modifiers.size.addPrice;
+      }
+
+      if (productItem.modifiers
+        && productItem.modifiers.add
+        && productItem.modifiers.add.length > 0) {
+        for (let i = 0; i < productItem.modifiers.add.length; i += 1) {
+          const priceStep = productItem.modifiers.add[i].product.basePrice;
+          finalPrice += +priceStep;
+        }
+      }
+
+      return finalPrice;
     },
     async chooseProduct(product) {
       this.isValidProduct = true;

@@ -245,8 +245,6 @@ export default {
       return '';
     },
     getFinalPrice(productItem) {
-      console.log('productItem', productItem);
-
       let finalPrice = productItem.product.basePrice;
 
       if (productItem.modifiers

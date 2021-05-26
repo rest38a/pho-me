@@ -26,7 +26,6 @@ export function totalSum(state) {
     if (item.modifiers.size.addPrice) {
       sizeMod = JSON.parse(item.modifiers.size.addPrice);
     }
-    console.log(mainMod, sizeMod, item.product.basePrice);
     return accumulator + (parseInt(item.product.basePrice + mainMod + sizeMod) * item.number)
   },0);
 

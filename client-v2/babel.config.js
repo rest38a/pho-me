@@ -1,9 +1,3 @@
-// module.exports = {
-//   presets: [
-//     '@quasar/babel-preset-app',
-//   ],
-// };
-
 const presets = ['@quasar/babel-preset-app'];
 const plugins = [];
 

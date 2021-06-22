@@ -1,54 +1,54 @@
 <template>
-    <div class="q-gutter-md">
-        <div class="text-h6">{{ ruName }}</div>
-        <div class="row"
-             :key="modifierItem.product.id"
-             v-for="modifierItem in modifiersType">
-            <div class="col-4" v-if="type !== 'size'">
-                {{ modifierItem.name || modifierItem.product.name }}
-                <span v-if="modifierItem.product.name">({{ modifierItem.product.name }})</span>
-                <span v-if="modifierItem.addPrice">
+  <div class="q-gutter-md">
+    <div class="text-h6">{{ ruName }}</div>
+    <div class="row"
+         :key="modifierItem.product.id"
+         v-for="modifierItem in modifiersType">
+      <div class="col-4" v-if="type !== 'size'">
+        {{ modifierItem.name || modifierItem.pName }}
+        <span v-if="modifierItem.product.name">({{ modifierItem.product.name }})</span>
+        <span v-if="modifierItem.addPrice">
                     ({{ modifierItem.addPrice }})
                 </span>
-            </div>
-            <div class="col-4" v-else>
-                {{ modifierItem.product.name }}
-                <span v-if="modifierItem.name">
+      </div>
+      <div class="col-4" v-else>
+        {{ modifierItem.product.name }}
+        <span v-if="modifierItem.name">
                     (позиция: {{ modifierItem.name }})
                 </span>
-                <span v-if="modifierItem.addPrice">
+        <span v-if="modifierItem.addPrice">
                     (цена: {{ modifierItem.addPrice }})
                 </span>
-            </div>
-            <div class="col-3">
-                <q-btn color=""
-                       class="text-amber"
-                       cicle
-                       @click="removeFunction(modifierItem)" icon="delete"/>
-            </div>
-        </div>
-        <div class="row q-col-gutter-lg q-py-md">
-            <div class="col-4">
-                <q-select outlined
-                          v-model="newModifier.product"
-                          option-label="name"
-                          option-value="id"
-                          :options="products" :label="ruName"/>
-            </div>
-            <div class="col-3">
-                <q-input outlined v-model="newModifier.name" label="Имя"/>
-            </div>
-            <div class="col-2">
-                <q-input outlined v-model="newModifier.addPrice" label="Цена"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <q-btn color="primary"
-                       @click='proxyAddFunction(newModifier)' label="Добавить модификатор"/>
-            </div>
-        </div>
+      </div>
+      <div class="col-3">
+        <q-btn color=""
+               class="text-amber"
+               cicle
+               @click="removeFunction(modifierItem)" icon="delete"/>
+      </div>
     </div>
+    <div class="row q-col-gutter-lg q-py-md">
+      <div class="col-4">
+        <q-select outlined
+                  v-model="newModifier.product"
+                  option-label="name"
+                  option-value="id"
+                  :options="products" :label="ruName"/>
+      </div>
+      <div class="col-3">
+        <q-input outlined v-model="newModifier.name" label="Имя"/>
+      </div>
+      <div class="col-2">
+        <q-input outlined v-model="newModifier.addPrice" label="Цена"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <q-btn color="primary"
+               @click='proxyAddFunction(newModifier)' label="Добавить модификатор"/>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -82,7 +82,6 @@ export default {
     modifiersType() {
       return this.modifiersList.filter((item) => {
         if (item.type === this.type) return true;
-
         if (this.type === 'main'
           && item.type === undefined) return true;
         return false;
@@ -109,5 +108,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

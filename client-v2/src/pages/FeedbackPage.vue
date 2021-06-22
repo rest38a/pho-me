@@ -97,7 +97,7 @@ export default {
         {
           id: '2',
           description: 'Наш рейтинг в Яндекс',
-          rating: 4.6,
+          rating: 4.8,
           socialImage: '../assets/image/feedback/Yandex.png',
           title: 'в яндекс.карты',
           image: '/image/icon-yandex.svg',

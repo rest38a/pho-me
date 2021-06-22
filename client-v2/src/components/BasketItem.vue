@@ -11,7 +11,7 @@
     <div class="col-4 column">
       <div class="name">{{ cartItem.product.name }}</div>
       <div
-        class="name-modifiers">{{ cartItem.comment }}
+        class="name-modifiers">{{ cartItem.productComment }}
       </div>
       <!-- <div class="grey4">{{cartItem.product.weight}} гр</div> -->
     </div>

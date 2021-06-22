@@ -142,7 +142,7 @@ export function setForks(state, forks) {
 }
 
 export function setPromoCode(state, promoCode) {
-  state.promoCode.value = promoCode;
+  state.promoCode.value = promoCode.toLowerCase();
 }
 
 export function setPromoCodeProduct(state, product) {

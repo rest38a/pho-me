@@ -5,7 +5,7 @@
          :key="modifierItem.product.id"
          v-for="modifierItem in modifiersType">
       <div class="col-4" v-if="type !== 'size'">
-        {{ modifierItem.name || modifierItem.pName }}
+        {{ modifierItem.name }}
         <span v-if="modifierItem.product.name">({{ modifierItem.product.name }})</span>
         <span v-if="modifierItem.addPrice">
                     ({{ modifierItem.addPrice }})

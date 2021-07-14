@@ -21,7 +21,7 @@
           <div class="under-title">КОНТАКТЫ</div>
           <div class="description">
             <u
-              ><a href="tel:83952000000">{{ this.contacts.phone }}</a><br />
+              ><a href="tel:83952596011">{{ this.contacts.phone }}</a><br />
               <a href="mailto:contact@pho-me.ru">hello@pho-me.ru</a></u
             >
           </div>

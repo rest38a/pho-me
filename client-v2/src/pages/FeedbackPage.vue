@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="footer">596-011</div>
+    <div ><a class="footer" href="tel:83952596011">596-011</a></div>
   </div>
 </template>
 
@@ -398,6 +398,8 @@ export default {
 
 .footer {
   display: none;
+  color: white;
+  text-decoration: none;
 }
 
 @media (max-width: 414px) {

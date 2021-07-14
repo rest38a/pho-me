@@ -26,9 +26,7 @@
                         <div class='zag11720'>
                             КОНТАКТЫ
                         </div>
-                        <div class='zag1720'>
-                            596-011
-                        </div>
+                      <a class='zag1720' href="tel:83952596011">596-011</a>
                     </div>
                     <!-- <div class='socials-wrap col-sm-6 contact-col'>
 						<div class='socials'>
@@ -78,6 +76,7 @@ export default {
 		font-weight: 500;
 		font-size: 18px;
 		line-height: 24px;
+      color: white;
 	}
 
 	.socials-wrap {

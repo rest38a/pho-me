@@ -481,7 +481,7 @@
             </h6>
             <div>Наш менеджер сможет вам позвонить только с 12 часов дня.</div>
             <div class="row justify-center">
-              <img class="thanksImage" src="../assets/image/thanksEarly.png">
+              <img class="thanksImage" src="../assets/image/ThanksEarly.png">
             </div>
           </template>
         </div>

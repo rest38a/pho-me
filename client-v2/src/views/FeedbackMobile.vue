@@ -72,14 +72,14 @@ export default {
         classImg: 'img-wrap-2gis',
         childClass: 'text-color-white',
       },
-      // {
-      //   title: 'на trip advisor',
-      //   image: '/image/icon-advisor.svg',
-      //   link: 'https://www.tripadvisor.ru/Restaurant_Review-g298527-d14167780-Reviews-Pho_Me_Asian_Food_Drinks-Irkutsk_Irkutsk_Oblast_Siberian_District.html?m=19905',
-      //   wrapClass: 'btn-feedback-advisor',
-      //   classImg: 'img-wrap-advisor',
-      //   childClass: 'text-color-white',
-      // },
+      {
+        title: 'на trip advisor',
+        image: '/image/icon-advisor.svg',
+        link: 'https://www.tripadvisor.ru/Restaurant_Review-g298527-d14167780-Reviews-Pho_Me_Asian_Food_Drinks-Irkutsk_Irkutsk_Oblast_Siberian_District.html?m=19905',
+        wrapClass: 'btn-feedback-advisor',
+        classImg: 'img-wrap-advisor',
+        childClass: 'text-color-white',
+      },
       {
         title: 'на flamp',
         image: '/image/icon-flamp.svg',

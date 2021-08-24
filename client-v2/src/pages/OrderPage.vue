@@ -457,10 +457,33 @@
 
         </q-scroll-area>
         <div v-else>
+          <template v-if="hours >= 12 && hours < 22">
           <h6 class="bold">
             Спасибо за заказ!
           </h6>
           <div>В ближайшее время с вами свяжется наш менеджер.</div>
+          <div class="row justify-center">
+          <img class="thanksImage" src="../assets/image/thanksSuccess.png">
+          </div>
+          </template>
+          <template v-if="hours >= 22 || (hours >= 0 && hours < 7)">
+            <h6 class="bold">
+              Беда! Мы уже не работаем.
+            </h6>
+            <div>Наша доставка работает с 12:00 до 22:00</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/thanksLate.png">
+            </div>
+          </template>
+          <template v-if="hours >= 7 && hours < 12">
+            <h6 class="bold">
+              Спасибо за заказ, но доставка еще не работает.
+            </h6>
+            <div>Наш менеджер сможет вам позвонить только с 12 часов дня.</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/thanksEarly.png">
+            </div>
+          </template>
         </div>
       </div>
       <div
@@ -902,6 +925,8 @@ export default {
       apartmentDisabled: false,
       hidePromoButton: true,
       addressHint: [],
+      dateNow: new Date(),
+      hours: null,
       startBreak: new Date(1989, 5, 26, 17, 0, 0, 0),
       finishBreak: new Date(1989, 5, 26, 19, 30, 0, 0),
       isInZone: true,
@@ -1259,6 +1284,7 @@ export default {
       return isBiggerFinishBreak && isLessFinishBreak;
     },
     proxySendOrder() {
+      this.hours = this.dateNow.getHours();
       const filterOrder = this.currentOrder.products.filter(
         (item) => item.isGift === true,
       );
@@ -1561,6 +1587,10 @@ max-width: 100%;
 }
 .basket-cart-name {
   margin: 0 auto;
+}
+
+.thanksImage {
+  max-width: 200px;
 }
 
 .close-basket {

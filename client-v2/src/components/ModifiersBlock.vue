@@ -56,7 +56,7 @@
                  @input="(modifierItem) => setModifierFunction(modifierItem, 'main')"
                  :value="userModifiers.main"
                  :options="mainModifiers"
-                 option-label="pName"
+                 option-label="name"
                  behavior="menu"
                  transition-show="scale"
                  outlined

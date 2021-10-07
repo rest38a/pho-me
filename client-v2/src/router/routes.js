@@ -34,6 +34,11 @@ const routes = [
         component: () => import('../views/SobakaView.vue'),
       },
       {
+        path: 'promo2gis',
+        name: 'promo2gis',
+        component: () => import('../pages/Promo2GisPage.vue'),
+      },
+      {
         path: 'kewrwen3234532834dhrsjkwejrwejkrn',
         name: 'report',
         component: () => import('pages/ReportPage.vue'),

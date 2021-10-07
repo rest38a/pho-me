@@ -58,7 +58,7 @@ export default {
         { name: 'using', label: 'Использовано', field: () => 'хрен знает' },
         { name: 'product', label: 'Блюдо', field: (row) => (row.product.name) },
         { name: 'date_finish', label: 'Дата окончания', field: (row) => (row.dateFinish.substr(0, 10)) },
-        { name: 'is_active', label: 'Активен', field: (row) => (row.isActive === null ? ' нет' : 'да') },
+        { name: 'is_active', label: 'Активен', field: (row) => (row.isActive === 0 ? ' нет' : 'да') },
         { name: 'edit', label: 'Редактировать', field: 'edit' },
       ],
     };

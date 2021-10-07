@@ -626,8 +626,8 @@
               Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
             <div v-if="currentOrder.deliveryInfo.type === 1">
-            <div v-if="totalSum < 800" class="pho-caption text-right">
-              Минимальная сумма заказа от 800 ₽
+            <div v-if="totalSum < contacts.min_sum" class="pho-caption text-right">
+              Минимальная сумма заказа от {{contacts.min_sum}} ₽
             </div>
           </div>
           </div>
@@ -1013,6 +1013,9 @@ export default {
     };
   },
   computed: {
+    ...mapActions('contacts', [
+      'getContacts',
+    ]),
     ...mapState('order', [
       'order',
       'orderProducts',
@@ -1300,6 +1303,11 @@ export default {
         && this.currentOrder.products[0].isGift === true)
       ) {
         this.createNotify('Нет блюд в корзине');
+      } else if (
+        this.currentOrder.deliveryInfo.type === 1
+        && this.totalSum < this.contacts.min_sum
+      ) {
+        this.createNotify('Cумма заказа меньше минимальной для доставки, добавьте что-нибудь ещё');
       } else if (
         this.showAddressInput === true
         && this.currentOrder.clientInfo.address.dadata === null

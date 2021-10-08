@@ -26,26 +26,13 @@ export default function ({ store }) {
     base: process.env.VUE_ROUTER_BASE,
   });
 
-  // Router.beforeEach((to, from, next) => {
-  //   if (store.state.auth.userToken === null) {
-  //     if (to.path !== '/login') {
-  //       next('/login');
-  //     } else {
-  //       next();
-  //     }
-  //   } else {
-  //     next();
-  //   }
-  // });
-  //
   Router.beforeEach((to, from, next) => {
-    if (to.path === '/kitchen') {
-      next();
-    // }
-    // else if (store.state.auth.userToken === null) {
-    //   if (to.path !== '/login') {
-    //     next('/login');
-    //   } else next();
+    if (store.state.auth.userToken === null) {
+      if (to.path !== '/login') {
+        next('/login');
+      } else {
+        next();
+      }
     } else {
       next();
     }

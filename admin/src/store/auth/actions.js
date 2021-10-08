@@ -12,11 +12,12 @@ export async function login(context, authData) {
   })
     .then(({ data }) => {
       context.commit('authUser', {
-        token: data.token,
+        token: data.token.token,
         userId: null,
         userName: null,
+        user: data.user,
       });
-      localStorage.setItem('token', data.token);
+      localStorage.setItem('token', data.token.token);
     })
     .then(() => {
       this.$router.push('/orders');

@@ -626,8 +626,8 @@
               Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
             <div v-if="currentOrder.deliveryInfo.type === 1">
-            <div v-if="totalSum < contacts.min_sum" class="pho-caption text-right">
-              Минимальная сумма заказа от {{contacts.min_sum}} ₽
+            <div v-if="totalSum < 800" class="pho-caption text-right">
+              Минимальная сумма заказа от 800 ₽
             </div>
           </div>
           </div>
@@ -1305,7 +1305,7 @@ export default {
         this.createNotify('Нет блюд в корзине');
       } else if (
         this.currentOrder.deliveryInfo.type === 1
-        && this.totalSum < this.contacts.min_sum
+        && this.totalSum < 800
       ) {
         this.createNotify('Cумма заказа меньше минимальной для доставки, добавьте что-нибудь ещё');
       } else if (

@@ -25,7 +25,7 @@
                  @input="(modifierItem) => setModifierFunction(modifierItem, 'size')"
                  :value="userModifiers.size"
                  :options="sizeModifiers"
-                 option-label="pName"
+                 option-label="name"
                  behavior="menu"
                  transition-show="scale"
                  outlined

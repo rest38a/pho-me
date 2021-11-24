@@ -70,6 +70,23 @@ const routes = [
         component: () => import('pages/SettingSite/SettingSite.vue'),
       },
       {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('pages/reports/Dashboard.vue'),
+      },
+      {
+        path: 'dashboards_settings',
+        name: 'dashboards_settings',
+        component: () => import('pages/reports/DashboardSettings.vue'),
+        children: [
+          {
+            path: 'motivation',
+            name: 'motivation',
+            component: () => import('components/dashboards/StaffBoard.vue'),
+          },
+        ],
+      },
+      {
         path: 'feedback',
         name: 'feedback_list',
         component: () => import('pages/Feedback/FeedbackPage.vue'),

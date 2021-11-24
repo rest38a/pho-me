@@ -73,6 +73,14 @@ export default {
           link: '/orders',
         },
         {
+          name: 'Дашборд',
+          link: '/dashboard',
+        },
+        {
+          name: 'Настройка дашбордов',
+          link: '/dashboards_settings',
+        },
+        {
           name: 'Подразделения',
           link: '/departments',
         },

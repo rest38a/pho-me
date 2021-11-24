@@ -80,6 +80,8 @@ services:
             DB_HOST: ${DB_HOST}
             APP_URL: http://${SERVER_HOST}:${SERVER_PORT}
             APP_NAME: ${APP_NAME}
+            STAFF_PRESET: ${STAFF_PRESET}
+            FOOD_PRESET: ${FOOD_PRESET}
     adminer:
         image: dockette/adminer:full
         container_name: ${PROJECT}adminer

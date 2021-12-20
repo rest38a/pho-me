@@ -6,7 +6,7 @@ const axios = require('axios').default;
 
 export async function login(context, authData) {
   let answer;
-  await axios.post('http://localhost:3002/api/staff/auth', {
+  await axios.post(`${process.env.ADMIN_API_LINK}/api/staff/auth`, {
     phone: authData.phone,
     password: authData.password,
   })

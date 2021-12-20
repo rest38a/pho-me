@@ -1,5 +1,6 @@
 <template>
     <q-page class="q-pb-xl">
+      <router-view/>
         <q-table
                 title="Акции"
                 :data="promotions"
@@ -68,10 +69,10 @@ export default {
   },
   methods: {
     editPromotio(productId) {
-      this.$router.push(`/promotion/${productId}`);
+      this.$router.push(`/promotions/${productId}`);
     },
     addPromotion() {
-      this.$router.push('/promotion/create');
+      this.$router.push('/promotions/create');
     },
   },
 };

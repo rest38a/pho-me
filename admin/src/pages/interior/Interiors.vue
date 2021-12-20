@@ -1,5 +1,6 @@
 <template>
     <q-page class="q-pb-xl">
+      <router-view/>
         <q-table
                 title="Интерьеры"
                 :data="interiors"

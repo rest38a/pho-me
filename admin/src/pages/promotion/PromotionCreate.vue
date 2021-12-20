@@ -1,5 +1,6 @@
 <template>
-    <div class="q-pa-md">
+    <q-page class="q-pa-md">
+      <router-view/>
         <h5>Создание акции</h5>
         <q-form
                 class="q-gutter-md"
@@ -112,7 +113,7 @@
                 </div>
             </div>
         </q-form>
-    </div>
+    </q-page>
 </template>
 
 <script>

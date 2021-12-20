@@ -1,5 +1,6 @@
 <template>
     <div class="q-pa-md">
+      <router-view/>
         <h5>Создание меню ресторана</h5>
         <q-form
                 class="q-gutter-md"

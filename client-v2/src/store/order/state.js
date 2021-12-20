@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export default function () {
   return {
     defaultState: [],
@@ -38,7 +40,7 @@ export default function () {
         },
       },
       deliveryInfo: {
-        date: null,
+        date: moment(new Date()).format('DD.MM.YYYY'),
         time: null,
         isCheck: false,
         dateCheck: null,

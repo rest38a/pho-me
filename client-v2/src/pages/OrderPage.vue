@@ -336,19 +336,28 @@
               noActive: showTimeInput === true,
             }"
           >
-            <div v-if="!showAddress" class="col-12">
+            <div v-if="!showAddress" class="row justify-between col-12">
               <q-input
-                :value="currentOrder.deliveryInfo.time"
-                mask="##:##"
+                :value="date"
                 bg-color="white"
                 outlined
                 dense
-                placeholder="00:00"
+                type="date"
+                placeholder="Дата"
+                class="col-6"
+                @input="setLatestDate"
+              >
+              </q-input>
+              <q-input
+                :value="currentOrder.deliveryInfo.time"
+                bg-color="white"
+                type="time"
+                outlined
+                dense
+                class="col-5"
+                placeholder="Время"
                 @input="setTime"
               >
-                <template v-slot:prepend>
-                  <q-icon name="schedule"/>
-                </template>
               </q-input>
             </div>
             <div v-if="!showAddress" class="pho-caption">
@@ -465,6 +474,17 @@
           <div class="row justify-center">
           <img class="thanksImage" src="../assets/image/thanksSuccess.png">
           </div>
+            <q-btn
+              v-if="!showAddress"
+              flat
+              style="background: #ca17a8; color: #fff"
+              class="full-width q-my-md"
+              @click="thanks = false; showCart = !showCart"
+            >
+              <div class="bold">
+                НА САЙТ
+              </div>
+            </q-btn>
           </template>
           <template v-if="hours >= 22 || (hours >= 0 && hours < 7)">
             <h6 class="bold">
@@ -474,6 +494,16 @@
             <div class="row justify-center">
               <img class="thanksImage" src="../assets/image/thanksLate.png">
             </div>
+            <q-btn
+              flat
+              style="background: #ca17a8; color: #fff"
+              class="full-width q-my-md"
+              @click="thanks = false; showCart = !showCart"
+            >
+              <div class="bold">
+                НА САЙТ
+              </div>
+            </q-btn>
           </template>
           <template v-if="hours >= 7 && hours < 12">
             <h6 class="bold">
@@ -483,6 +513,16 @@
             <div class="row justify-center">
               <img class="thanksImage" src="../assets/image/ThanksEarly.png">
             </div>
+            <q-btn
+              flat
+              style="background: #ca17a8; color: #fff"
+              class="full-width q-my-md"
+              @click="thanks = false; showCart = !showCart"
+            >
+              <div class="bold">
+                НА САЙТ
+              </div>
+            </q-btn>
           </template>
         </div>
       </div>
@@ -888,6 +928,8 @@ import { loadYmap } from 'vue-yandex-maps';
 import {
   mapState, mapGetters, mapMutations, mapActions,
 } from 'vuex';
+
+import moment from 'moment';
 import ProductItem from '../components/ProductItem';
 import BasketItem from '../components/BasketItem';
 import InputAdress from '../components/inputAdress.vue';
@@ -917,6 +959,7 @@ export default {
       CLIENT_API_LINK: process.env.CLIENT_API_LINK,
       PAIMENT_TYPES: process.env.PAIMENT_TYPES,
       slide: 1,
+      date: null,
       autoplay: true,
       paymentRadio: '',
       addressDisadble: false,
@@ -1074,6 +1117,11 @@ export default {
       'catchDefaultState',
       'setDefaultState',
     ]),
+    setLatestDate(date) {
+      const latestDate = moment(date).format('DD.MM.YYYY');
+      this.date = date;
+      this.setDate(latestDate);
+    },
     sayThanks() {
       this.thanks = false;
       this.setDefaultState();
@@ -1321,7 +1369,9 @@ export default {
       } else if (this.isValidPhone && this.currentOrder.products.length !== 0) {
         this.sendOrder();
         this.thanks = true;
-        setTimeout(this.sayThanks, 8000);
+        // setTimeout(this.sayThanks, 10000);
+        // this.thanks = false;this.thanks = false;
+        this.setDefaultState();
         this.loading = false;
         this.reachYandexGoal('thank');
       }
@@ -1419,7 +1469,6 @@ export default {
     if (this.deliveryTimeButton[0] !== undefined) {
       [this.activeDeliveryTimeButton] = this.deliveryTimeButton;
     }
-    this.setDate();
     this.$store.dispatch('order/getPromocode').then(() => {
       if (this.promoCodes[0] !== undefined) {
         console.log();
@@ -1569,7 +1618,7 @@ export default {
 max-width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.24);
   border-radius: 4px;
-  height: 40px;
+  min-height: 40px;
   padding: 8px 12px;
   box-sizing: border-box;
   cursor: pointer;

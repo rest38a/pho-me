@@ -1,5 +1,6 @@
 <template>
     <div class="q-pa-md">
+      <router-view/>
         <div class="text-h6">Подразделение</div>
         <q-tabs
                 v-model="tab"

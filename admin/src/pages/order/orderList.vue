@@ -1,5 +1,6 @@
 <template>
     <q-page class="">
+      <router-view/>
         <div class="row items-center q-col-gutter-lg">
             <div class="col-4">
                 <q-select outlined
@@ -224,7 +225,7 @@ export default {
   },
   methods: {
     editOrder(orderId) {
-      this.$router.push(`/order/${orderId}`);
+      this.$router.push(`/orders/${orderId}`);
     },
     countSum(products) {
       // eslint-disable-next-line
@@ -244,7 +245,7 @@ export default {
       return this.qDate.formatDate(deliveryDate, 'HH:mm DD.MM');
     },
     newOrder() {
-      this.$router.push('/order/create');
+      this.$router.push('/orders/create');
     },
     getOrders(dateStart = null, dateFinish = null) {
       this.isLoading = true;

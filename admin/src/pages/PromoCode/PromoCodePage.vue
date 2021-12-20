@@ -1,5 +1,6 @@
 <template>
     <q-page class="">
+      <router-view/>
         <q-table
                 title="Промокоды"
                 :data="promoCodes"

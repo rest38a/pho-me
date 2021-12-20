@@ -199,7 +199,7 @@ export default {
 }
 
 .photo {
-  height: 574px;
+  height: 100%;
   object-fit: cover;
   max-width: 100%;
 }

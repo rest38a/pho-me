@@ -1,4 +1,4 @@
-import moment from 'moment';
+// import moment from 'moment';
 
 export function addProductToBasket(state, cartItem) {
   const index = state.currentOrder.products.findIndex((item) => item.id === cartItem.id);
@@ -107,8 +107,8 @@ export function switchDeliveryType(state, DeliveryType) {
   state.currentOrder.deliveryInfo.type = DeliveryType;
 }
 
-export function setDate(state) {
-  state.currentOrder.deliveryInfo.date = moment().format('DD.MM.YYYY');
+export function setDate(state, date) {
+  state.currentOrder.deliveryInfo.date = date;
 }
 
 export function setTime(state, time) {

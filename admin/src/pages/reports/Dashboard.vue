@@ -264,7 +264,7 @@ export default {
         });
     },
     getFillDashboardInfo() {
-      this.$axios.get('/api/dashboard/get-data?dashboardId=1')
+      this.$axios.get('http/api/dashboard/get-data?dashboardId=1')
         .then(({ data }) => {
           const dayPlan = JSON.parse(data.info[0].day_plan);
           this.staffBoard.dayPlan = dayPlan;
@@ -408,7 +408,7 @@ export default {
 .dashboard-page {
   background-color: #e5e5e5;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   padding: 27px 50px;
   color: #333333;
 }

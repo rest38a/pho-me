@@ -41,13 +41,13 @@
               <q-card-section class="q-card-section">
                 <div
                   v-if="activePromo !== null"
-                  class="render-card justify-between"
+                  class="dialog-render-card justify-between"
                   :style="{
                   background: gradients[activePromoIndex].gradient}">
-                  <div class="titles-btn column justify-between">
-                    <div class="titles">
-                      <div class="under-title">{{ activePromo.name }}</div>
-                      <div class="description">
+                  <div class="titles-btn column col-6 justify-between">
+                    <div class="titles row">
+                      <div class="under-title col-12">{{ activePromo.name }}</div>
+                      <div class="description col-10">
                         {{ activePromo.long_text }}
                       </div>
                     </div>
@@ -150,6 +150,15 @@ export default {
 .render-card {
   border-radius: 10px;
   height: 286px;
+  position: relative;
+  z-index: 1;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.dialog-render-card {
+  border-radius: 10px;
+  min-height: 286px;
   position: relative;
   z-index: 1;
   background-repeat: no-repeat;

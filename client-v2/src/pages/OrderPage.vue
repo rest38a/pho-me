@@ -48,7 +48,7 @@
       <div class="close-basket col-xs-0 col-1 q-pl-md-lg"
            v-if="showCart"
            v-show="windowWidth > 1023"
-      @click="showCart = !showCart">
+           @click="showCart = !showCart">
         <img src="../assets/icon/closeBasket.png">
       </div>
       <div
@@ -437,19 +437,19 @@
               :thickness="2"
             />
           </q-btn>
-<!--          <template v-if="currentOrder.clientInfo.address.dadata === null">-->
-<!--          <q-btn-->
-<!--            v-if="showAddress"-->
-<!--            flat-->
-<!--            style="background: #fcd000; color: #fff"-->
-<!--            class="full-width q-my-md"-->
-<!--            @click="showCardAddress"-->
-<!--          >-->
-<!--            <div class="bold">-->
-<!--              Назад-->
-<!--            </div>-->
-<!--          </q-btn>-->
-<!--          </template>-->
+          <!--          <template v-if="currentOrder.clientInfo.address.dadata === null">-->
+          <!--          <q-btn-->
+          <!--            v-if="showAddress"-->
+          <!--            flat-->
+          <!--            style="background: #fcd000; color: #fff"-->
+          <!--            class="full-width q-my-md"-->
+          <!--            @click="showCardAddress"-->
+          <!--          >-->
+          <!--            <div class="bold">-->
+          <!--              Назад-->
+          <!--            </div>-->
+          <!--          </q-btn>-->
+          <!--          </template>-->
 
           <q-btn
             v-if="showAddress"
@@ -467,13 +467,13 @@
         </q-scroll-area>
         <div v-else>
           <template v-if="hours >= 12 && hours < 22">
-          <h6 class="bold">
-            Спасибо за заказ!
-          </h6>
-          <div>В ближайшее время с вами свяжется наш менеджер.</div>
-          <div class="row justify-center">
-          <img class="thanksImage" src="../assets/image/thanksSuccess.png">
-          </div>
+            <h6 class="bold">
+              Спасибо за заказ!
+            </h6>
+            <div>В ближайшее время с вами свяжется наш менеджер.</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/thanksSuccess.png">
+            </div>
             <q-btn
               v-if="!showAddress"
               flat
@@ -659,17 +659,17 @@
             <div class="cart-h1 text-right"
                  v-if="currentOrder.deliveryInfo.type === 2">Скидка за самовывоз 15%</div>
             <div class="total text-right"
-            v-if="currentOrder.deliveryInfo.type === 2">
+                 v-if="currentOrder.deliveryInfo.type === 2">
               Сумма заказа:<span class="total-sum">{{ totalSum - (totalSum / 100 * 15)}} ₽</span>
             </div>
             <div v-else class="total text-right">
               Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
             <div v-if="currentOrder.deliveryInfo.type === 1">
-            <div v-if="totalSum < 800" class="pho-caption text-right">
-              Минимальная сумма заказа от 800 ₽
+              <div v-if="totalSum < 800" class="pho-caption text-right">
+                Минимальная сумма заказа от 800 ₽
+              </div>
             </div>
-          </div>
           </div>
         </div>
         <q-btn
@@ -776,10 +776,10 @@
         </template>
       </div>
       <div class="justify-center row q-mt-lg"  v-if="loadProductItem === false">
-      <q-spinner
-        color="white"
-        size="10em"
-      />
+        <q-spinner
+          color="white"
+          size="10em"
+        />
       </div>
       <div
         class="row q-col-gutter-md items-stretch content-stretch form-area-display"
@@ -863,46 +863,46 @@
             </div>
           </div>
           <div class="row">
-          <yandex-map
-            v-if="isMounted"
-            :coords="centerMap"
-            :style="{height: `${yandexMapHeight}px`}"
-            style="width: 100%"
-            zoom="12"
-          >
-            <ymap-marker
-              v-for="(item, index) in dsZonesPriced.features"
-              :key="index"
-              :balloon="{
+            <yandex-map
+              v-if="isMounted"
+              :coords="centerMap"
+              :style="{height: `${yandexMapHeight}px`}"
+              style="width: 100%"
+              zoom="12"
+            >
+              <ymap-marker
+                v-for="(item, index) in dsZonesPriced.features"
+                :key="index"
+                :balloon="{
                 body: item.properties.description,
               }"
-              :coords="getPriceZoneCoords(item)"
-              :marker-fill="{
+                :coords="getPriceZoneCoords(item)"
+                :marker-fill="{
                 color: item.properties.fill,
                 opacity: item.properties['fill-opacity'],
               }"
-              :marker-stroke="{
+                :marker-stroke="{
                 color: item.properties.stroke,
                 width: item.properties['stroke-width'],
                 opacity: item.properties['stroke-opacity'],
               }"
-              :marker-id="'m' + index"
-              marker-type="Polygon"
-            />
-            <ymap-marker
-              v-if="coords.length !== 0"
-              :coords="[coords[0], coords[1]]"
-              marker-id="42m"
-              marker-type="Placemark"
-            />
-            <ymap-marker
-              :coords="[ourDepartment[0], ourDepartment[1]]"
-              marker-id="ourMap"
-              hint-content="Pho Me"
-              marker-type="Placemark"
-              :properties="departmentProperty"
-            />
-          </yandex-map>
+                :marker-id="'m' + index"
+                marker-type="Polygon"
+              />
+              <ymap-marker
+                v-if="coords.length !== 0"
+                :coords="[coords[0], coords[1]]"
+                marker-id="42m"
+                marker-type="Placemark"
+              />
+              <ymap-marker
+                :coords="[ourDepartment[0], ourDepartment[1]]"
+                marker-id="ourMap"
+                hint-content="Pho Me"
+                marker-type="Placemark"
+                :properties="departmentProperty"
+              />
+            </yandex-map>
           </div>
         </q-card-section>
 
@@ -1123,7 +1123,6 @@ export default {
       this.setDate(latestDate);
     },
     sayThanks() {
-      this.thanks = false;
       this.setDefaultState();
     },
     slideHeight() {
@@ -1369,9 +1368,9 @@ export default {
       } else if (this.isValidPhone && this.currentOrder.products.length !== 0) {
         this.sendOrder();
         this.thanks = true;
-        // setTimeout(this.sayThanks, 10000);
+        setTimeout(this.sayThanks, 3000);
         // this.thanks = false;this.thanks = false;
-        this.setDefaultState();
+        // this.setDefaultState();
         this.loading = false;
         this.reachYandexGoal('thank');
       }
@@ -1615,7 +1614,7 @@ export default {
   border-radius: 10px;
 }
 .pseudo-input {
-max-width: 100%;
+  max-width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.24);
   border-radius: 4px;
   min-height: 40px;
@@ -2021,7 +2020,7 @@ max-width: 100%;
     width: 1000px;
   }
   .cart-area {
-  padding: 32px 30px 45px 20px;
+    padding: 32px 30px 45px 20px;
   }
 }
 

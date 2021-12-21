@@ -133,7 +133,7 @@
           <div v-else class="q-mt-lx leader-list">За сегодняшний день продаж не было :(</div>
         </div>
       </div>
-      <div class="col"></div>
+      <div class="col q-mb-md"></div>
       <div class="row col-5">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-md">Старт лист</div>
@@ -156,7 +156,7 @@
           </div>
         </div>
       </div>
-      <div class="col"></div>
+      <div class="col q-mb-md"></div>
       <div class="row col-1">
         <div class="row col-12 dashboard-block justify-between text-center content-center q-pa-md">
           <div class="row col-4 items-center">
@@ -471,20 +471,18 @@ export default {
 .time {
   font-family: ttbold;
   font-size: 28px;
-  line-height: 57px;
+  line-height: 33px;
 }
 
 .second-piece-main-title {
   font-family: lb;
   font-style: italic;
   font-size: 26px;
-  line-height: 40px;
 }
 
 .second-piece-main-title-non-italic {
   font-family: ttbold;
   font-size: 22px;
-  line-height: 40px;
 }
 
 .second-piece-under-title {

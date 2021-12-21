@@ -85,24 +85,25 @@
           <div :style="{color: `${timeColor}`}"
                class="time">{{ Math.floor(currentTime / 60) }} : {{ currentTime % 60 }}</div>
         </div>
-        <div class="col-grow row dashboard-block q-px-md justify-between content-center">
+        <div
+          class="col-grow row dashboard-block q-px-md justify-between content-center items-center">
           <div class="second-piece-main-title q-mr-md">Блюд приготовлено сегодня:</div>
-          <div class="row ">
+          <div class="row items-center">
             <div class="second-piece-under-title q-mr-sm">Кухня</div>
             <div class="second-piece-main-title-non-italic">
               {{ new Intl.NumberFormat('ru-RU').format(getCookedFood('kitchen')) }}</div>
           </div>
-          <div class="row ">
+          <div class="row items-center">
             <div class="second-piece-under-title q-mr-sm">Бар</div>
             <div class="second-piece-main-title-non-italic">
               {{ new Intl.NumberFormat('ru-RU').format(getCookedFood('bar')) }}</div>
           </div>
         </div>
       </div>
-      <div class="col"></div>
+      <div class="col q-mb-md"></div>
       <div class="row col-4 ">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
-          <div class="second-piece-main-title q-mb-lg">Лидер месяца</div>
+          <div class="second-piece-main-title q-mb-mb">Лидер месяца</div>
           <div v-if="getLeader('month').length !== 0" class="leader-box">
           <div class="row q-mb-xs leader-list items-baseline"
                v-for="(leader, index) in getLeader('month')" :key="index">
@@ -117,7 +118,7 @@
           <div v-else class="q-mt-lx leader-list">В этом месяце продаж не было :(</div>
         </div>
         <div class="column col dashboard-block q-pa-lg">
-          <div class="second-piece-main-title  q-mb-lg">Лидер дня</div>
+          <div class="second-piece-main-title  q-mb-mb">Лидер дня</div>
           <div v-if="getLeader('day').length !== 0" class="leader-box justify-between">
           <div class="q-mb-xs row leader-list items-baseline"
                v-for="(leader, index) in getLeader('day')" :key="index">
@@ -135,7 +136,7 @@
       <div class="col"></div>
       <div class="row col-5">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
-          <div class="second-piece-main-title q-mb-lg">Старт лист</div>
+          <div class="second-piece-main-title q-mb-md">Старт лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in staffBoard.startList" :key="index">
@@ -145,7 +146,7 @@
           </div>
         </div>
         <div class="column col dashboard-block q-pa-lg">
-          <div class="second-piece-main-title  q-mb-lg">Стоп лист</div>
+          <div class="second-piece-main-title  q-mb-md">Стоп лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in stopList" :key="index">
@@ -158,19 +159,19 @@
       <div class="col"></div>
       <div class="row col-1">
         <div class="row col-12 dashboard-block justify-between text-center content-center q-pa-md">
-          <div class="row col-4">
+          <div class="row col-4 items-center">
             <div class="second-piece-under-title q-mr-sm">Доставка:</div>
             <div class="second-piece-main-title-non-italic">
               {{ new Intl.NumberFormat('ru-RU').format(getDayFoodSum('DELIVERY_BY_COURIER')) }} ₽
             </div>
           </div>
-          <div class="row col-4">
+          <div class="row col-4 items-center">
             <div class="second-piece-under-title q-mr-sm">Самовывоз:</div>
             <div class="second-piece-main-title-non-italic">
               {{ new Intl.NumberFormat('ru-RU').format(getDayFoodSum('DELIVERY_PICKUP')) }} ₽
             </div>
           </div>
-          <div class="row col-4">
+          <div class="row col-4 items-center">
             <div class="second-piece-under-title q-mr-sm">Зал:</div>
             <div class="second-piece-main-title-non-italic">
               {{ new Intl.NumberFormat('ru-RU').format(getDayFoodSum('COMMON')) }} ₽
@@ -264,7 +265,7 @@ export default {
         });
     },
     getFillDashboardInfo() {
-      this.$axios.get('http/api/dashboard/get-data?dashboardId=1')
+      this.$axios.get('/api/dashboard/get-data?dashboardId=1')
         .then(({ data }) => {
           const dayPlan = JSON.parse(data.info[0].day_plan);
           this.staffBoard.dayPlan = dayPlan;
@@ -408,8 +409,8 @@ export default {
 .dashboard-page {
   background-color: #e5e5e5;
   width: 100%;
-  height: 100vh;
-  padding: 27px 50px;
+  height: 100%;
+  padding: 20px 20px;
   color: #333333;
 }
 
@@ -419,25 +420,25 @@ export default {
 }
 
 .plan-text {
-  font-size: 48px;
+  font-size: 40px;
   font-style: italic;
   font-family: lb;
 }
 
 .plan-number-main {
   font-family: ttbold;
-  font-size: 40px;
+  font-size: 32px;
   font-style: italic;
 }
 
 .plan-number {
   font-family: tr;
-  font-size: 40px;
+  font-size: 32px;
   font-style: italic;
 }
 
 .grafic-plan-text {
-  font-size: 26px;
+  font-size: 18px;
   font-family: lb;
   font-style: italic;
 }
@@ -445,13 +446,13 @@ export default {
 .grafic-plan-done {
   font-family: lb;
   color: #ca17a8;
-  font-size: 44px;
+  font-size: 38px;
   font-style: italic;
 }
 
 .grafic-plan {
   font-family: tr;
-  font-size: 26px;
+  font-size: 18px;
   font-style: italic;
 }
 
@@ -469,26 +470,26 @@ export default {
 
 .time {
   font-family: ttbold;
-  font-size: 44px;
+  font-size: 28px;
   line-height: 57px;
 }
 
 .second-piece-main-title {
   font-family: lb;
   font-style: italic;
-  font-size: 34px;
+  font-size: 26px;
   line-height: 40px;
 }
 
 .second-piece-main-title-non-italic {
   font-family: ttbold;
-  font-size: 30px;
+  font-size: 22px;
   line-height: 40px;
 }
 
 .second-piece-under-title {
   font-family: tr;
-  font-size: 27px;
+  font-size: 19px;
   color: rgba(0, 0, 0, 0.5);
 }
 
@@ -524,8 +525,8 @@ white 11px, white 30px, green 31px);*/
 /*}*/
 
 .circul {
-  width: 477px;
-  height: 477px;
+  width: 350px;
+  height: 350px;
 }
 
 .q-circular-progress--indeterminate .q-circular-progress__svg {
@@ -573,7 +574,7 @@ white 11px, white 30px, green 31px);*/
 
 .leader-box .leader-list:first-child {
   font-family: ttbold;
-  font-size: 24px;
+  font-size: 16px;
 }
 .leader-list .leader:nth-child(2) {
     color: #ABABAB;
@@ -581,13 +582,13 @@ white 11px, white 30px, green 31px);*/
 
 .leader-list {
   font-family: lcm;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 500;
 }
 
 .product-list-box {
   font-family: lcm;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 500;
 }
 

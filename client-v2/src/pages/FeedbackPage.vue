@@ -41,7 +41,7 @@
               </div>
               <div
                 class="btn-feedback btn-feedback-whatsapp"
-                @click="clickHandle()"
+                @click="clickHandle('https://api.whatsapp.com/message/SQEJSCQWCUHMN1?src=qr')"
               >
                 <div class="img-feedback-wrap img-wrap-whatsapp">
                   <img src="../assets/image/feedback/WhatsApp.png"/>

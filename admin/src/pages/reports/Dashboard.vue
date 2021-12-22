@@ -100,8 +100,8 @@
           </div>
         </div>
       </div>
-      <div class="col q-mb-md"></div>
-      <div class="row col-4 ">
+      <div class="col "></div>
+      <div class="row col-4 q-mb-md">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-mb">Лидер месяца</div>
           <div v-if="getLeader('month').length !== 0" class="leader-box">
@@ -133,7 +133,6 @@
           <div v-else class="q-mt-lx leader-list">За сегодняшний день продаж не было :(</div>
         </div>
       </div>
-      <div class="col q-mb-md"></div>
       <div class="row col-5">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-md">Старт лист</div>
@@ -156,7 +155,7 @@
           </div>
         </div>
       </div>
-      <div class="col q-mb-md"></div>
+      <div class="col "></div>
       <div class="row col-1">
         <div class="row col-12 dashboard-block justify-between text-center content-center q-pa-md">
           <div class="row col-4 items-center">
@@ -409,7 +408,7 @@ export default {
 .dashboard-page {
   background-color: #e5e5e5;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   padding: 20px 20px;
   color: #333333;
 }
@@ -427,13 +426,13 @@ export default {
 
 .plan-number-main {
   font-family: ttbold;
-  font-size: 32px;
+  font-size: 26px;
   font-style: italic;
 }
 
 .plan-number {
   font-family: tr;
-  font-size: 32px;
+  font-size: 26px;
   font-style: italic;
 }
 
@@ -471,13 +470,13 @@ export default {
 .time {
   font-family: ttbold;
   font-size: 28px;
-  line-height: 33px;
+  line-height: 26px;
 }
 
 .second-piece-main-title {
   font-family: lb;
   font-style: italic;
-  font-size: 26px;
+  font-size: 22px;
 }
 
 .second-piece-main-title-non-italic {

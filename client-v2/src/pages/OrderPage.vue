@@ -1,5 +1,6 @@
 <template>
   <q-page class="main-container">
+    <div v-if="isBreak === false">
     <!--        <div class="warning-line">-->
     <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
     <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
@@ -912,6 +913,19 @@
       </q-card>
     </q-dialog>
     <my-footer/>
+    </div>
+    <div v-else class="breakImage">
+      <div v-if="windowWidth > 1023">
+      <q-img
+        :src="`${CLIENT_API_LINK}/uploads/${blind.mainPhoto}`"
+      />
+      </div>
+      <div v-if="windowWidth < 1023">
+        <q-img
+          :src="`${CLIENT_API_LINK}/uploads/${blind.secondPhoto}`"
+        />
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -970,6 +984,7 @@ export default {
       addressHint: [],
       dateNow: new Date(),
       hours: null,
+      isBreak: false,
       startBreak: new Date(1989, 5, 26, 17, 0, 0, 0),
       finishBreak: new Date(1989, 5, 26, 19, 30, 0, 0),
       isInZone: true,
@@ -1031,6 +1046,14 @@ export default {
       contentActiveStyle: {
         color: 'black',
       },
+      blind: [
+        {
+          mainPhoto: '',
+          secondPhoto: '',
+          fromTime: null,
+          toTime: null,
+        },
+      ],
       thumbStyle: {
         right: '2px',
         borderRadius: '5px',
@@ -1488,6 +1511,12 @@ export default {
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
     this.catchDefaultState();
+    this.blind = JSON.parse(this.contacts.blind);
+    console.log(moment().isAfter(this.blind.fromTime), moment().isBefore(this.blind.toTime));
+    if (moment().isAfter(this.blind.fromTime) === true
+      && moment().isBefore(this.blind.toTime) === true) {
+      this.isBreak = true;
+    }
   },
   created() {
     if (process.browser) {
@@ -1867,6 +1896,11 @@ export default {
 .pho-btn-delivery-group {
   border-radius: 10px;
   box-shadow: none;
+}
+
+.breakImage {
+  width: 100vw;
+  height: 100vh;
 }
 .pho-btn-med-promo {
   width: 85px;

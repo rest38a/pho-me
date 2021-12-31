@@ -922,7 +922,7 @@
             src="../assets/image/pcBreak.jpg"
           />
         </div>
-        <div v-if="windowWidth < 1023">
+        <div v-else>
           <q-img
             src="../assets/image/mobileBreak.jpg"
           />

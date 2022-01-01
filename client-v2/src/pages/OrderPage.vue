@@ -1,568 +1,627 @@
 <template>
   <q-page class="main-container">
-    <div v-if="isBreak === false">
-      <!--        <div class="warning-line">-->
-      <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
-      <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
-      <!--        </div>-->
-      <img src="/icons/logo.svg" alt="" class="logo mobile-hide"
-           @click="goToRest"/>
-      <div class="row desktop-hide items-center">
-        <!-- <div class="col-3 q-pa-sm items-center row">
-          <img src="/icons/logo.svg" alt="" class="logo-m" />
-        </div> -->
-      </div>
-      <div>
-        <!-- <div class="yelow-line" v-if="showCart"></div> -->
-        <div
-          v-ripple
-          class="cart-widget"
-          :class="{
+    <!--        <div class="warning-line">-->
+    <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
+    <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
+    <!--        </div>-->
+    <img src="/icons/logo.svg" alt="" class="logo mobile-hide"
+         @click="goToRest"/>
+    <div class="row desktop-hide items-center">
+      <!-- <div class="col-3 q-pa-sm items-center row">
+        <img src="/icons/logo.svg" alt="" class="logo-m" />
+      </div> -->
+    </div>
+    <div>
+      <!-- <div class="yelow-line" v-if="showCart"></div> -->
+      <div
+        v-ripple
+        class="cart-widget"
+        :class="{
           active: orderProductsNum >= 0,
           noActive: orderProductsNum <= 0,
         }"
-          @click="showCart = !showCart"
-        >
-          <img
-            src="/icons/basket.svg"
-            alt=""
-            class="cart-logo form-area-display"
-          />
-          <img
-            src="/icons/cartmob.png"
-            alt=""
-            class="cart-logo display-none-class"
-          />
-          <div class="cart-product-num">
-            {{ orderProductsNum }}
-          </div>
-        </div>
-        <div
-          v-if="showCart"
-          class="shadow-cart"
-          @click.stop="showCart = !showCart"
+        @click="showCart = !showCart"
+      >
+        <img
+          src="/icons/basket.svg"
+          alt=""
+          class="cart-logo form-area-display"
         />
-      </div>
-      <right-navigate-order-page/>
-      <!-- корзина-->
-      <div v-if="showCart" class="cart row col-8 col-lg-5">
-        <div class="close-basket col-xs-0 col-1 q-pl-md-lg"
-             v-if="showCart"
-             v-show="windowWidth > 1023"
-             @click="showCart = !showCart">
-          <img src="../assets/icon/closeBasket.png">
+        <img
+          src="/icons/cartmob.png"
+          alt=""
+          class="cart-logo display-none-class"
+        />
+        <div class="cart-product-num">
+          {{ orderProductsNum }}
         </div>
-        <div
-          class="col-md-5 col-sm-12 form-area"
-          :class="{
+      </div>
+      <div
+        v-if="showCart"
+        class="shadow-cart"
+        @click.stop="showCart = !showCart"
+      />
+    </div>
+    <right-navigate-order-page/>
+    <!-- корзина-->
+    <div v-if="showCart" class="cart row col-8 col-lg-5">
+      <div class="close-basket col-xs-0 col-1 q-pl-md-lg"
+           v-if="showCart"
+           v-show="windowWidth > 1023"
+           @click="showCart = !showCart">
+        <img src="../assets/icon/closeBasket.png">
+      </div>
+      <div
+        class="col-md-5 col-sm-12 form-area"
+        :class="{
           'col-xs-12': ordering === false,
           'form-area-display': ordering === true,
         }"
+      >
+        <div
+          class=""
+          :class="{
+            'display-none-class': ordering === true,
+            'row justify-between items-center content-center vertical-line absolute-top':
+              ordering === false,
+          }"
+        >
+          <div class="col-auto">
+            <q-btn
+              class=""
+              color="grey-5"
+              size="md"
+              flat
+              @click="toShowRegistrationOrder"
+            >
+              <img class="" src="../assets/image/returnButton.png"/>
+            </q-btn>
+          </div>
+          <div class="col-auto justify-center">
+            <div class="cart-h1">
+              Оформление заказа
+            </div>
+          </div>
+          <div class="col-1"/>
+        </div>
+
+        <div
+          v-if="showAddress"
+          :class="{
+            'display-none-class': ordering === true,
+            'row justify-between items-center content-center vertical-line absolute-top':
+              ordering === false,
+          }"
+        >
+          <div class="col-auto">
+            <img
+              src="../assets/image/returnButton.png"
+              @click="showAddress = !showAddress"
+            />
+          </div>
+          <div class="col-auto cart-h1 justify-center">
+            Адрес доставки
+          </div>
+          <div col-auto/>
+        </div>
+
+        <q-scroll-area
+          v-if="!thanks"
+          :thumb-style="thumbStyle"
+          :content-style="contentStyle"
+          :content-active-style="contentActiveStyle"
+          style="height: 100%; padding-right: 20px"
         >
           <div
-            class=""
+            v-if="!showAddress"
+            class="cart-h1"
             :class="{
-            'display-none-class': ordering === true,
-            'row justify-between items-center content-center vertical-line absolute-top':
-              ordering === false,
-          }"
-          >
-            <div class="col-auto">
-              <q-btn
-                class=""
-                color="grey-5"
-                size="md"
-                flat
-                @click="toShowRegistrationOrder"
-              >
-                <img class="" src="../assets/image/returnButton.png"/>
-              </q-btn>
-            </div>
-            <div class="col-auto justify-center">
-              <div class="cart-h1">
-                Оформление заказа
-              </div>
-            </div>
-            <div class="col-1"/>
-          </div>
-
-          <div
-            v-if="showAddress"
-            :class="{
-            'display-none-class': ordering === true,
-            'row justify-between items-center content-center vertical-line absolute-top':
-              ordering === false,
-          }"
-          >
-            <div class="col-auto">
-              <img
-                src="../assets/image/returnButton.png"
-                @click="showAddress = !showAddress"
-              />
-            </div>
-            <div class="col-auto cart-h1 justify-center">
-              Адрес доставки
-            </div>
-            <div col-auto/>
-          </div>
-
-          <q-scroll-area
-            v-if="!thanks"
-            :thumb-style="thumbStyle"
-            :content-style="contentStyle"
-            :content-active-style="contentActiveStyle"
-            style="height: 100%; padding-right: 20px"
-          >
-            <div
-              v-if="!showAddress"
-              class="cart-h1"
-              :class="{
               '': ordering === true,
               'form-area-display': ordering === false,
             }"
-            >
-              Оформление заказа
-            </div>
-            <div
-              v-if="showAddress"
-              class=""
-              :class="{
+          >
+            Оформление заказа
+          </div>
+          <div
+            v-if="showAddress"
+            class=""
+            :class="{
               'cart-h1': ordering === true,
               'form-area-display': ordering === false,
             }"
-            ><img
-              src="../assets/image/returnButtonBlack.svg"
-              @click="showAddress = !showAddress"
-              class="q-mr-sm"
-              style="cursor: pointer"
-            />
-              Адрес доставки
+          ><img
+            src="../assets/image/returnButtonBlack.svg"
+            @click="showAddress = !showAddress"
+            class="q-mr-sm"
+            style="cursor: pointer"
+          />
+            Адрес доставки
+          </div>
+          <div v-if="!showAddress" class="pho-pb-2">
+            <div class="name-field name-field-first">
+              Имя
             </div>
-            <div v-if="!showAddress" class="pho-pb-2">
-              <div class="name-field name-field-first">
-                Имя
-              </div>
-              <q-input
-                :value="currentOrder.clientInfo.client.name"
-                bg-color="white"
-                outlined
-                dense
-                placeholder="Введите имя"
-                @input="setName"
-              /><!--
+            <q-input
+              :value="currentOrder.clientInfo.client.name"
+              bg-color="white"
+              outlined
+              dense
+              placeholder="Введите имя"
+              @input="setName"
+            /><!--
               v-model="text" //вызывает ошибки
               -->
+          </div>
+          <div class="pho-pb-2">
+            <div v-if="!showAddress" class="name-field">
+              Телефон
             </div>
-            <div class="pho-pb-2">
-              <div v-if="!showAddress" class="name-field">
-                Телефон
-              </div>
-              <q-input
-                v-if="!showAddress"
-                :value="currentOrder.clientInfo.phone"
-                mask="+7 (###) ###-##-##"
-                unmasked-value
-                bg-color="white"
-                outlined
-                dense
-                placeholder="+7 (___)-___-__-__"
-                @input="setPhone"
-              />
+            <q-input
+              v-if="!showAddress"
+              :value="currentOrder.clientInfo.phone"
+              mask="+7 (###) ###-##-##"
+              unmasked-value
+              bg-color="white"
+              outlined
+              dense
+              placeholder="+7 (___)-___-__-__"
+              @input="setPhone"
+            />
+          </div>
+          <div v-if="!showAddress" class="row button-box">
+            <div class="row col-12">
+              <q-btn-group spread class="row col-12 pho-btn-delivery-group">
+                <q-btn
+                  v-for="item in deliveryTypeButton"
+                  :key="item.type"
+                  flat
+                  class="pho-btn pho-btn-delivery col-6"
+                  :class="{ active: item === activeDeliveryTypeButton }"
+                  no-caps
+                  @click="changeDeliveryType(item)"
+                >
+                  <div>{{ item.type }}</div>
+                </q-btn>
+              </q-btn-group>
             </div>
-            <div v-if="!showAddress" class="row button-box">
-              <div class="row col-12">
-                <q-btn-group spread class="row col-12 pho-btn-delivery-group">
-                  <q-btn
-                    v-for="item in deliveryTypeButton"
-                    :key="item.type"
-                    flat
-                    class="pho-btn pho-btn-delivery col-6"
-                    :class="{ active: item === activeDeliveryTypeButton }"
-                    no-caps
-                    @click="changeDeliveryType(item)"
-                  >
-                    <div>{{ item.type }}</div>
-                  </q-btn>
-                </q-btn-group>
-              </div>
-            </div>
-            <div v-if="showAddressInput">
-              <div
-                v-if="!showAddress"
-                class="pho-pb-2 address-animation"
-                :class="{
+          </div>
+          <div v-if="showAddressInput">
+            <div
+              v-if="!showAddress"
+              class="pho-pb-2 address-animation"
+              :class="{
                 active: showAddressInput === true,
                 noActive: showAddressInput === false,
               }"
-              >
-                <div class="row name-field">
-                  <div class="col-6">
-                    Адрес доставки
-                  </div>
-                  <div
-                    class="col-6 row items-baseline justify-end"
-                    @click="showMap = !showMap"
-                  >
-                    <img
-                      src="/icons/location-baloon.svg"
-                      class="q-mr-xs baloon-order"
-                    />
-                    <div class="cursor">
-                      Зона доставки
-                    </div>
-                  </div>
-                </div>
-                <div class="q-mb-sm pseudo-input" @click="showCardAddress">
-                  <span>{{ currentOrder.clientInfo.addressString }}</span>
-                </div>
-              </div>
-            </div>
-            <div v-if="showAddress" class="pho-pb-2">
-              <div class="name-field col-6">
-                Улица, № дома
-              </div>
-              <input-adress
-                :input-value="currentOrder.clientInfo.addressString"
-                :get-price-zone-coords="getPriceZoneCoords"
-                :input-func="updateClientAddressString"
-                :options="addressHint"
-                :valid="hasAddress"
-                :has-house="hasHouse"
-                :is-in-additional-zone="isInAdditionalZone"
-                :start-break="startBreak"
-                :finish-break="finishBreak"
-                :is-in-zone="isInZone"
-              />
-            </div>
-            <div v-if="showAddress" class="row col-12">
-              <div class="pho-pb-2 col-12">
-                <div class="name-field">
-                  Квартира
-                </div>
-                <div class="row items-center q-col-gutter-md">
-                  <div class="col-6">
-                    <q-input
-                      :value="currentOrder.clientInfo.address.apartment"
-                      bg-color="white"
-                      outlined
-                      dense
-                      :disable="apartmentDisabled"
-                      @input="setApartment"
-                    />
-                  </div>
-                  <div class="col-6">
-                    <q-toggle
-                      v-model="apartmentDisabled"
-                      :value="currentOrder.clientInfo.address.apartment"
-                      color="yellow-14"
-                      size="xs"
-                      label="Частный дом"
-                      @input="setApartment('')"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="row q-col-gutter-md">
-              <div v-if="showAddress" class="pho-pb-2 col-6">
-                <div class="name-field">
-                  Этаж
-                </div>
-                <div class="col-5">
-                  <q-input
-                    :value="currentOrder.clientInfo.address.floor"
-                    bg-color="white"
-                    outlined
-                    dense
-                    :disable="apartmentDisabled"
-                    @input="setFloor"
-                  />
-                </div>
-              </div>
-              <div v-if="showAddress" class="pho-pb-2 col-6">
-                <div class="name-field">
-                  Подъезд
-                </div>
-                <div class="col-5">
-                  <q-input
-                    :value="currentOrder.clientInfo.address.entrance"
-                    bg-color="white"
-                    outlined
-                    dense
-                    :disable="apartmentDisabled"
-                    @input="setEntrance"
-                  />
-                </div>
-              </div>
-            </div>
-            <div v-if="!showAddress" class="pho-pb-2">
-              <div class="name-field">
-                Кол-во персон
-              </div>
-              <q-input
-                :value="currentOrder.forks"
-                bg-color="white"
-                outlined
-                dense
-                @input="setForks"
-              />
-            </div>
-            <div v-if="!showAddress" class="pho-pb-2">
-              <div class="name-field">
-                Время доставки
-              </div>
-              <div v-if="!showAddress" class="row button-box button-box-time">
-                <div class="row col-12">
-                  <q-btn-group spread class="row col-12 pho-btn-delivery-group">
-                    <q-btn
-                      v-for="item in deliveryTimeButton"
-                      :key="item.type"
-                      flat
-                      class="pho-btn pho-btn-delivery col-6"
-                      :class="{ active: item === activeDeliveryTimeButton }"
-                      no-caps
-                      @click="changeDeliveryTime(item)"
-                    >
-                      <div>{{ item.type }}</div>
-                    </q-btn>
-                  </q-btn-group>
-                </div>
-              </div>
-            </div>
-            <div
-              v-if="!showTimeInput"
-              class="row items-center time-animation"
-              :class="{
-              active: showTimeInput === false,
-              noActive: showTimeInput === true,
-            }"
             >
-              <div v-if="!showAddress" class="row justify-between col-12">
+              <div class="row name-field">
+                <div class="col-6">
+                  Адрес доставки
+                </div>
+                <div
+                  class="col-6 row items-baseline justify-end"
+                  @click="showMap = !showMap"
+                >
+                  <img
+                    src="/icons/location-baloon.svg"
+                    class="q-mr-xs baloon-order"
+                  />
+                  <div class="cursor">
+                    Зона доставки
+                  </div>
+                </div>
+              </div>
+              <div class="q-mb-sm pseudo-input" @click="showCardAddress">
+                <span>{{ currentOrder.clientInfo.addressString }}</span>
+              </div>
+            </div>
+          </div>
+          <div v-if="showAddress" class="pho-pb-2">
+            <div class="name-field col-6">
+              Улица, № дома
+            </div>
+            <input-adress
+              :input-value="currentOrder.clientInfo.addressString"
+              :get-price-zone-coords="getPriceZoneCoords"
+              :input-func="updateClientAddressString"
+              :options="addressHint"
+              :valid="hasAddress"
+              :has-house="hasHouse"
+              :is-in-additional-zone="isInAdditionalZone"
+              :start-break="startBreak"
+              :finish-break="finishBreak"
+              :is-in-zone="isInZone"
+            />
+          </div>
+          <div v-if="showAddress" class="row col-12">
+            <div class="pho-pb-2 col-12">
+              <div class="name-field">
+                Квартира
+              </div>
+              <div class="row items-center q-col-gutter-md">
+                <div class="col-6">
+                  <q-input
+                    :value="currentOrder.clientInfo.address.apartment"
+                    bg-color="white"
+                    outlined
+                    dense
+                    :disable="apartmentDisabled"
+                    @input="setApartment"
+                  />
+                </div>
+                <div class="col-6">
+                  <q-toggle
+                    v-model="apartmentDisabled"
+                    :value="currentOrder.clientInfo.address.apartment"
+                    color="yellow-14"
+                    size="xs"
+                    label="Частный дом"
+                    @input="setApartment('')"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row q-col-gutter-md">
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">
+                Этаж
+              </div>
+              <div class="col-5">
                 <q-input
-                  :value="date"
+                  :value="currentOrder.clientInfo.address.floor"
                   bg-color="white"
                   outlined
                   dense
-                  type="date"
-                  placeholder="Дата"
-                  class="col-6"
-                  @input="setLatestDate"
-                >
-                </q-input>
+                  :disable="apartmentDisabled"
+                  @input="setFloor"
+                />
+              </div>
+            </div>
+            <div v-if="showAddress" class="pho-pb-2 col-6">
+              <div class="name-field">
+                Подъезд
+              </div>
+              <div class="col-5">
                 <q-input
-                  :value="currentOrder.deliveryInfo.time"
+                  :value="currentOrder.clientInfo.address.entrance"
                   bg-color="white"
-                  type="time"
                   outlined
                   dense
-                  class="col-5"
-                  placeholder="Время"
-                  @input="setTime"
-                >
-                </q-input>
+                  :disable="apartmentDisabled"
+                  @input="setEntrance"
+                />
               </div>
-              <div v-if="!showAddress" class="pho-caption">
-                <!-- Доставка в среднем занимает 1,5 часа.<br />
-                  Режим работы доставки: с 12:00 по 22:00 -->
-                Среднее время доставки - 90 минут.
-              </div>
-              <div/>
             </div>
-            <div v-if="!showAddress" class="name-field">
-              Способ оплаты
+          </div>
+          <div v-if="!showAddress" class="pho-pb-2">
+            <div class="name-field">
+              Кол-во персон
             </div>
-            <div v-if="!showAddress" class="row button-box">
+            <q-input
+              :value="currentOrder.forks"
+              bg-color="white"
+              outlined
+              dense
+              @input="setForks"
+            />
+          </div>
+          <div v-if="!showAddress" class="pho-pb-2">
+            <div class="name-field">
+              Время доставки
+            </div>
+            <div v-if="!showAddress" class="row button-box button-box-time">
               <div class="row col-12">
                 <q-btn-group spread class="row col-12 pho-btn-delivery-group">
                   <q-btn
-                    v-for="item in deliveryPayButton"
+                    v-for="item in deliveryTimeButton"
                     :key="item.type"
                     flat
-                    :val="PAIMENT_TYPES.CASH"
-                    class="pho-btn pho-btn-delivery col"
-                    :class="{ active: item === activeDeliveryPayButton }"
+                    class="pho-btn pho-btn-delivery col-6"
+                    :class="{ active: item === activeDeliveryTimeButton }"
                     no-caps
-                    @click="changeDeliveryPay(item)"
+                    @click="changeDeliveryTime(item)"
                   >
                     <div>{{ item.type }}</div>
                   </q-btn>
                 </q-btn-group>
               </div>
             </div>
-            <div v-if="showAddress">
-              <div class="name-field">
-                Комментарий к адресу
-              </div>
+          </div>
+          <div
+            v-if="!showTimeInput"
+            class="row items-center time-animation"
+            :class="{
+              active: showTimeInput === false,
+              noActive: showTimeInput === true,
+            }"
+          >
+            <div v-if="!showAddress" class="row justify-between col-12">
               <q-input
-                type="textarea"
-                class="comment-input"
-                :value="currentOrder.comment"
-                outlined
+                :value="date"
                 bg-color="white"
-                @input="setComment"
-              />
+                outlined
+                dense
+                type="date"
+                placeholder="Дата"
+                class="col-6"
+                @input="setLatestDate"
+              >
+              </q-input>
+              <q-input
+                :value="currentOrder.deliveryInfo.time"
+                bg-color="white"
+                type="time"
+                outlined
+                dense
+                class="col-5"
+                placeholder="Время"
+                @input="setTime"
+              >
+              </q-input>
             </div>
-            <q-banner
-              v-if="error"
-              inline-actions
-              class="text-white bg-red q-my-md"
-            >
-              При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
-              ошибка повториться сообщите пожалуйста нам об этом.
-              <template v-slot:action>
-                <q-btn flat color="white" label="ОК" @click="error = !error"/>
-              </template>
-            </q-banner>
+            <div v-if="!showAddress" class="pho-caption">
+              <!-- Доставка в среднем занимает 1,5 часа.<br />
+                Режим работы доставки: с 12:00 по 22:00 -->
+              Среднее время доставки - 90 минут.
+            </div>
+            <div/>
+          </div>
+          <div v-if="!showAddress" class="name-field">
+            Способ оплаты
+          </div>
+          <div v-if="!showAddress" class="row button-box">
+            <div class="row col-12">
+              <q-btn-group spread class="row col-12 pho-btn-delivery-group">
+                <q-btn
+                  v-for="item in deliveryPayButton"
+                  :key="item.type"
+                  flat
+                  :val="PAIMENT_TYPES.CASH"
+                  class="pho-btn pho-btn-delivery col"
+                  :class="{ active: item === activeDeliveryPayButton }"
+                  no-caps
+                  @click="changeDeliveryPay(item)"
+                >
+                  <div>{{ item.type }}</div>
+                </q-btn>
+              </q-btn-group>
+            </div>
+          </div>
+          <div v-if="showAddress">
+            <div class="name-field">
+              Комментарий к адресу
+            </div>
+            <q-input
+              type="textarea"
+              class="comment-input"
+              :value="currentOrder.comment"
+              outlined
+              bg-color="white"
+              @input="setComment"
+            />
+          </div>
+          <q-banner
+            v-if="error"
+            inline-actions
+            class="text-white bg-red q-my-md"
+          >
+            При отправке заказа произошла ошибка. Попробуйте ещё раз. Если
+            ошибка повториться сообщите пожалуйста нам об этом.
+            <template v-slot:action>
+              <q-btn flat color="white" label="ОК" @click="error = !error"/>
+            </template>
+          </q-banner>
+          <q-btn
+            v-if="!showAddress"
+            flat
+            style="background: #ca17a8; color: #fff"
+            class="full-width q-my-md"
+            @click="proxySendOrder('top')"
+          >
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-mr-md"
+              :thickness="2"
+            />
+            <div class="bold">
+              Оформить заказ
+            </div>
+            <q-spinner
+              v-if="loading"
+              color="white"
+              size="1em"
+              class="q-ml-md"
+              :thickness="2"
+            />
+          </q-btn>
+          <!--          <template v-if="currentOrder.clientInfo.address.dadata === null">-->
+          <!--          <q-btn-->
+          <!--            v-if="showAddress"-->
+          <!--            flat-->
+          <!--            style="background: #fcd000; color: #fff"-->
+          <!--            class="full-width q-my-md"-->
+          <!--            @click="showCardAddress"-->
+          <!--          >-->
+          <!--            <div class="bold">-->
+          <!--              Назад-->
+          <!--            </div>-->
+          <!--          </q-btn>-->
+          <!--          </template>-->
+
+          <q-btn
+            v-if="showAddress"
+            flat
+            style="background: #fcd000; color: #fff"
+            class="full-width q-my-md"
+            @click="toExitAddressForm"
+            :disable="addressDisadble"
+          >
+            <div class="bold">
+              Сохранить
+            </div>
+          </q-btn>
+
+        </q-scroll-area>
+        <div v-else>
+          <template v-if="hours >= 12 && hours < 22">
+            <h6 class="bold">
+              Спасибо за заказ!
+            </h6>
+            <div>В ближайшее время с вами свяжется наш менеджер.</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/thanksSuccess.png">
+            </div>
             <q-btn
               v-if="!showAddress"
               flat
               style="background: #ca17a8; color: #fff"
               class="full-width q-my-md"
-              @click="proxySendOrder('top')"
+              @click="thanks = false; showCart = !showCart"
             >
-              <q-spinner
-                v-if="loading"
-                color="white"
-                size="1em"
-                class="q-mr-md"
-                :thickness="2"
-              />
               <div class="bold">
-                Оформить заказ
+                НА САЙТ
               </div>
-              <q-spinner
-                v-if="loading"
-                color="white"
-                size="1em"
-                class="q-ml-md"
-                :thickness="2"
-              />
             </q-btn>
-            <!--          <template v-if="currentOrder.clientInfo.address.dadata === null">-->
-            <!--          <q-btn-->
-            <!--            v-if="showAddress"-->
-            <!--            flat-->
-            <!--            style="background: #fcd000; color: #fff"-->
-            <!--            class="full-width q-my-md"-->
-            <!--            @click="showCardAddress"-->
-            <!--          >-->
-            <!--            <div class="bold">-->
-            <!--              Назад-->
-            <!--            </div>-->
-            <!--          </q-btn>-->
-            <!--          </template>-->
-
+          </template>
+          <template v-if="hours >= 22 || (hours >= 0 && hours < 7)">
+            <h6 class="bold">
+              Беда! Мы уже не работаем.
+            </h6>
+            <div>Наша доставка работает с 12:00 до 22:00</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/thanksLate.png">
+            </div>
             <q-btn
-              v-if="showAddress"
               flat
-              style="background: #fcd000; color: #fff"
+              style="background: #ca17a8; color: #fff"
               class="full-width q-my-md"
-              @click="toExitAddressForm"
-              :disable="addressDisadble"
+              @click="thanks = false; showCart = !showCart"
             >
               <div class="bold">
-                Сохранить
+                НА САЙТ
               </div>
             </q-btn>
-
-          </q-scroll-area>
-          <div v-else>
-            <template v-if="hours >= 12 && hours < 22">
-              <h6 class="bold">
-                Спасибо за заказ!
-              </h6>
-              <div>В ближайшее время с вами свяжется наш менеджер.</div>
-              <div class="row justify-center">
-                <img class="thanksImage" src="../assets/image/thanksSuccess.png">
+          </template>
+          <template v-if="hours >= 7 && hours < 12">
+            <h6 class="bold">
+              Спасибо за заказ, но доставка еще не работает.
+            </h6>
+            <div>Наш менеджер сможет вам позвонить только с 12 часов дня.</div>
+            <div class="row justify-center">
+              <img class="thanksImage" src="../assets/image/ThanksEarly.png">
+            </div>
+            <q-btn
+              flat
+              style="background: #ca17a8; color: #fff"
+              class="full-width q-my-md"
+              @click="thanks = false; showCart = !showCart"
+            >
+              <div class="bold">
+                НА САЙТ
               </div>
-              <q-btn
-                v-if="!showAddress"
-                flat
-                style="background: #ca17a8; color: #fff"
-                class="full-width q-my-md"
-                @click="thanks = false; showCart = !showCart"
-              >
-                <div class="bold">
-                  НА САЙТ
-                </div>
-              </q-btn>
-            </template>
-            <template v-if="hours >= 22 || (hours >= 0 && hours < 7)">
-              <h6 class="bold">
-                Беда! Мы уже не работаем.
-              </h6>
-              <div>Наша доставка работает с 12:00 до 22:00</div>
-              <div class="row justify-center">
-                <img class="thanksImage" src="../assets/image/thanksLate.png">
-              </div>
-              <q-btn
-                flat
-                style="background: #ca17a8; color: #fff"
-                class="full-width q-my-md"
-                @click="thanks = false; showCart = !showCart"
-              >
-                <div class="bold">
-                  НА САЙТ
-                </div>
-              </q-btn>
-            </template>
-            <template v-if="hours >= 7 && hours < 12">
-              <h6 class="bold">
-                Спасибо за заказ, но доставка еще не работает.
-              </h6>
-              <div>Наш менеджер сможет вам позвонить только с 12 часов дня.</div>
-              <div class="row justify-center">
-                <img class="thanksImage" src="../assets/image/ThanksEarly.png">
-              </div>
-              <q-btn
-                flat
-                style="background: #ca17a8; color: #fff"
-                class="full-width q-my-md"
-                @click="thanks = false; showCart = !showCart"
-              >
-                <div class="bold">
-                  НА САЙТ
-                </div>
-              </q-btn>
-            </template>
-          </div>
+            </q-btn>
+          </template>
         </div>
-        <div
-          class="col-12 col-md-6 col-sm-12 cart-area"
-          :class="{
+      </div>
+      <div
+        class="col-12 col-md-6 col-sm-12 cart-area"
+        :class="{
           'col-sm-12': ordering === true,
           'form-area-display': ordering === false,
         }"
+      >
+        <div
+          class="row justify-between items-center content-center vertical-line"
         >
-          <div
-            class="row justify-between items-center content-center vertical-line"
-          >
-            <div class="col-auto">
-              <q-btn
-                class=""
-                color="grey-5"
-                size="md"
-                flat
-                @click="showCart = !showCart"
-              >
-                <img class="" src="../assets/image/returnButton.png"/>
-              </q-btn>
-            </div>
-            <div class="col-auto justify-center">
-              <div class="cart-h1">
-                Корзина
-              </div>
-            </div>
-            <div class="col-1"/>
+          <div class="col-auto">
+            <q-btn
+              class=""
+              color="grey-5"
+              size="md"
+              flat
+              @click="showCart = !showCart"
+            >
+              <img class="" src="../assets/image/returnButton.png"/>
+            </q-btn>
           </div>
-
-          <div class="cart-h1 form-area-display">
-            Корзина
+          <div class="col-auto justify-center">
+            <div class="cart-h1">
+              Корзина
+            </div>
           </div>
+          <div class="col-1"/>
+        </div>
 
-          <div
-            class=" display-none-class col-12 q-mb-sm"
+        <div class="cart-h1 form-area-display">
+          Корзина
+        </div>
+
+        <div
+          class=" display-none-class col-12 q-mb-sm"
+        >
+          <q-input
+            :value="promoCode.value"
+            label="Ввести промокод"
+            bg-color="white"
+            :disable="promoInputDisabled"
+            outlined
+            dense
+            class="col-grow"
+            @input="setPromoCode"
+          />
+          <q-btn
+            v-if="hidePromoButton === true"
+            flat
+            size="md"
+            class="pho-btn pho-btn-med-promo col-3"
+            no-caps
+            unelevated
+            @click="usePromoCode('top')"
           >
+            <div>Применить</div>
+          </q-btn>
+          <q-btn
+            v-if="hidePromoButton === false"
+            flat
+            size="md"
+            class="pho-btn pho-btn-med-promo col-3"
+            no-caps
+            unelevated
+            @click="removePromoFromBasket()"
+          >
+            <div>Отменить</div>
+          </q-btn>
+          <div>{{ promoNotification }}</div>
+        </div>
+
+        <q-scroll-area
+          :thumb-style="thumbStyle"
+          :content-style="contentStyle"
+          :content-active-style="contentActiveStyle"
+          style="height: 80%; padding-right: 20px"
+        >
+          <div class="q-pr-xs-md">
+            <q-separator/>
+            <div v-for="cartItem in currentOrder.products" :key="cartItem.id">
+              <BasketItem
+                :add-to-basket="addProductToBasket"
+                :remove-from-basket="removeProductToBasket"
+                :remove-one-product="removeOneProduct"
+                :cart-item="cartItem"
+                :order-products="currentOrder.products"
+              />
+              <q-separator/>
+            </div>
+          </div>
+        </q-scroll-area>
+        <additional-sale
+          :add-to-basket="addProductToBasket"
+        />
+        <div class="row justify-between items-center col-12">
+          <div class="row form-area-display col-12 q-pr-lg">
             <q-input
               :value="promoCode.value"
               label="Ввести промокод"
@@ -570,8 +629,8 @@
               :disable="promoInputDisabled"
               outlined
               dense
-              class="col-grow"
               @input="setPromoCode"
+              class="col-grow"
             />
             <q-btn
               v-if="hidePromoButton === true"
@@ -595,340 +654,264 @@
             >
               <div>Отменить</div>
             </q-btn>
-            <div>{{ promoNotification }}</div>
           </div>
-
-          <q-scroll-area
-            :thumb-style="thumbStyle"
-            :content-style="contentStyle"
-            :content-active-style="contentActiveStyle"
-            style="height: 80%; padding-right: 20px"
-          >
-            <div class="q-pr-xs-md">
-              <q-separator/>
-              <div v-for="cartItem in currentOrder.products" :key="cartItem.id">
-                <BasketItem
-                  :add-to-basket="addProductToBasket"
-                  :remove-from-basket="removeProductToBasket"
-                  :remove-one-product="removeOneProduct"
-                  :cart-item="cartItem"
-                  :order-products="currentOrder.products"
-                />
-                <q-separator/>
-              </div>
+          <div class="col-12 q-pr-lg q-xs-none">
+            <div class="cart-h1 text-right"
+                 v-if="currentOrder.deliveryInfo.type === 2">Скидка за самовывоз 15%</div>
+            <div class="total text-right"
+                 v-if="currentOrder.deliveryInfo.type === 2">
+              Сумма заказа:<span class="total-sum">{{ totalSum - (totalSum / 100 * 15)}} ₽</span>
             </div>
-          </q-scroll-area>
-          <additional-sale
-            :add-to-basket="addProductToBasket"
-          />
-          <div class="row justify-between items-center col-12">
-            <div class="row form-area-display col-12 q-pr-lg">
-              <q-input
-                :value="promoCode.value"
-                label="Ввести промокод"
-                bg-color="white"
-                :disable="promoInputDisabled"
-                outlined
-                dense
-                @input="setPromoCode"
-                class="col-grow"
-              />
-              <q-btn
-                v-if="hidePromoButton === true"
-                flat
-                size="md"
-                class="pho-btn pho-btn-med-promo col-3"
-                no-caps
-                unelevated
-                @click="usePromoCode('top')"
-              >
-                <div>Применить</div>
-              </q-btn>
-              <q-btn
-                v-if="hidePromoButton === false"
-                flat
-                size="md"
-                class="pho-btn pho-btn-med-promo col-3"
-                no-caps
-                unelevated
-                @click="removePromoFromBasket()"
-              >
-                <div>Отменить</div>
-              </q-btn>
+            <div v-else class="total text-right">
+              Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
-            <div class="col-12 q-pr-lg q-xs-none">
-              <div class="cart-h1 text-right"
-                   v-if="currentOrder.deliveryInfo.type === 2">Скидка за самовывоз 15%
-              </div>
-              <div class="total text-right"
-                   v-if="currentOrder.deliveryInfo.type === 2">
-                Сумма заказа:<span class="total-sum">{{ totalSum - (totalSum / 100 * 15) }} ₽</span>
-              </div>
-              <div v-else class="total text-right">
-                Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
-              </div>
-              <div v-if="currentOrder.deliveryInfo.type === 1">
-                <div v-if="totalSum < 800" class="pho-caption text-right">
-                  Минимальная сумма заказа от 800 ₽
-                </div>
+            <div v-if="currentOrder.deliveryInfo.type === 1">
+              <div v-if="totalSum < 800" class="pho-caption text-right">
+                Минимальная сумма заказа от 800 ₽
               </div>
             </div>
           </div>
+        </div>
+        <q-btn
+          v-if="!showAddress"
+          flat
+          style="background: #ca17a8; color: #fff"
+          class="full-width create-order-button absolute-bottom q-mb-lg"
+          @click="toShowRegistrationOrder"
+        >
+          <div class="bold">
+            К оформлению заказа
+          </div>
+        </q-btn>
+      </div>
+    </div>
+    <!--        <div class="warning-line-mobile">-->
+    <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
+    <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
+    <!--        </div>-->
+    <div class="container">
+      <div class="row items-center justify-md-start justify-between">
+        <div class="pho-h1 form-area-display q-pr-lg">
+          ДОСТАВКА
+        </div>
+        <div class="pho-h1 display-none-class q-pr-md">
+          Доставка
+        </div>
+        <div>
           <q-btn
-            v-if="!showAddress"
             flat
-            style="background: #ca17a8; color: #fff"
-            class="full-width create-order-button absolute-bottom q-mb-lg"
-            @click="toShowRegistrationOrder"
+            class="column q-ml-lg q-px-sm pho-btn pho-btn-delivery-zones"
+            no-caps
+            @click="showMap = !showMap"
           >
-            <div class="bold">
-              К оформлению заказа
-            </div>
+            <img src="/icons/location-baloon.svg" alt="" class="q-mr-sm"/>
+            <div>Зона доставки</div>
           </q-btn>
         </div>
       </div>
-      <!--        <div class="warning-line-mobile">-->
-      <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
-      <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
-      <!--        </div>-->
-      <div class="container">
-        <div class="row items-center justify-md-start justify-between">
-          <div class="pho-h1 form-area-display q-pr-lg">
-            ДОСТАВКА
-          </div>
-          <div class="pho-h1 display-none-class q-pr-md">
-            Доставка
-          </div>
-          <div>
-            <q-btn
-              flat
-              class="column q-ml-lg q-px-sm pho-btn pho-btn-delivery-zones"
-              no-caps
-              @click="showMap = !showMap"
-            >
-              <img src="/icons/location-baloon.svg" alt="" class="q-mr-sm"/>
-              <div>Зона доставки</div>
-            </q-btn>
-          </div>
-        </div>
-        <!-- главная страница -->
-        <div class="carousel-box form-area-display">
-          <q-carousel
-            :height="heightSlider"
-            v-model="slide"
-            animated
-            navigation
-            infinite
-            :autoplay="autoplay"
-            arrows
-            transition-prev="slide-right"
-            transition-next="slide-left"
-            @mouseenter="autoplay = false"
-            @mouseleave="autoplay = true"
+      <!-- главная страница -->
+      <div class="carousel-box form-area-display">
+        <q-carousel
+          :height="heightSlider"
+          v-model="slide"
+          animated
+          navigation
+          infinite
+          :autoplay="autoplay"
+          arrows
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          @mouseenter="autoplay = false"
+          @mouseleave="autoplay = true"
+        >
+          <q-carousel-slide
+            class="q-pa-none carousel-slide-image"
+            :name="index"
+            v-for="(promo, index) in promotionsDelivery" :key="promo.index"
+            :img-src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
           >
-            <q-carousel-slide
-              class="q-pa-none carousel-slide-image"
-              :name="index"
-              v-for="(promo, index) in promotionsDelivery" :key="promo.index"
-              :img-src="`${CLIENT_API_LINK}/uploads/${promo.image}`"
-            >
-            </q-carousel-slide>
-          </q-carousel>
-        </div>
-        <div class="carousel-box display-none-mobile">
-          <q-carousel
-            :height="heightSlider"
-            v-model="slide"
-            animated
-            swipeable
-            infinite
-            :autoplay="autoplay"
-            arrows
-            transition-prev="slide-right"
-            transition-next="slide-left"
-            @mouseenter="autoplay = false"
-            @mouseleave="autoplay = true"
-          >
-            <q-carousel-slide
-              class="carousel-slide-image"
-              :name="index"
-              :img-src="`${CLIENT_API_LINK}/uploads/${promo.preview}`"
-              v-for="(promo, index) in promotionsDelivery" :key="promo.index"
-            ></q-carousel-slide>
-          </q-carousel>
-        </div>
-        <div class="row q-pb-md form-area-display">
-          <template v-for="category in categoriesMenu">
-            <q-btn
-              :id="category.id"
-              :key="category.id"
-              class="pho-btn"
-              :class="{
+          </q-carousel-slide>
+        </q-carousel>
+      </div>
+      <div class="carousel-box display-none-mobile">
+        <q-carousel
+          :height="heightSlider"
+          v-model="slide"
+          animated
+          swipeable
+          infinite
+          :autoplay="autoplay"
+          arrows
+          transition-prev="slide-right"
+          transition-next="slide-left"
+          @mouseenter="autoplay = false"
+          @mouseleave="autoplay = true"
+        >
+          <q-carousel-slide
+            class="carousel-slide-image"
+            :name="index"
+            :img-src="`${CLIENT_API_LINK}/uploads/${promo.preview}`"
+            v-for="(promo, index) in promotionsDelivery" :key="promo.index"
+          ></q-carousel-slide>
+        </q-carousel>
+      </div>
+      <div class="row q-pb-md form-area-display">
+        <template v-for="category in categoriesMenu">
+          <q-btn
+            :id="category.id"
+            :key="category.id"
+            class="pho-btn"
+            :class="{
               '': activeCategory !== null && category.id === activeCategory,
               'pho-btn-outline': category.id !== activeCategory,
             }"
-              flat
-              no-caps
-              @click="chooseCategory(category)"
-            >
-              <div>
-                {{ category.name }}
-              </div>
-            </q-btn>
-          </template>
-        </div>
-        <div class="justify-center row q-mt-lg" v-if="loadProductItem === false">
-          <q-spinner
-            color="white"
-            size="10em"
-          />
-        </div>
-        <div
-          class="row q-col-gutter-md items-stretch content-stretch form-area-display"
-        >
-          <ProductItem
-            v-for="product in activeCategoryProducts"
-            :key="product.name"
-            :product="product"
-          />
-        </div>
-        <div class="row mobile-menu-scroll flex-md-block no-wrap display-none-class"
-             v-show="windowWidth < 1023"
-             id="mobile-menu-scroll"
-             :style="{left: `${scrollMobileOffset}px`}">
-          <template v-for="category in categoriesMenu">
-            <q-btn
-              :id="category.id"
-              :key="category.id"
-              class="pho-btn"
-              :class="{
+            flat
+            no-caps
+            @click="chooseCategory(category)"
+          >
+            <div>
+              {{ category.name }}
+            </div>
+          </q-btn>
+        </template>
+      </div>
+      <div class="justify-center row q-mt-lg"  v-if="loadProductItem === false">
+        <q-spinner
+          color="white"
+          size="10em"
+        />
+      </div>
+      <div
+        class="row q-col-gutter-md items-stretch content-stretch form-area-display"
+      >
+        <ProductItem
+          v-for="product in activeCategoryProducts"
+          :key="product.name"
+          :product="product"
+        />
+      </div>
+      <div class="row mobile-menu-scroll flex-md-block no-wrap display-none-class"
+           v-show="windowWidth < 1023"
+           id="mobile-menu-scroll"
+           :style="{left: `${scrollMobileOffset}px`}">
+        <template v-for="category in categoriesMenu">
+          <q-btn
+            :id="category.id"
+            :key="category.id"
+            class="pho-btn"
+            :class="{
               'active-category': category.id === activeCategory,
               'pho-btn-outline': category.id !== activeCategory,
             }"
-              flat
-              no-caps
-              @scroll="scroll"
-              @click="chooseCategory(category)"
-            >
-              <div>
-                <nobr>{{ category.name }}</nobr>
-              </div>
-            </q-btn>
-          </template>
-        </div>
-        <div
-          class="display-none-mobile"
-        >
-          <div
-            v-for="category in categoriesMenu"
-            :id="category.name"
-            :key="category.id"
+            flat
+            no-caps
+            @scroll="scroll"
+            @click="chooseCategory(category)"
           >
-            <div class="mobile-category-text">
-              {{ category.name }}
+            <div>
+              <nobr>{{ category.name }}</nobr>
             </div>
-            <div class="row q-col-gutter-md items-stretch content-stretch">
-              <ProductItem
-                v-for="product in category.products"
-                :key="product.name"
-                :product="product"
-              />
-            </div>
+          </q-btn>
+        </template>
+      </div>
+      <div
+        class="display-none-mobile"
+      >
+        <div
+          v-for="category in categoriesMenu"
+          :id="category.name"
+          :key="category.id"
+        >
+          <div class="mobile-category-text">
+            {{ category.name }}
+          </div>
+          <div class="row q-col-gutter-md items-stretch content-stretch">
+            <ProductItem
+              v-for="product in category.products"
+              :key="product.name"
+              :product="product"
+            />
           </div>
         </div>
       </div>
-      <!-- зона доставки -->
-      <q-dialog v-model="showMap"
-                :maximized="true">
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">
-              Зона доставки
-            </div>
+    </div>
+    <!-- зона доставки -->
+    <q-dialog v-model="showMap"
+              :maximized="true">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">
+            Зона доставки
+          </div>
 
-            <div class="row justify-between">
-              <div class="row items-center q-my-sm">
-                <div class="yellow-zone q-mr-sm"/>
-                <div>от 800 руб</div>
-              </div>
-              <div class="row items-center q-my-sm">
-                <div class="blue-zone pl-3 q-mr-sm"/>
-                <div>от 1100 руб</div>
-              </div>
-              <div class="row items-center q-my-sm">
-                <div class="purple-zone pl-3 q-mr-sm"/>
-                <div>от 1400 руб</div>
-              </div>
-              <div class="row items-center q-my-sm">
-                <div class="green-zone pl-3 q-mr-sm"/>
-                <div>от 1700 руб</div>
-              </div>
+          <div class="row justify-between">
+            <div class="row items-center q-my-sm">
+              <div class="yellow-zone q-mr-sm"/>
+              <div>от 800 руб</div>
             </div>
-            <div class="row">
-              <yandex-map
-                v-if="isMounted"
-                :coords="centerMap"
-                :style="{height: `${yandexMapHeight}px`}"
-                style="width: 100%"
-                zoom="12"
-              >
-                <ymap-marker
-                  v-for="(item, index) in dsZonesPriced.features"
-                  :key="index"
-                  :balloon="{
+            <div class="row items-center q-my-sm">
+              <div class="blue-zone pl-3 q-mr-sm"/>
+              <div>от 1100 руб</div>
+            </div>
+            <div class="row items-center q-my-sm">
+              <div class="purple-zone pl-3 q-mr-sm"/>
+              <div>от 1400 руб</div>
+            </div>
+            <div class="row items-center q-my-sm">
+              <div class="green-zone pl-3 q-mr-sm"/>
+              <div>от 1700 руб</div>
+            </div>
+          </div>
+          <div class="row">
+            <yandex-map
+              v-if="isMounted"
+              :coords="centerMap"
+              :style="{height: `${yandexMapHeight}px`}"
+              style="width: 100%"
+              zoom="12"
+            >
+              <ymap-marker
+                v-for="(item, index) in dsZonesPriced.features"
+                :key="index"
+                :balloon="{
                 body: item.properties.description,
               }"
-                  :coords="getPriceZoneCoords(item)"
-                  :marker-fill="{
+                :coords="getPriceZoneCoords(item)"
+                :marker-fill="{
                 color: item.properties.fill,
                 opacity: item.properties['fill-opacity'],
               }"
-                  :marker-stroke="{
+                :marker-stroke="{
                 color: item.properties.stroke,
                 width: item.properties['stroke-width'],
                 opacity: item.properties['stroke-opacity'],
               }"
-                  :marker-id="'m' + index"
-                  marker-type="Polygon"
-                />
-                <ymap-marker
-                  v-if="coords.length !== 0"
-                  :coords="[coords[0], coords[1]]"
-                  marker-id="42m"
-                  marker-type="Placemark"
-                />
-                <ymap-marker
-                  :coords="[ourDepartment[0], ourDepartment[1]]"
-                  marker-id="ourMap"
-                  hint-content="Pho Me"
-                  marker-type="Placemark"
-                  :properties="departmentProperty"
-                />
-              </yandex-map>
-            </div>
-          </q-card-section>
+                :marker-id="'m' + index"
+                marker-type="Polygon"
+              />
+              <ymap-marker
+                v-if="coords.length !== 0"
+                :coords="[coords[0], coords[1]]"
+                marker-id="42m"
+                marker-type="Placemark"
+              />
+              <ymap-marker
+                :coords="[ourDepartment[0], ourDepartment[1]]"
+                marker-id="ourMap"
+                hint-content="Pho Me"
+                marker-type="Placemark"
+                :properties="departmentProperty"
+              />
+            </yandex-map>
+          </div>
+        </q-card-section>
 
-          <q-card-actions align="right">
-            <q-btn v-close-popup flat label="OK" color="primary"/>
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-      <my-footer/>
-    </div>
-    <div v-else class="breakImage">
-      <div>
-        <div v-if="windowWidth > 1023">
-          <q-img
-            src="../assets/image/pcBreak.jpg"
-          />
-        </div>
-        <div v-else>
-          <q-img
-            src="../assets/image/mobileBreak.jpg"
-          />
-        </div>
-      </div>
-    </div>
+        <q-card-actions align="right">
+          <q-btn v-close-popup flat label="OK" color="primary"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <my-footer/>
   </q-page>
 </template>
 
@@ -936,10 +919,7 @@
 import { dom, scroll } from 'quasar';
 
 const { height } = dom;
-const {
-  getScrollTarget,
-  setScrollPosition,
-} = scroll;
+const { getScrollTarget, setScrollPosition } = scroll;
 import Vue from 'vue'; // vue
 import VueScrollTo from 'vue-scrollto';
 
@@ -990,7 +970,6 @@ export default {
       addressHint: [],
       dateNow: new Date(),
       hours: null,
-      isBreak: true,
       startBreak: new Date(1989, 5, 26, 17, 0, 0, 0),
       finishBreak: new Date(1989, 5, 26, 19, 30, 0, 0),
       isInZone: true,
@@ -1052,14 +1031,6 @@ export default {
       contentActiveStyle: {
         color: 'black',
       },
-      blind: [
-        {
-          mainPhoto: '',
-          secondPhoto: '',
-          fromTime: null,
-          toTime: null,
-        },
-      ],
       thumbStyle: {
         right: '2px',
         borderRadius: '5px',
@@ -1147,8 +1118,7 @@ export default {
       'setDefaultState',
     ]),
     setLatestDate(date) {
-      const latestDate = moment(date)
-        .format('DD.MM.YYYY');
+      const latestDate = moment(date).format('DD.MM.YYYY');
       this.date = date;
       this.setDate(latestDate);
     },
@@ -1289,9 +1259,7 @@ export default {
       );
       if (result.length === 0) {
         this.createNotify('Промокод не найден');
-      } else {
-        this.checkPromoCode(result[0], position);
-      }
+      } else this.checkPromoCode(result[0], position);
     },
     checkPromoCode(result) {
       const date = new Date();
@@ -1318,9 +1286,7 @@ export default {
         );
       } else if (filterOrder[0].number + 1 > 1) {
         this.createNotify('Можно добавить только один промокод');
-      } else {
-        this.createNotify('Промокод не найден');
-      }
+      } else this.createNotify('Промокод не найден');
     },
     addPromocode(result, product) {
       const cartItemPromo = {
@@ -1483,17 +1449,16 @@ export default {
   },
   async mounted() {
     this.yandexMapHeight = window.innerHeight - 190;
-    this.$store.dispatch('promotions/getPromotions')
-      .then(() => {
-        for (let i = 0; i < this.promotions.length; i += 1) {
-          if (JSON.parse(this.promotions[i].type).id === 2) {
-            this.promotionsDelivery.push(this.promotions[i]);
-          }
+    this.$store.dispatch('promotions/getPromotions').then(() => {
+      for (let i = 0; i < this.promotions.length; i += 1) {
+        if (JSON.parse(this.promotions[i].type).id === 2) {
+          this.promotionsDelivery.push(this.promotions[i]);
         }
-        if (this.promotions[0] !== undefined) {
-          [this.activePromo] = this.promotions;
-        }
-      });
+      }
+      if (this.promotions[0] !== undefined) {
+        [this.activePromo] = this.promotions;
+      }
+    });
     if (this.deliveryPayButton[0] !== undefined) {
       [this.activeDeliveryPayButton] = this.deliveryPayButton;
     }
@@ -1503,12 +1468,11 @@ export default {
     if (this.deliveryTimeButton[0] !== undefined) {
       [this.activeDeliveryTimeButton] = this.deliveryTimeButton;
     }
-    this.$store.dispatch('order/getPromocode')
-      .then(() => {
-        if (this.promoCodes[0] !== undefined) {
-          console.log();
-        }
-      });
+    this.$store.dispatch('order/getPromocode').then(() => {
+      if (this.promoCodes[0] !== undefined) {
+        console.log();
+      }
+    });
     if (this.categoriesMenu[0] !== undefined) {
       this.chooseCategory(this.categoriesMenu[0]);
     }
@@ -1524,12 +1488,6 @@ export default {
     // eslint-disable-next-line
     this.ymapsObj = ymaps;
     this.catchDefaultState();
-    this.blind = JSON.parse(this.contacts.blind);
-    // console.log(moment().isAfter(this.blind.fromTime), moment().isBefore(this.blind.toTime));
-    // if (moment().isAfter(this.blind.fromTime) === true
-    //   && moment().isBefore(this.blind.toTime) === true) {
-    //   this.isBreak = true;
-    // }
   },
   created() {
     if (process.browser) {
@@ -1550,7 +1508,6 @@ export default {
   font-family: lb;
   src: url(../font/TTLakes-Black.ttf);
 }
-
 .pho-h1 {
   font-family: lb;
   color: #fff;
@@ -1559,74 +1516,59 @@ export default {
   font-size: 90px;
   line-height: 145px;
 }
-
 .logo {
   padding: 22px 0 0px 34px;
   cursor: pointer;
 }
-
 .container {
   padding: 0 105px;
   max-width: 1400px;
   margin: 0 auto;
 }
-
 .q-carousel {
   border-radius: 20px;
 }
-
 .carousel-box {
   margin: 9px 0 28px 0;
   border-radius: 20px;
 }
-
 .carousel-slide-image {
   border-radius: 20px;
   width: 100%;
 }
-
 .button-box {
   border: 1px solid #dadada;
   border-radius: 10px;
   margin: 8px 0 20px 0;
 }
-
 .button-box-time {
   margin: 8px 0 0 0;
 }
-
 .button-parent {
   &:first-child {
     border-radius: 0px 10px 0 10px;
   }
-
   &:last-child {
     border-radius: 0 10px 10px 0;
   }
 }
-
 .address-animation {
   &.active {
     animation: active-animation 0.1s;
   }
-
   &.noActive {
     animation: noactive-animation 0.1s;
   }
 }
-
 .time-animation {
   margin: 5px 0 10px 0;
-
   &.active {
     animation: active-animation 0.1s;
   }
-
   &.noActive {
     animation: noactive-animation 0.1s;
   }
 }
-
 @keyframes active-animation {
   from {
     margin-top: -18px;
@@ -1644,7 +1586,6 @@ export default {
     margin-top: 0;
   }
 }
-
 @keyframes noactive-animation {
   from {
     margin-top: 36px;
@@ -1662,20 +1603,16 @@ export default {
     margin-top: 5px;
   }
 }
-
 .baloon-order {
   width: 10px;
   height: 12px;
 }
-
 .cursor {
   cursor: pointer;
 }
-
 .border-radius {
   border-radius: 10px;
 }
-
 .pseudo-input {
   max-width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.24);
@@ -1699,13 +1636,11 @@ export default {
   padding: 0 16px;
   display: none;
 }
-
 .basket-bottom-additional-button {
   bottom: 0;
   right: 10px;
   left: 10px;
 }
-
 .basket-cart-name {
   margin: 0 auto;
 }
@@ -1718,7 +1653,6 @@ export default {
   margin-top: 33px;
   cursor: pointer;
 }
-
 .cart {
   z-index: 99;
   position: fixed;
@@ -1727,48 +1661,38 @@ export default {
   width: 90%;
   height: 100%;
 }
-
 .form-area {
   padding: 32px 35px 32px 53px;
   background: #fafafa;
   background: #fff;
 }
-
 .cart-area {
   padding: 32px 40px 45px 32px;
   background: #fff;
 }
-
 .create-order-button {
   display: none;
 }
-
 .display-none-class {
   display: none;
 }
-
 .q-notifications__list--center {
   bottom: 55px;
 }
-
 .q-notifications__list--bottom {
   top: 0;
 }
-
 .q-notifications__list--top {
   top: 0;
 }
-
 .main-container {
   background: #02bbbd;
   height: 100%;
 }
-
 .product-area {
   display: flex;
   flex-direction: row;
 }
-
 .cart-widget {
   position: fixed;
   width: 100px;
@@ -1779,16 +1703,13 @@ export default {
   justify-content: center;
   align-items: center;
   z-index: 100;
-
   &.active {
     background: #ca17a8;
   }
-
   &.noActive {
     background: #eab700;
   }
 }
-
 .cart-product-num {
   position: absolute;
   top: 39%;
@@ -1797,7 +1718,6 @@ export default {
   color: #fff;
   font-size: 12px;
 }
-
 .yelow-line {
   position: fixed;
   width: 95px;
@@ -1807,7 +1727,6 @@ export default {
   background: #f8c200;
   z-index: 100;
 }
-
 .shadow-cart {
   position: fixed;
   top: 0;
@@ -1820,20 +1739,17 @@ export default {
   opacity: 0.4;
   z-index: 99;
 }
-
 .cart-h1 {
   font-family: 'lb';
   font-style: italic;
   font-size: 24px;
   line-height: 32px;
 }
-
 .total {
   font-size: 16px;
   line-height: 22px;
   color: #828282;
 }
-
 .total-sum {
   font-size: 24px;
   line-height: 32px;
@@ -1841,7 +1757,6 @@ export default {
   padding-left: 20px;
   color: #333333;
 }
-
 .name-field {
   color: #4f4f4f;
   padding-bottom: 2px;
@@ -1850,71 +1765,59 @@ export default {
   line-height: 19px;
   font-family: tr;
 }
-
 .name-field-first {
   margin-top: 21px;
 }
-
 .comment-input {
   background: #ffffff;
   box-sizing: border-box;
   resize: none;
 }
-
 .pho-caption {
   font-size: 12px;
   line-height: 16px;
   /* Gray 4 */
   color: #bdbdbd;
 }
-
 .pho-pb-2 {
   padding-bottom: 13px;
 }
-
 .ballun-m {
   width: 15px;
 }
-
 .zone-btm-m {
   text-transform: none;
   font-size: 12px;
   line-height: 12px;
   border-radius: 10px;
 }
-
 .logo-m {
   width: 100%;
 }
-
 .yellow-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #ffd21e;
 }
-
 .blue-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #82cdff;
 }
-
 .purple-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #f371d1;
 }
-
 .green-zone {
   width: 50px;
   height: 30px;
   border-radius: 20px;
   background: #56db40;
 }
-
 .mobile-category-text {
   font-family: lb;
   font-weight: 900;
@@ -1924,7 +1827,6 @@ export default {
   color: white;
   margin: 10px 0 6px 0;
 }
-
 .pho-btn {
   margin: 10px 10px 10px 0px;
   border-radius: 10px;
@@ -1936,19 +1838,16 @@ export default {
   font-family: ttbold;
   font-weight: 700;
 }
-
 .pho-btn-outline {
   background: none;
   border: 2px solid #ffffff;
   color: #fff;
 }
-
 .pho-btn-outline:hover {
   background: #fcd000;
   border: 2px solid #fcd000;
   color: #4f4f4f;
 }
-
 .pho-btn-delivery {
   background: #fff;
   border: none;
@@ -1959,24 +1858,16 @@ export default {
   font-weight: 500;
   margin: 0;
   font-family: tr;
-
   &.active {
     background: #fcd000;
     color: #ffffff;
     font-weight: 700;
   }
 }
-
 .pho-btn-delivery-group {
   border-radius: 10px;
   box-shadow: none;
 }
-
-.breakImage {
-  width: 100vw;
-  height: 100vh;
-}
-
 .pho-btn-med-promo {
   width: 85px;
   border-radius: 0 10px 10px 0;
@@ -1989,7 +1880,6 @@ export default {
   margin: 0px 0px 0px 0px;
   font-weight: 700;
 }
-
 .pho-btn-delivery-zones {
   font-size: 22px;
   line-height: 29.7px;
@@ -1997,11 +1887,9 @@ export default {
   height: 49px;
   font-family: lcm;
 }
-
 .display-none-mobile {
   display: none;
 }
-
 @media (min-width: 1000px) {
   .warning-line {
     height: 95px;
@@ -2020,7 +1908,6 @@ export default {
     display: none;
   }
 }
-
 @media (max-width: 999px) {
   .warning-line {
     display: none;
@@ -2038,7 +1925,6 @@ export default {
     margin-bottom: -35px;
   }
 }
-
 @media (max-width: 1023px) {
   .main-container {
     background: #02bbbd;
@@ -2129,7 +2015,6 @@ export default {
     color: #fff;
   }
 }
-
 @media (min-width: 1523px) {
   .cart {
     width: 1000px;

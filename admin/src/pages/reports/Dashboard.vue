@@ -1,6 +1,6 @@
 <template>
   <div class="row dashboard-page ">
-    <div v-if="currentTime < 897"
+    <div v-if="currentTime < 2397"
          class="column col-4 q-mr-md dashboard-block justify-between q-pa-xl text-center">
       <div class="row col-2">
         <div class=" plan-text col-12 ">План на месяц</div>
@@ -77,7 +77,7 @@
         </div>
       </div>
     </div>
-    <div  v-if="currentTime < 897" class="column col-grow ">
+    <div  v-if="currentTime < 2397" class="column col-grow ">
       <div class="row col-1 ">
         <div class="col-3 q-mr-md dashboard-block q-pa-sm text-center">
           <div v-if="timeColor === '#ca17a8'" class="time-text">Время до обновления</div>
@@ -101,7 +101,7 @@
         </div>
       </div>
       <div class="col "></div>
-      <div class="row col-4 q-mb-md">
+      <div class="row col-5 q-mb-md">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-mb">Лидер месяца</div>
           <div v-if="getLeader('month').length !== 0" class="leader-box">
@@ -133,18 +133,18 @@
           <div v-else class="q-mt-lx leader-list">За сегодняшний день продаж не было :(</div>
         </div>
       </div>
-      <div class="row col-5">
-        <div class="column col  q-mr-md dashboard-block q-pa-lg ">
+      <div class="row col-4">
+        <div class="column col  q-mr-md dashboard-block q-px-lg q-pt-lg ">
           <div class="second-piece-main-title q-mb-md">Старт лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in staffBoard.startList" :key="index">
-              <div class="col-7">{{+index}}.&nbsp;&nbsp;
+              <div class="col-8">{{+index}}.&nbsp;&nbsp;
                 {{ getProductName(product.iikoId) }} </div>
             </div>
           </div>
         </div>
-        <div class="column col dashboard-block q-pa-lg">
+        <div class="column col dashboard-block  q-px-lg q-pt-lg">
           <div class="second-piece-main-title  q-mb-md">Стоп лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
@@ -180,7 +180,7 @@
       </div>
     </div>
     <div class="column absolute-center text-center" style="color: #ca17a8"
-      v-if="currentTime > 897"><nobr>
+      v-if="currentTime > 2397"><nobr>
       <q-spinner-bars color="purple" size="5em"/>
       <h3>Ожидайте... Происходит обновление данных</h3>
       <q-spinner-bars color="purple" size="5em"/>
@@ -196,7 +196,7 @@ export default {
   name: 'Dashboard',
   data() {
     return {
-      currentTime: 900,
+      currentTime: 2400,
       timer: null,
       staffReport: [],
       foodReport: [],
@@ -218,7 +218,7 @@ export default {
     currentTime(time) {
       if (time === 0) {
         this.stopTimer();
-        this.currentTime = 900;
+        this.currentTime = 2400;
         this.startTimer();
       }
     },
@@ -344,6 +344,7 @@ export default {
       let staffList = null;
       if (type === 'month') {
         staffList = this.staffReport
+          .filter((item) => item.WaiterName !== 'Пользователь для централизованной доставки')
           .reduce((acc, it) => ({
             ...acc,
             [it.WaiterName]: (+(acc[it.WaiterName] || 0) + it.DishDiscountSumInt).toFixed(2),
@@ -351,19 +352,19 @@ export default {
           {});
       } else {
         staffList = this.staffReport
-          .filter((item) => item['OpenDate.Typed'].includes(this.today) === true)
+          .filter((item) => item['OpenDate.Typed'].includes(this.today) === true && item.WaiterName !== 'Пользователь для централизованной доставки')
           .reduce((acc, it) => ({
             ...acc,
             [it.WaiterName]: (+(acc[it.WaiterName] || 0) + it.DishDiscountSumInt).toFixed(2),
           }),
           {});
       }
-      const result = Object.entries(staffList).sort((a, b) => b[1] - a[1]).splice(-5);
+      const result = Object.entries(staffList).sort((a, b) => b[1] - a[1]).splice(0, 10);
       return result;
     },
     getProductName(id) {
       const foundProduct = this.iikoProducts.find((item) => item.iikoId === id);
-      return foundProduct.name;
+      return foundProduct ? foundProduct.name : 'Такого блюда больше нет';
     },
     startTimer() {
       this.timeColor = '#ca17a8';
@@ -571,7 +572,7 @@ white 11px, white 30px, green 31px);*/
 
 .leader-box .leader-list:first-child {
   font-family: ttbold;
-  font-size: 16px;
+  font-size: 18px;
 }
 .leader-list .leader:nth-child(2) {
     color: #ABABAB;
@@ -579,13 +580,13 @@ white 11px, white 30px, green 31px);*/
 
 .leader-list {
   font-family: lcm;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
 }
 
 .product-list-box {
   font-family: lcm;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 500;
 }
 

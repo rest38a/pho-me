@@ -77,8 +77,8 @@
         </div>
       </div>
     </div>
-    <div  v-if="currentTime < 2397" class="column col-grow ">
-      <div class="row col-1 ">
+    <div  v-if="currentTime < 2397" class="column col-grow justify-between">
+      <div class="row  " >
         <div class="col-3 q-mr-md dashboard-block q-pa-sm text-center">
           <div v-if="timeColor === '#ca17a8'" class="time-text">Время до обновления</div>
           <div v-else class="time-text">Ожидание обновления</div>
@@ -100,8 +100,7 @@
           </div>
         </div>
       </div>
-      <div class="col "></div>
-      <div class="row col-5 q-mb-md">
+      <div class="row  col-4">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-mb">Лидер месяца</div>
           <div v-if="getLeader('month').length !== 0" class="leader-box">
@@ -133,7 +132,7 @@
           <div v-else class="q-mt-lx leader-list">За сегодняшний день продаж не было :(</div>
         </div>
       </div>
-      <div class="row col-4">
+      <div class="row  col-4 ">
         <div class="column col  q-mr-md dashboard-block q-px-lg q-pt-lg ">
           <div class="second-piece-main-title q-mb-md">Старт лист</div>
           <div class="product-list-box justify-between">
@@ -155,8 +154,7 @@
           </div>
         </div>
       </div>
-      <div class="col "></div>
-      <div class="row col-1">
+      <div class="row ">
         <div class="row col-12 dashboard-block justify-between text-center content-center q-pa-md">
           <div class="row col-4 items-center">
             <div class="second-piece-under-title q-mr-sm">Доставка:</div>
@@ -359,7 +357,7 @@ export default {
           }),
           {});
       }
-      const result = Object.entries(staffList).sort((a, b) => b[1] - a[1]).splice(0, 10);
+      const result = Object.entries(staffList).sort((a, b) => b[1] - a[1]).splice(0, 8);
       return result;
     },
     getProductName(id) {

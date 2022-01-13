@@ -43,6 +43,25 @@
       </div>
     </div>
   </div>
+  <div class="col-3 q-mb-md">Стоп-лист
+    <div class="">
+      <div class="col-5 row" v-for="(current, index) in 7" :key="`${index}${current + 40}`">
+        <div  class="row items-center col-12 q-mt-md">
+          <div class="q-mr-md row col-1">{{ current }}.</div>
+          <q-select outlined
+                    class="col-10"
+                    dense
+                    use-input
+                    @filter="filterFn"
+                    clearable
+                    v-model="staffBoard.stopList[`${current}`]"
+                    :options="filterProduct"
+                    option-label="name"
+                    label="Что не продаём?"/>
+        </div>
+      </div>
+    </div>
+  </div>
 </q-form>
 </template>
 
@@ -59,6 +78,7 @@ export default {
       staffBoard: {
         name: 'Мотивационный',
         startList: {},
+        stopList: {},
         dayPlan: {},
         monthPlan: null,
       },
@@ -122,6 +142,8 @@ export default {
         this.staffBoard.dayPlan = dayPlan;
         const startList = JSON.parse(data.info[0].start_list);
         this.staffBoard.startList = startList;
+        const stopList = JSON.parse(data.info[0].stop_list);
+        this.staffBoard.stopList = stopList;
       })
       .catch((e) => {
         console.log('error', e);

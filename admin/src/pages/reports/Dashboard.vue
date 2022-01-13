@@ -147,9 +147,9 @@
           <div class="second-piece-main-title  q-mb-md">Стоп лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
-                 v-for="(product, index) in stopList" :key="index">
-              <div class="col-7">{{index + 1}}.&nbsp;&nbsp;
-                {{ getProductName(product.productId) }} </div>
+                 v-for="(product, index) in staffBoard.stopList" :key="index">
+              <div class="col-7">{{+index}}.&nbsp;&nbsp;
+                {{ getProductName(product.iikoId) }} </div>
             </div>
           </div>
         </div>
@@ -207,6 +207,7 @@ export default {
       staffBoard: {
         name: 'Мотивационный',
         startList: {},
+        stopList: {},
         dayPlan: {},
         monthPlan: null,
       },
@@ -225,7 +226,7 @@ export default {
     this.getToday();
     this.getProducts();
     this.getFillDashboardInfo();
-    this.getStopList();
+    // this.getStopList();
     this.getDashboardOlap();
     this.startTimer();
   },
@@ -248,19 +249,19 @@ export default {
           this.startTimer();
         });
     },
-    getStopList() {
-      this.$axios.get('/api/iiko/stop-list')
-        .then(({ data }) => {
-          if (data.answer.stopList.length > 0) {
-            this.stopList = data.answer.stopList[0].items;
-          }
-        })
-        .catch((e) => {
-          console.log('error', e);
-          this.timeColor = '#ff4f00';
-          // this.startTimer();
-        });
-    },
+    // getStopList() {
+    //   this.$axios.get('/api/iiko/stop-list')
+    //     .then(({ data }) => {
+    //       if (data.answer.stopList.length > 0) {
+    //         this.stopList = data.answer.stopList[0].items;
+    //       }
+    //     })
+    //     .catch((e) => {
+    //       console.log('error', e);
+    //       this.timeColor = '#ff4f00';
+    //       // this.startTimer();
+    //     });
+    // },
     getFillDashboardInfo() {
       this.$axios.get('/api/dashboard/get-data?dashboardId=1')
         .then(({ data }) => {
@@ -268,6 +269,8 @@ export default {
           this.staffBoard.dayPlan = dayPlan;
           const startList = JSON.parse(data.info[0].start_list);
           this.staffBoard.startList = startList;
+          const stopList = JSON.parse(data.info[0].stop_list);
+          this.staffBoard.stopList = stopList;
           const monthPlan = JSON.parse(data.info[0].month_plan);
           this.staffBoard.monthPlan = monthPlan;
           this.isLoad = true;
@@ -369,7 +372,7 @@ export default {
       this.getToday();
       this.getProducts();
       this.getFillDashboardInfo();
-      this.getStopList();
+      // this.getStopList();
       this.getDashboardOlap();
       this.timer = setInterval(() => {
         this.currentTime -= 1;

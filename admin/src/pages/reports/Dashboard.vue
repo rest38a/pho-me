@@ -78,7 +78,7 @@
       </div>
     </div>
     <div  v-if="currentTime < 2397" class="column col-grow justify-between">
-      <div class="row  " >
+      <div class="row  q-mb-md" >
         <div class="col-3 q-mr-md dashboard-block q-pa-sm text-center">
           <div v-if="timeColor === '#ca17a8'" class="time-text">Время до обновления</div>
           <div v-else class="time-text">Ожидание обновления</div>
@@ -100,7 +100,7 @@
           </div>
         </div>
       </div>
-      <div class="row  col-4">
+      <div class="row  q-mb-md">
         <div class="column col  q-mr-md dashboard-block q-pa-lg ">
           <div class="second-piece-main-title q-mb-mb">Лидер месяца</div>
           <div v-if="getLeader('month').length !== 0" class="leader-box">
@@ -132,14 +132,14 @@
           <div v-else class="q-mt-lx leader-list">За сегодняшний день продаж не было :(</div>
         </div>
       </div>
-      <div class="row  col-4 ">
-        <div class="column col  q-mr-md dashboard-block q-px-lg q-pt-lg ">
+      <div class="row  q-mb-md">
+        <div class="column col start-stop-box  q-mr-md dashboard-block q-px-lg q-pt-lg ">
           <div class="second-piece-main-title q-mb-md">Старт лист</div>
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in staffBoard.startList" :key="index">
-              <div class="col-8">{{+index}}.&nbsp;&nbsp;
-                {{ getProductName(product.iikoId) }} </div>
+              <nobr><div class="col-8">{{+index}}.&nbsp;&nbsp;
+                {{ getProductName(product.iikoId) }}</div> </nobr>
             </div>
           </div>
         </div>
@@ -569,6 +569,13 @@ white 11px, white 30px, green 31px);*/
     stroke-dasharray: 400, 400;
     stroke-dashoffset: -300
   }
+}
+
+.leader-box{
+  max-height: 230px;
+}
+.start-stop-box {
+  max-height: 3300px;
 }
 
 .leader-box .leader-list:first-child {

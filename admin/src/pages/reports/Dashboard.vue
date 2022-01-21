@@ -138,7 +138,7 @@
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in staffBoard.startList" :key="index">
-              <nobr><div class="col-8">{{+index}}.&nbsp;&nbsp;
+              <nobr><div v-if="product !== null" class="col-8">{{+index}}.&nbsp;&nbsp;
                 {{ getProductName(product.iikoId) }}</div> </nobr>
             </div>
           </div>
@@ -148,8 +148,8 @@
           <div class="product-list-box justify-between">
             <div class="q-mb-xs row items-baseline"
                  v-for="(product, index) in staffBoard.stopList" :key="index">
-              <div class="col-7">{{+index}}.&nbsp;&nbsp;
-                {{ getProductName(product.iikoId) }} </div>
+              <nobr><div v-if="product !== null" class="col-7">{{+index}}.&nbsp;&nbsp;
+                {{ getProductName(product.iikoId) }} </div></nobr>
             </div>
           </div>
         </div>

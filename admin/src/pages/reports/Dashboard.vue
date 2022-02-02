@@ -389,7 +389,7 @@ export default {
       return donesPlan.toFixed(2);
     },
     getTodayPlan() {
-      const day = moment(new Date()).format('DD');
+      const day = moment(new Date()).format('D');
       const foundDay = this.staffBoard.dayPlan[day];
       return foundDay;
     },

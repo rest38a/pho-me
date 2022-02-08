@@ -48,17 +48,33 @@ export default {
   data: () => ({
     items: [
       {
-        title: 'Лучшая летняя \r\n терраса',
+        title: 'Лучшая ресторанная \r\n терраса',
         image: '/image/beach.png',
-        link: 'http://best-restaurant.irk.sobaka.ru/vote/project/121044',
+        link: 'http://best-restaurant.irk.sobaka.ru/vote/project/143459',
         wrapClass: 'btn-feedback btn-feedback-google',
         classImg: 'img-wrap-google',
         childClass: 'text-color-black',
       },
       {
-        title: 'Лучшее азиатское блюдо',
-        image: '/image/box.png',
-        link: 'http://best-restaurant.irk.sobaka.ru/vote/food/121585',
+        title: 'Лучшее аутентичное заведение',
+        image: '/image/pho-me-sobaka.png',
+        link: 'http://best-restaurant.irk.sobaka.ru/vote/project/143460',
+        wrapClass: 'btn-feedback btn-feedback-google',
+        classImg: 'img-wrap-yandex',
+        childClass: 'text-color-black',
+      },
+      {
+        title: 'Лучший Фо Бо',
+        image: '/image/pho-bo-sobaka.png',
+        link: 'http://best-restaurant.irk.sobaka.ru/vote/food/143458',
+        wrapClass: 'btn-feedback btn-feedback-google',
+        classImg: 'img-wrap-yandex',
+        childClass: 'text-color-black',
+      },
+      {
+        title: 'Лучший шеф повар',
+        image: '/image/chef-sobaka.png',
+        link: 'http://best-restaurant.irk.sobaka.ru/vote/people/143556',
         wrapClass: 'btn-feedback btn-feedback-google',
         classImg: 'img-wrap-yandex',
         childClass: 'text-color-black',

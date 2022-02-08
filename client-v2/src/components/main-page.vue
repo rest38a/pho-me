@@ -5,9 +5,13 @@
     </div>
     <div class="main-container container">
       <div class="text-col">
-        <h1>Мы ресторан <nobr>и доставка</nobr></h1>
-        <h2>Азиатская кухня и напитки.</h2>
-				<div class="delivery-btn" @click="gotoDelivery()">Заказать доставку</div >
+<!--        <h1>Мы ресторан <nobr>и доставка</nobr></h1>-->
+        <h1>Участвуем <nobr>в ресторанной</nobr><br>премии</h1>
+        <h2>#чтогдеестьвИркутске</h2>
+<!--        <h2>Азиатская кухня и напитки.</h2>-->
+        <div class="delivery-btn q-mb-md" @click="gotoSobaka()">Голосуй за нас</div >
+				<div class="delivery-btn-for-sobaka q-ml-lg"
+             @click="gotoDelivery()">Заказать доставку</div >
 <!--				<div class="row q-mt-lg">-->
 <!--&lt;!&ndash;				<a class="delivery-btn"-->
 <!--				@click="scrollToMenu('menu-page')"-->
@@ -29,6 +33,9 @@ export default {
   components: { BottomNavigation },
   name: 'main-page',
   methods: {
+    gotoSobaka() {
+      window.location = '/sobaka';
+    },
     gotoDelivery() {
       window.location = '/delivery';
     },
@@ -98,6 +105,31 @@ h2 {
   line-height: 32px;
   color: #fff;
   margin: 35px 0;
+}
+.delivery-btn-for-sobaka {
+  font-family: lb;
+  font-weight: 900;
+  font-size: 17px;
+  line-height: 28px;
+  text-align: center;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 20px 14px;
+  color: #fff;
+  background: none;
+  border-radius: 10px;
+  border: 2px solid white;
+  cursor: pointer;
+  -webkit-transition: 0.5s box-shadow;
+  -o-transition: 0.5s box-shadow;
+  transition: 0.5s box-shadow;
+  text-decoration: none;
+}
+
+.delivery-btn-for-sobaka:hover {
+  -webkit-box-shadow: 0px 8px 35px 1px rgba(255, 0, 0, 1);
+  -moz-box-shadow: 0px 8px 35px 1px rgba(255, 0, 0, 1);
+  box-shadow: 0px 8px 35px 1px rgba(255, 0, 0, 1);
 }
 .delivery-btn {
   font-family: lb;

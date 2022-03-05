@@ -8,6 +8,14 @@ export async function getOrderMenu(context) {
   return true;
 }
 
+export async function getEMenu(context) {
+  await axios.get(`${process.env.CLIENT_API_LINK}/api/menuESite`).then(({ data }) => {
+    context.commit('setCategoriesMenu', data.categories);
+  });
+
+  return true;
+}
+
 export async function sendOrder(context) {
   const order = context.state.currentOrder;
   await axios.post(`${process.env.CLIENT_API_LINK}/api/order-site`,

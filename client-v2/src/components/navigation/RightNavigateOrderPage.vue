@@ -25,7 +25,7 @@
           <img src="../../assets/icon/inst-icon.png" class="icon-img"
           /></a>
       </div>
-      <div class="center column justify-center">
+      <div class="center column justify-center" v-if="$route.name === undefined">
         <div
           v-show="!isSideMenuVisible"
           class="column"

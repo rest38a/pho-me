@@ -51,7 +51,7 @@
            @click="showCart = !showCart">
         <img src="../assets/icon/closeBasket.png">
       </div>
-      <div
+      <div v-if="$route.name === undefined">
         class="col-md-5 col-sm-12 form-area"
         :class="{
           'col-xs-12': ordering === false,
@@ -555,8 +555,11 @@
           <div class="col-1"/>
         </div>
 
-        <div class="cart-h1 form-area-display">
+        <div class="cart-h1 form-area-display" v-if="$route.name === undefined">
           Корзина
+        </div>
+        <div class="cart-h1 form-area-display" v-else>
+          Хочу
         </div>
 
         <div
@@ -620,7 +623,7 @@
         <additional-sale
           :add-to-basket="addProductToBasket"
         />
-        <div class="row justify-between items-center col-12">
+        <div class="row justify-between items-center col-12" v-if="$route.name === undefined">
           <div class="row form-area-display col-12 q-pr-lg">
             <q-input
               :value="promoCode.value"
@@ -655,7 +658,7 @@
               <div>Отменить</div>
             </q-btn>
           </div>
-          <div class="col-12 q-pr-lg q-xs-none">
+          <div class="col-12 q-pr-lg q-xs-none" v-if="totalSum < 800 && $route.name === undefined">
             <div class="cart-h1 text-right"
                  v-if="currentOrder.deliveryInfo.type === 2">Скидка за самовывоз 15%</div>
             <div class="total text-right"
@@ -666,10 +669,14 @@
               Сумма заказа:<span class="total-sum">{{ totalSum }} ₽</span>
             </div>
             <div v-if="currentOrder.deliveryInfo.type === 1">
-              <div v-if="totalSum < 800" class="pho-caption text-right">
+              <div v-if="totalSum < 800 && $route.name === undefined"
+                   class="pho-caption text-right">
                 Минимальная сумма заказа от 800 ₽
               </div>
             </div>
+          </div>
+          <div class="col-12 q-pr-lg q-xs-none" v-else>
+            <div class="cart-h1 text-right">Обратитесь к официанту чтобы сделать заказ</div>
           </div>
         </div>
         <q-btn
@@ -689,8 +696,9 @@
     <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
     <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
     <!--        </div>-->
-    <div class="container">
-      <div class="row items-center justify-md-start justify-between">
+    <div class="container" >
+      <div class="row items-center justify-md-start justify-between"
+           v-if="$route.name === undefined">
         <div class="pho-h1 form-area-display q-pr-lg">
           ДОСТАВКА
         </div>
@@ -710,7 +718,7 @@
         </div>
       </div>
       <!-- главная страница -->
-      <div class="carousel-box form-area-display">
+      <div v-if="$route.name === undefined" class="carousel-box form-area-display">
         <q-carousel
           :height="heightSlider"
           v-model="slide"
@@ -947,9 +955,9 @@ export default {
     AdditionalSale,
     myFooter,
   },
-  preFetch({ store }) {
-    return store.dispatch('order/getOrderMenu');
-  },
+  // preFetch({ store }) {
+  //   return store.dispatch('order/getOrderMenu');
+  // },
   meta: {
     title: 'Pho me. Доставка из азиатского ресторана в Иркутске',
   },
@@ -1448,7 +1456,15 @@ export default {
     this.setAddressDadata(dadataAddress);
   },
   async mounted() {
+    console.log(this.$route.name);
     this.yandexMapHeight = window.innerHeight - 190;
+    if (this.$route.name === undefined) {
+      console.log(123456);
+      this.$store.dispatch('order/getOrderMenu');
+    } else {
+      console.log(654321);
+      this.$store.dispatch('order/getEMenu');
+    }
     this.$store.dispatch('promotions/getPromotions').then(() => {
       for (let i = 0; i < this.promotions.length; i += 1) {
         if (JSON.parse(this.promotions[i].type).id === 2) {

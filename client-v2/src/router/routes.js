@@ -44,6 +44,7 @@ const routes = [
         component: () => import('pages/ReportPage.vue'),
       },
       { path: 'delivery', component: () => import('pages/OrderPage.vue') },
+      { path: 'menu_rest', component: () => import('pages/OrderPage.vue'), name: 'emenu' },
       {
         path: '/Contacts',
         name: 'ContactPage',

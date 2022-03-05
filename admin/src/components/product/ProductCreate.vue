@@ -110,6 +110,11 @@
                             v-model="product.isActive"
                             color="amber"
                     />
+                  <q-toggle
+                    label="Показывать в меню доставки?"
+                    v-model="product.isDeliveryMenu"
+                    color="amber"
+                  />
                     <errorAlert
                             :massageText="alert.massageText"
                             :massageType="alert.massageType"
@@ -317,6 +322,7 @@ export default {
     return {
       tab: 'main',
       product: {
+        isDeliveryMenu: null,
         id: null,
         name: null,
         bgColor: '#ffffff',

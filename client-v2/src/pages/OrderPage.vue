@@ -51,9 +51,9 @@
            @click="showCart = !showCart">
         <img src="../assets/icon/closeBasket.png">
       </div>
-      <div v-if="$route.name === undefined">
-        class="col-md-5 col-sm-12 form-area"
-        :class="{
+      <div v-if="$route.name === undefined"
+           class="col-md-5 col-sm-12 form-area"
+           :class="{
           'col-xs-12': ordering === false,
           'form-area-display': ordering === true,
         }"
@@ -548,8 +548,11 @@
             </q-btn>
           </div>
           <div class="col-auto justify-center">
-            <div class="cart-h1">
+            <div class="cart-h1" v-if="$route.name === undefined">
               Корзина
+            </div>
+            <div class="cart-h1" v-else>
+              Хочу
             </div>
           </div>
           <div class="col-1"/>
@@ -562,7 +565,7 @@
           Хочу
         </div>
 
-        <div
+        <div v-if="$route.name === undefined"
           class=" display-none-class col-12 q-mb-sm"
         >
           <q-input
@@ -676,22 +679,26 @@
             </div>
           </div>
           <div class="col-12 q-pr-lg q-xs-none" v-else>
-            <div class="cart-h1 text-right">Обратитесь к официанту чтобы сделать заказ</div>
+            <div class="cart-h1 text-right">Обратитесь к официанту, чтобы сделать заказ</div>
           </div>
         </div>
         <q-btn
-          v-if="!showAddress"
+          v-if="!showAddress && $route.name === undefined"
           flat
           style="background: #ca17a8; color: #fff"
           class="full-width create-order-button absolute-bottom q-mb-lg"
           @click="toShowRegistrationOrder"
         >
-          <div class="bold">
+          <div class="bold" >
             К оформлению заказа
           </div>
         </q-btn>
+        <div class="create-order-button absolute-bottom q-ma-lg"
+             v-if="$route.name !== undefined">
+          <div class="cart-h1">Обратитесь к официанту, чтобы сделать заказ</div>
+        </div>
       </div>
-    </div>
+      </div>
     <!--        <div class="warning-line-mobile">-->
     <!--            Внимание! Режим работы доставки 31.12.20 - принимаем заказы до 19:00.-->
     <!--            А вот 1.01.21 - принимаем заказы с 14:00.-->
@@ -717,6 +724,14 @@
           </q-btn>
         </div>
       </div>
+      <div v-else class="row items-center justify-md-start justify-between">
+        <div class="pho-h1 form-area-display q-pr-lg">
+          Электронное меню
+        </div>
+        <div class="pho-h1 display-none-class q-pr-md">
+          Электронное меню
+        </div>
+        </div>
       <!-- главная страница -->
       <div v-if="$route.name === undefined" class="carousel-box form-area-display">
         <q-carousel
@@ -741,7 +756,7 @@
           </q-carousel-slide>
         </q-carousel>
       </div>
-      <div class="carousel-box display-none-mobile">
+      <div class="carousel-box display-none-mobile"  v-if="$route.name === undefined">
         <q-carousel
           :height="heightSlider"
           v-model="slide"
@@ -1459,11 +1474,17 @@ export default {
     console.log(this.$route.name);
     this.yandexMapHeight = window.innerHeight - 190;
     if (this.$route.name === undefined) {
-      console.log(123456);
-      this.$store.dispatch('order/getOrderMenu');
+      this.$store.dispatch('order/getOrderMenu').then(() => {
+        if (this.categoriesMenu[0] !== undefined) {
+          this.chooseCategory(this.categoriesMenu[0]);
+        }
+      });
     } else {
-      console.log(654321);
-      this.$store.dispatch('order/getEMenu');
+      this.$store.dispatch('order/getEMenu').then(() => {
+        if (this.categoriesMenu[0] !== undefined) {
+          this.chooseCategory(this.categoriesMenu[0]);
+        }
+      });
     }
     this.$store.dispatch('promotions/getPromotions').then(() => {
       for (let i = 0; i < this.promotions.length; i += 1) {
